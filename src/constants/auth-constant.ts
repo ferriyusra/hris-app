@@ -55,12 +55,8 @@ export const ROLE_LIST = [
 		label: 'Admin',
 	},
 	{
-		value: 'kitchen',
-		label: 'Kitchen',
-	},
-	{
-		value: 'cashier',
-		label: 'Cashier',
+		value: 'employee',
+		label: 'Karyawan',
 	},
 ];
 
