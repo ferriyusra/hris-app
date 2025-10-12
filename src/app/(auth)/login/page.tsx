@@ -1,7 +1,7 @@
 import Login from './_components/login'
 export const metadata = {
-  title: 'POS Cafe | Login',
-  description: 'Login to your POS Cafe account',
+  title: 'HRIS App | Login',
+  description: 'Login to your HRIS App account',
 }
 
 export default function LoginPage() {

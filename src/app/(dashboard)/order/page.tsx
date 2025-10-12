@@ -1,7 +1,7 @@
 import OrderManagement from './_components/order';
 
 export const metadata = {
-	title: 'POS Cafe | Order Management',
+	title: 'HRIS App | Order Management',
 };
 
 export default function OrderManagementPage() {

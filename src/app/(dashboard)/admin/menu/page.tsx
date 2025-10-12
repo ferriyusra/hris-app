@@ -1,7 +1,7 @@
 import MenuManagement from './_components/menu';
 
 export const metadata = {
-	title: 'POS Cafe | Menu Management',
+	title: 'HRIS App | Menu Management',
 };
 
 export default function MenuManagementPage() {

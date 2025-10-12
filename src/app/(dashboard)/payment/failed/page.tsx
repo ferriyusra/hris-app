@@ -1,7 +1,7 @@
 import Failed from './_components/failed';
 
 export const metadata = {
-	title: 'POS Cafe | Payment Failed',
+	title: 'HRIS App | Payment Failed',
 };
 
 export default function FailedPage() {

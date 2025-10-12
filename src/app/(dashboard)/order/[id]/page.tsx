@@ -3,7 +3,7 @@ import DetailOrder from './_components/detail-order';
 import { environment } from '@/configs/environment';
 
 export const metadata = {
-	title: 'POS Cafe | Detail Order',
+	title: 'HRIS App | Detail Order',
 };
 
 export default async function DetailOrderPage({
