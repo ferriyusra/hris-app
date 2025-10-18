@@ -131,7 +131,7 @@ export default function TableManagement() {
 	return (
 		<div className='w-full'>
 			<div className='flex flex-col lg:flex-row mb-4 gap-2 justify-between w-full'>
-				<h1 className='text-2xl font-bold'>Table Management</h1>
+				<h1 className='text-2xl font-bold'>Employee Management</h1>
 				<div className='flex gap-2'>
 					<Input
 						placeholder='Search...'

@@ -1,9 +1,9 @@
-export const HEADER_TABLE_MENU = [
+export const HEADER_TABLE_ATTENDANCE = [
 	'No',
-	'Name',
-	'Category',
-	'Price',
-	'Available',
+	'Nama',
+	'Check In',
+	'Check Out',
+	'Status',
 	'Action',
 ];
 

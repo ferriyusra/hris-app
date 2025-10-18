@@ -7,7 +7,7 @@ import { Preview } from '@/types/general';
 import FormMenu from './form-menu';
 import { Dialog } from '@radix-ui/react-dialog';
 import { Menu, MenuForm, menuFormSchema } from '@/validations/menu-validation';
-import { INITIAL_STATE_MENU } from '@/constants/menu-constant';
+import { INITIAL_STATE_MENU } from '@/constants/attendance-constant';
 
 export default function DialogUpdateMenu({
 	refetch,

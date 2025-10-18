@@ -14,37 +14,25 @@ export const SIDEBAR_MENU_LIST = {
 			icon: LayoutDashboard,
 		},
 		{
-			title: 'Order',
-			url: '/order',
-			icon: Album,
-		},
-		{
-			title: 'Menu',
-			url: '/admin/menu',
-			icon: SquareMenu,
-		},
-		{
-			title: 'Table',
-			url: '/admin/table',
-			icon: Armchair,
-		},
-		{
 			title: 'User',
 			url: '/admin/user',
 			icon: Users,
 		},
-	],
-	cashier: [
 		{
-			title: 'Order',
-			url: '/order',
+			title: 'Employee',
+			url: '/admin/employee',
+			icon: SquareMenu,
+		},
+		{
+			title: 'Attendance',
+			url: '/admin/attendance',
 			icon: Album,
 		},
 	],
-	kitchen: [
+	employee: [
 		{
-			title: 'Order',
-			url: '/order',
+			title: 'Attendance',
+			url: '/attendance',
 			icon: Album,
 		},
 	],

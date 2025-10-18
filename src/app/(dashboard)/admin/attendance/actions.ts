@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server';
 import { MenuFormState } from '@/types/menu';
 import { menuSchema } from '@/validations/menu-validation';
 
-export async function createMenu(prevState: MenuFormState, formData: FormData) {
+export async function createAttendance(prevState: MenuFormState, formData: FormData) {
 	let validatedFields = menuSchema.safeParse({
 		name: formData.get('name'),
 		description: formData.get('description'),

@@ -15,8 +15,8 @@ import { toast } from 'sonner';
 import { Menu } from '@/validations/menu-validation';
 import Image from 'next/image';
 import { cn, convertIDR } from '@/lib/utils';
-import { HEADER_TABLE_MENU } from '@/constants/menu-constant';
-import DialogCreateMenu from './dialog-create-menu';
+import { HEADER_TABLE_ATTENDANCE } from '@/constants/attendance-constant';
+import DialogcreateAttendance from './dialog-create-menu';
 import DialogUpdateMenu from './dialog-update-menu';
 import DialogDeleteMenu from './dialog-delete-menu';
 
@@ -146,7 +146,7 @@ export default function MenuManagement() {
 	return (
 		<div className='w-full'>
 			<div className='flex flex-col lg:flex-row mb-4 gap-2 justify-between w-full'>
-				<h1 className='text-2xl font-bold'>Menu Management</h1>
+				<h1 className='text-2xl font-bold'>Attendance Management</h1>
 				<div className='flex gap-2'>
 					<Input
 						placeholder='Search by name or category'
@@ -156,12 +156,12 @@ export default function MenuManagement() {
 						<DialogTrigger asChild>
 							<Button variant='outline'>Create</Button>
 						</DialogTrigger>
-						<DialogCreateMenu refetch={refetch} />
+						<DialogcreateAttendance refetch={refetch} />
 					</Dialog>
 				</div>
 			</div>
 			<DataTable
-				header={HEADER_TABLE_MENU}
+				header={HEADER_TABLE_ATTENDANCE}
 				data={filteredData}
 				isLoading={isLoading}
 				totalPages={totalPages}

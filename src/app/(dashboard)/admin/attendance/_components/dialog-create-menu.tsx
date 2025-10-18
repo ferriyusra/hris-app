@@ -1,21 +1,21 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { startTransition, useActionState, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { createMenu } from '../actions';
+import { createAttendance } from '../actions';
 import { toast } from 'sonner';
 import { Preview } from '@/types/general';
 import { MenuForm, menuFormSchema } from '@/validations/menu-validation';
-import { INITIAL_MENU, INITIAL_STATE_MENU } from '@/constants/menu-constant';
+import { INITIAL_MENU, INITIAL_STATE_MENU } from '@/constants/attendance-constant';
 import FormMenu from './form-menu';
 
-export default function DialogCreateMenu({ refetch }: { refetch: () => void }) {
+export default function DialogcreateAttendance({ refetch }: { refetch: () => void }) {
 	const form = useForm<MenuForm>({
 		resolver: zodResolver(menuFormSchema),
 		defaultValues: INITIAL_MENU,
 	});
 
-	const [createMenuState, createMenuAction, isPendingCreateMenu] =
-		useActionState(createMenu, INITIAL_STATE_MENU);
+	const [createAttendanceState, createAttendanceAction, isPendingcreateAttendance] =
+		useActionState(createAttendance, INITIAL_STATE_MENU);
 
 	const [preview, setPreview] = useState<Preview | undefined>(undefined);
 
@@ -26,31 +26,31 @@ export default function DialogCreateMenu({ refetch }: { refetch: () => void }) {
 		});
 
 		startTransition(() => {
-			createMenuAction(formData);
+			createAttendanceAction(formData);
 		});
 	});
 
 	useEffect(() => {
-		if (createMenuState?.status === 'error') {
+		if (createAttendanceState?.status === 'error') {
 			toast.error('Create Menu Failed', {
-				description: createMenuState.errors?._form?.[0],
+				description: createAttendanceState.errors?._form?.[0],
 			});
 		}
 
-		if (createMenuState?.status === 'success') {
+		if (createAttendanceState?.status === 'success') {
 			toast.success('Create Menu Success');
 			form.reset();
 			setPreview(undefined);
 			document.querySelector<HTMLButtonElement>('[data-state="open"]')?.click();
 			refetch();
 		}
-	}, [createMenuState]);
+	}, [createAttendanceState]);
 
 	return (
 		<FormMenu
 			form={form}
 			onSubmit={onSubmit}
-			isLoading={isPendingCreateMenu}
+			isLoading={isPendingcreateAttendance}
 			type='Create'
 			preview={preview}
 			setPreview={setPreview}

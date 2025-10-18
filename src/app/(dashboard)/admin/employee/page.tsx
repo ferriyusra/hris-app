@@ -1,7 +1,7 @@
 import TableManagement from './_components/table';
 
 export const metadata = {
-	title: 'HRIS App | Table Management',
+	title: 'HRIS App | Employee Management',
 };
 
 export default function TableManagementPage() {
