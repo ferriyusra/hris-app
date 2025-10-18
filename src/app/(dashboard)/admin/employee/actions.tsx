@@ -1,18 +1,18 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import { TableFormState } from '@/types/table';
-import { tableSchema } from '@/validations/table-validation';
+import { EmployeeFormState } from '@/types/employee';
+import { employeeSchema } from '@/validations/employee-validation';
 
-export async function createTable(
-	prevState: TableFormState,
+export async function createEmployee(
+	prevState: EmployeeFormState,
 	formData: FormData
 ) {
-	const validatedFields = tableSchema.safeParse({
-		name: formData.get('name'),
-		description: formData.get('description'),
-		capacity: parseInt(formData.get('capacity') as string),
-		status: formData.get('status'),
+	const validatedFields = employeeSchema.safeParse({
+		full_name: formData.get('full_name'),
+		position: formData.get('position'),
+		phone_number: formData.get('phone_number'),
+		is_active: formData.get('is_active'),
 	});
 
 	if (!validatedFields.success) {
@@ -27,11 +27,12 @@ export async function createTable(
 
 	const supabase = await createClient();
 
-	const { error } = await supabase.from('tables').insert({
-		name: validatedFields.data.name,
-		description: validatedFields.data.description,
-		capacity: validatedFields.data.capacity,
-		status: validatedFields.data.status,
+	const { error } = await supabase.from('employees').insert({
+		full_name: validatedFields.data.full_name,
+		user_id: '3f2fd94f-a770-481d-add6-bdc2ce466312',
+		position: validatedFields.data.position,
+		phone_number: validatedFields.data.phone_number,
+		is_active: validatedFields.data.is_active,
 	});
 
 	if (error) {
@@ -49,15 +50,15 @@ export async function createTable(
 	};
 }
 
-export async function updateTable(
-	prevState: TableFormState,
+export async function updateEmployee(
+	prevState: EmployeeFormState,
 	formData: FormData
 ) {
-	const validatedFields = tableSchema.safeParse({
-		name: formData.get('name'),
-		description: formData.get('description'),
-		capacity: parseInt(formData.get('capacity') as string),
-		status: formData.get('status'),
+	const validatedFields = employeeSchema.safeParse({
+		full_name: formData.get('full_name'),
+		position: formData.get('position'),
+		phone_number: formData.get('phone_number'),
+		is_active: formData.get('is_active'),
 	});
 
 	if (!validatedFields.success) {
@@ -73,12 +74,12 @@ export async function updateTable(
 	const supabase = await createClient();
 
 	const { error } = await supabase
-		.from('tables')
+		.from('employees')
 		.update({
-			name: validatedFields.data.name,
-			description: validatedFields.data.description,
-			capacity: validatedFields.data.capacity,
-			status: validatedFields.data.status,
+			full_name: validatedFields.data.full_name,
+			position: validatedFields.data.position,
+			phone_number: validatedFields.data.phone_number,
+			is_active: validatedFields.data.is_active,
 		})
 		.eq('id', formData.get('id'));
 
@@ -97,14 +98,14 @@ export async function updateTable(
 	};
 }
 
-export async function deleteTable(
-	prevState: TableFormState,
+export async function deleteEmployee(
+	prevState: EmployeeFormState,
 	formData: FormData
 ) {
 	const supabase = await createClient();
 
 	const { error } = await supabase
-		.from('tables')
+		.from('employees')
 		.delete()
 		.eq('id', formData.get('id'));
 

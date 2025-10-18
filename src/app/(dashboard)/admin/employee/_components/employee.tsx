@@ -13,13 +13,13 @@ import { Pencil, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { Table } from '@/validations/table-validation';
-import { HEADER_TABLE_TABLE } from '@/constants/table-constant';
-import DialogCreateTable from './dialog-create-table';
-import DialogUpdateTable from './dialog-update-table';
-import DialogDeleteTable from './dialog-delete-table';
+import { Table } from '@/validations/employee-validation';
+import { HEADER_TABLE_EMPLOYEE } from '@/constants/employee-constant';
+import DialogCreateEmployee from './dialog-create-employee';
+import DialogUpdateEmployee from './dialog-update-employee';
+import DialogDeleteEmployee from './dialog-delete-employee';
 
-export default function TableManagement() {
+export default function EmployeeManagement() {
 	const supabase = createClient();
 	const {
 		currentPage,
@@ -30,28 +30,28 @@ export default function TableManagement() {
 		handleChangeSearch,
 	} = useDataTable();
 	const {
-		data: tables,
+		data: employees,
 		isLoading,
 		refetch,
 	} = useQuery({
-		queryKey: ['tables', currentPage, currentLimit, currentSearch],
+		queryKey: ['employees', currentPage, currentLimit, currentSearch],
 		queryFn: async () => {
 			const query = supabase
-				.from('tables')
+				.from('employees')
 				.select('*', { count: 'exact' })
 				.range((currentPage - 1) * currentLimit, currentPage * currentLimit - 1)
 				.order('created_at');
 
 			if (currentSearch) {
 				query.or(
-					`name.ilike.%${currentSearch}%,description.ilike.%${currentSearch}%,status.ilike.%${currentSearch}%`
+					`position.ilike.%${currentSearch}%,full_name.ilike.%${currentSearch}%,status.ilike.%${currentSearch}%`
 				);
 			}
 
 			const result = await query;
 
 			if (result.error)
-				toast.error('Get Table data failed', {
+				toast.error('Get Employee data failed', {
 					description: result.error.message,
 				});
 
@@ -69,19 +69,18 @@ export default function TableManagement() {
 	};
 
 	const filteredData = useMemo(() => {
-		return (tables?.data || []).map((table: Table, index) => {
+		return (employees?.data || []).map((table: Table, index) => {
 			return [
 				currentLimit * (currentPage - 1) + index + 1,
 				<div>
-					<h4 className='font-bold'>{table.name}</h4>
-					<p className='text-xs'>{table.description}</p>
+					<h4 className='font-bold'>{table.full_name}</h4>
+					<p className='text-xs'>{table.position}</p>
 				</div>,
-				table.capacity,
+				table.phone_number,
 				<div
 					className={cn('px-2 py-1 rounded-full text-white w-fit capitalize', {
-						'bg-green-600': table.status === 'available',
-						'bg-red-600': table.status === 'unavailable',
-						'bg-yellow-600': table.status === 'reserved',
+						'bg-green-600': table.status === 'true',
+						'bg-red-600': table.status === 'false',
 					})}>
 					{table.status}
 				</div>,
@@ -120,13 +119,13 @@ export default function TableManagement() {
 				/>,
 			];
 		});
-	}, [tables]);
+	}, [employees]);
 
 	const totalPages = useMemo(() => {
-		return tables && tables.count !== null
-			? Math.ceil(tables.count / currentLimit)
+		return employees && employees.count !== null
+			? Math.ceil(employees.count / currentLimit)
 			: 0;
-	}, [tables]);
+	}, [employees]);
 
 	return (
 		<div className='w-full'>
@@ -141,12 +140,12 @@ export default function TableManagement() {
 						<DialogTrigger asChild>
 							<Button variant='outline'>Create</Button>
 						</DialogTrigger>
-						<DialogCreateTable refetch={refetch} />
+						<DialogCreateEmployee refetch={refetch} />
 					</Dialog>
 				</div>
 			</div>
 			<DataTable
-				header={HEADER_TABLE_TABLE}
+				header={HEADER_TABLE_EMPLOYEE}
 				data={filteredData}
 				isLoading={isLoading}
 				totalPages={totalPages}
@@ -155,13 +154,13 @@ export default function TableManagement() {
 				onChangePage={handleChangePage}
 				onChangeLimit={handleChangeLimit}
 			/>
-			<DialogUpdateTable
+			<DialogUpdateEmployee
 				open={selectedAction !== null && selectedAction.type === 'update'}
 				refetch={refetch}
 				currentData={selectedAction?.data}
 				handleChangeAction={handleChangeAction}
 			/>
-			<DialogDeleteTable
+			<DialogDeleteEmployee
 				open={selectedAction !== null && selectedAction.type === 'delete'}
 				refetch={refetch}
 				currentData={selectedAction?.data}

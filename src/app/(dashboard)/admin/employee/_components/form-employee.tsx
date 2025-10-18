@@ -10,12 +10,12 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
-import { STATUS_TABLE_LIST } from '@/constants/table-constant';
+import { STATUS_TABLE_EMPLOYEE } from '@/constants/employee-constant';
 import { Loader2 } from 'lucide-react';
 import { FormEvent } from 'react';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
-export default function FormTable<T extends FieldValues>({
+export default function FormEmployee<T extends FieldValues>({
 	form,
 	onSubmit,
 	isLoading,
@@ -32,36 +32,34 @@ export default function FormTable<T extends FieldValues>({
 				<DialogHeader>
 					<DialogTitle>{type} Table</DialogTitle>
 					<DialogDescription>
-						{type === 'Create' ? 'Add a new table' : 'Make changes table here'}
+						{type === 'Create' ? 'Add a new employee' : 'Make changes table here'}
 					</DialogDescription>
 				</DialogHeader>
 				<form onSubmit={onSubmit} className='space-y-4'>
 					<div className='space-y-4 max-h-[50vh] px-1 overflow-y-auto'>
 						<FormInput
 							form={form}
-							name={'name' as Path<T>}
-							label='Name'
-							placeholder='Insert name here'
+							name={'full_name' as Path<T>}
+							label='Full Name'
+							placeholder='Insert full name here'
 						/>
 						<FormInput
 							form={form}
-							name={'description' as Path<T>}
-							label='Description'
-							placeholder='Insert description here'
-							type='textarea'
+							name={'position' as Path<T>}
+							label='Position'
+							placeholder='Insert position here'
 						/>
 						<FormInput
 							form={form}
-							name={'capacity' as Path<T>}
-							label='Capacity'
-							placeholder='Insert capacity here'
-							type='number'
+							name={'phone_number' as Path<T>}
+							label='Phone Number'
+							placeholder='Insert phone number here'
 						/>
 						<FormSelect
 							form={form}
-							name={'status' as Path<T>}
+							name={'is_active' as Path<T>}
 							label='Status'
-							selectItem={STATUS_TABLE_LIST}
+							selectItem={STATUS_TABLE_EMPLOYEE}
 						/>
 					</div>
 					<DialogFooter>

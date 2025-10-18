@@ -1,5 +1,5 @@
--- create table profiles
-create table public.profiles (
+-- Create Employee profiles
+Create Employee public.profiles (
   id uuid not null references auth.users on delete cascade,
   name text,
   role text,

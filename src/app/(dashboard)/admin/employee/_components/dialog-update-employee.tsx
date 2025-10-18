@@ -1,18 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { startTransition, useActionState, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { updateTable } from '../actions';
+import { updateEmployee } from '../actions';
 import { toast } from 'sonner';
-import FormTable from './form-table';
+import FormEmployee from './form-employee';
 import { Dialog } from '@radix-ui/react-dialog';
 import {
 	Table,
 	TableForm,
-	tableFormSchema,
-} from '@/validations/table-validation';
-import { INITIAL_STATE_TABLE } from '@/constants/table-constant';
+	employeeFormSchema,
+} from '@/validations/employee-validation';
+import { INITIAL_STATE_EMPLOYEE } from '@/constants/employee-constant';
 
-export default function DialogUpdateTable({
+export default function DialogUpdateEmployee({
 	refetch,
 	currentData,
 	open,
@@ -24,11 +24,11 @@ export default function DialogUpdateTable({
 	handleChangeAction?: (open: boolean) => void;
 }) {
 	const form = useForm<TableForm>({
-		resolver: zodResolver(tableFormSchema),
+		resolver: zodResolver(employeeFormSchema),
 	});
 
-	const [updateTableState, updateTableAction, isPendingUpdateTable] =
-		useActionState(updateTable, INITIAL_STATE_TABLE);
+	const [updateEmployeeState, updateEmployeeAction, isPendingupdateEmployee] =
+		useActionState(updateEmployee, INITIAL_STATE_EMPLOYEE);
 
 	const onSubmit = form.handleSubmit((data) => {
 		const formData = new FormData();
@@ -38,40 +38,40 @@ export default function DialogUpdateTable({
 		formData.append('id', currentData?.id ?? '');
 
 		startTransition(() => {
-			updateTableAction(formData);
+			updateEmployeeAction(formData);
 		});
 	});
 
 	useEffect(() => {
-		if (updateTableState?.status === 'error') {
+		if (updateEmployeeState?.status === 'error') {
 			toast.error('Update Table Failed', {
-				description: updateTableState.errors?._form?.[0],
+				description: updateEmployeeState.errors?._form?.[0],
 			});
 		}
 
-		if (updateTableState?.status === 'success') {
+		if (updateEmployeeState?.status === 'success') {
 			toast.success('Update Table Success');
 			form.reset();
 			handleChangeAction?.(false);
 			refetch();
 		}
-	}, [updateTableState]);
+	}, [updateEmployeeState]);
 
 	useEffect(() => {
 		if (currentData) {
-			form.setValue('name', currentData.name);
-			form.setValue('description', currentData.description);
-			form.setValue('capacity', currentData.capacity.toString());
+			form.setValue('full_name', currentData.full_name);
+			form.setValue('position', currentData.position);
+			form.setValue('phone_number', currentData.phone_number);
 			form.setValue('status', currentData.status);
 		}
 	}, [currentData]);
 
 	return (
 		<Dialog open={open} onOpenChange={handleChangeAction}>
-			<FormTable
+			<FormEmployee
 				form={form}
 				onSubmit={onSubmit}
-				isLoading={isPendingUpdateTable}
+				isLoading={isPendingupdateEmployee}
 				type='Update'
 			/>
 		</Dialog>

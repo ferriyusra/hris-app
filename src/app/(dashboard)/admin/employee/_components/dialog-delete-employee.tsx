@@ -1,11 +1,11 @@
 import DialogDelete from '@/components/common/dialog-delete';
 import { startTransition, useActionState, useEffect } from 'react';
-import { deleteTable } from '../actions';
+import { deleteEmployee } from '../actions';
 import { INITIAL_STATE_ACTION } from '@/constants/general-constant';
 import { toast } from 'sonner';
-import { Table } from '@/validations/table-validation';
+import { Table } from '@/validations/employee-validation';
 
-export default function DialogDeleteTable({
+export default function DialogDeleteEmployee({
 	open,
 	refetch,
 	currentData,
@@ -16,36 +16,36 @@ export default function DialogDeleteTable({
 	open: boolean;
 	handleChangeAction: (open: boolean) => void;
 }) {
-	const [deleteTableState, deleteTableAction, isPendingDeleteTable] =
-		useActionState(deleteTable, INITIAL_STATE_ACTION);
+	const [deleteEmployeeState, deleteEmployeeAction, isPendingdeleteEmployee] =
+		useActionState(deleteEmployee, INITIAL_STATE_ACTION);
 
 	const onSubmit = () => {
 		const formData = new FormData();
 		formData.append('id', currentData!.id as string);
 		startTransition(() => {
-			deleteTableAction(formData);
+			deleteEmployeeAction(formData);
 		});
 	};
 
 	useEffect(() => {
-		if (deleteTableState?.status === 'error') {
-			toast.error('Delete Table Failed', {
-				description: deleteTableState.errors?._form?.[0],
+		if (deleteEmployeeState?.status === 'error') {
+			toast.error('Delete Employee Failed', {
+				description: deleteEmployeeState.errors?._form?.[0],
 			});
 		}
 
-		if (deleteTableState?.status === 'success') {
-			toast.success('Delete Table Success');
+		if (deleteEmployeeState?.status === 'success') {
+			toast.success('Delete Employee Success');
 			handleChangeAction?.(false);
 			refetch();
 		}
-	}, [deleteTableState]);
+	}, [deleteEmployeeState]);
 
 	return (
 		<DialogDelete
 			open={open}
 			onOpenChange={handleChangeAction}
-			isLoading={isPendingDeleteTable}
+			isLoading={isPendingdeleteEmployee}
 			onSubmit={onSubmit}
 			title='Table'
 		/>

@@ -3,7 +3,7 @@ import { startTransition, useActionState, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { createOrder } from '../actions';
 import { toast } from 'sonner';
-import { Table } from '@/validations/table-validation';
+import { Table } from '@/validations/employee-validation';
 import { OrderForm, orderFormSchema } from '@/validations/order-validation';
 import {
 	INITIAL_ORDER,

@@ -19,8 +19,8 @@ import {
 } from 'react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { Table } from '@/validations/table-validation';
-import { HEADER_TABLE_TABLE } from '@/constants/table-constant';
+import { Table } from '@/validations/employee-validation';
+import { HEADER_TABLE_EMPLOYEE } from '@/constants/employee-constant';
 import {
 	HEADER_TABLE_ORDER,
 	INITIAL_STATE_ORDER,
