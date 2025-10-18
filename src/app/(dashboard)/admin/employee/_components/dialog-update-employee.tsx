@@ -7,7 +7,7 @@ import FormEmployee from './form-employee';
 import { Dialog } from '@radix-ui/react-dialog';
 import {
 	Table,
-	TableForm,
+	EmployeeForm,
 	employeeFormSchema,
 } from '@/validations/employee-validation';
 import { INITIAL_STATE_EMPLOYEE } from '@/constants/employee-constant';
@@ -23,7 +23,7 @@ export default function DialogUpdateEmployee({
 	open?: boolean;
 	handleChangeAction?: (open: boolean) => void;
 }) {
-	const form = useForm<TableForm>({
+	const form = useForm<EmployeeForm>({
 		resolver: zodResolver(employeeFormSchema),
 	});
 

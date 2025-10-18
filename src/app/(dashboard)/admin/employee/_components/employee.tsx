@@ -13,7 +13,7 @@ import { Pencil, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { Table } from '@/validations/employee-validation';
+import { Employee } from '@/validations/employee-validation';
 import { HEADER_TABLE_EMPLOYEE } from '@/constants/employee-constant';
 import DialogCreateEmployee from './dialog-create-employee';
 import DialogUpdateEmployee from './dialog-update-employee';
@@ -44,7 +44,7 @@ export default function EmployeeManagement() {
 
 			if (currentSearch) {
 				query.or(
-					`position.ilike.%${currentSearch}%,full_name.ilike.%${currentSearch}%,status.ilike.%${currentSearch}%`
+					`position.ilike.%${currentSearch}%,full_name.ilike.%${currentSearch}%`
 				);
 			}
 
@@ -60,7 +60,7 @@ export default function EmployeeManagement() {
 	});
 
 	const [selectedAction, setSelectedAction] = useState<{
-		data: Table;
+		data: Employee;
 		type: 'update' | 'delete';
 	} | null>(null);
 
@@ -69,20 +69,21 @@ export default function EmployeeManagement() {
 	};
 
 	const filteredData = useMemo(() => {
-		return (employees?.data || []).map((table: Table, index) => {
+		return (employees?.data || []).map((employee: Employee, index) => {
 			return [
 				currentLimit * (currentPage - 1) + index + 1,
+				employee.id,
 				<div>
-					<h4 className='font-bold'>{table.full_name}</h4>
-					<p className='text-xs'>{table.position}</p>
+					<h4 className='font-bold'>{employee.full_name}</h4>
 				</div>,
-				table.phone_number,
+				employee.position,
+				employee.phone_number,
 				<div
 					className={cn('px-2 py-1 rounded-full text-white w-fit capitalize', {
-						'bg-green-600': table.status === 'true',
-						'bg-red-600': table.status === 'false',
+						 'bg-green-600': employee.is_active,
+    					'bg-red-600': !employee.is_active,
 					})}>
-					{table.status}
+					 {employee.is_active ? 'Active' : 'Inactive'}
 				</div>,
 				<DropdownAction
 					menu={[
@@ -95,7 +96,7 @@ export default function EmployeeManagement() {
 							),
 							action: () => {
 								setSelectedAction({
-									data: table,
+									data: employee,
 									type: 'update',
 								});
 							},
@@ -110,7 +111,7 @@ export default function EmployeeManagement() {
 							variant: 'destructive',
 							action: () => {
 								setSelectedAction({
-									data: table,
+									data: employee,
 									type: 'delete',
 								});
 							},

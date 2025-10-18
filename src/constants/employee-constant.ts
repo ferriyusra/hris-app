@@ -1,5 +1,6 @@
 export const HEADER_TABLE_EMPLOYEE = [
 	'No',
+	'Employee ID',
 	'Full Name',
 	'Position',
 	'Phone Number',

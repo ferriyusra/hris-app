@@ -3,7 +3,7 @@ import { startTransition, useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { createEmployee } from '../actions';
 import { toast } from 'sonner';
-import { TableForm, employeeFormSchema } from '@/validations/employee-validation';
+import { EmployeeForm, employeeFormSchema } from '@/validations/employee-validation';
 import { INITIAL_STATE_EMPLOYEE, INITIAL_EMPLOYEE } from '@/constants/employee-constant';
 import FormEmployee from './form-employee';
 
@@ -12,7 +12,7 @@ export default function DialogCreateEmployee({
 }: {
 	refetch: () => void;
 }) {
-	const form = useForm<TableForm>({
+	const form = useForm<EmployeeForm>({
 		resolver: zodResolver(employeeFormSchema),
 		defaultValues: INITIAL_EMPLOYEE,
 	});

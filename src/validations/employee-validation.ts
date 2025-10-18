@@ -11,8 +11,8 @@ export const employeeSchema = z.object({
 	full_name: z.string(),
 	position: z.string(),
 	phone_number: z.string(),
-	is_active: z.string(),
+	is_active: z.boolean(),
 });
 
-export type TableForm = z.infer<typeof employeeFormSchema>;
-export type Table = z.infer<typeof employeeSchema> & { id: string };
+export type EmployeeForm = z.infer<typeof employeeFormSchema>;
+export type Employee = z.infer<typeof employeeSchema> & { id: string };
