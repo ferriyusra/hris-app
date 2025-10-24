@@ -122,17 +122,47 @@ export async function deleteEmployee(
 	return { status: 'success' };
 }
 
-export async function getAvailableEmployees() {
+export async function getAllEmployeesDebug() {
 	const supabase = await createClient();
 
 	const { data, error } = await supabase
 		.from('employees')
-		.select('id, full_name, position')
+		.select('id, full_name, position, user_id, is_active')
+		.order('full_name');
+
+	console.log('getAllEmployeesDebug - Total employees:', data?.length);
+	console.log('getAllEmployeesDebug - Data:', data);
+
+	return { data, error: error?.message || null };
+}
+
+export async function getAvailableEmployees() {
+	const supabase = await createClient();
+
+	// Debug: Get all employees first
+	const allEmployees = await supabase
+		.from('employees')
+		.select('id, full_name, position, user_id, is_active')
+		.order('full_name');
+
+	console.log('=== getAvailableEmployees DEBUG ===');
+	console.log('Total employees in DB:', allEmployees.data?.length);
+	console.log('All employees:', allEmployees.data);
+
+	const { data, error } = await supabase
+		.from('employees')
+		.select('id, full_name, position, user_id, is_active')
 		.is('user_id', null)
 		.eq('is_active', true)
 		.order('full_name');
 
+	console.log('Available employees (user_id = null, is_active = true):', data?.length);
+	console.log('Available employees data:', data);
+	console.log('Error:', error);
+	console.log('=== END DEBUG ===');
+
 	if (error) {
+		console.error('getAvailableEmployees - Error detail:', error);
 		return { data: null, error: error.message };
 	}
 

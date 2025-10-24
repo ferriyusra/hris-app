@@ -1,6 +1,7 @@
 import FormImage from '@/components/common/form-image';
 import FormInput from '@/components/common/form-input';
 import FormSelect from '@/components/common/form-select';
+import FormCombobox from '@/components/common/form-combobox';
 import { Button } from '@/components/ui/button';
 import {
 	DialogClose,
@@ -25,6 +26,7 @@ export default function FormUser<T extends FieldValues>({
 	preview,
 	setPreview,
 	employees = [],
+	isLoadingEmployees = false,
 }: {
 	form: UseFormReturn<T>;
 	onSubmit: (event: FormEvent<HTMLFormElement>) => void;
@@ -33,6 +35,7 @@ export default function FormUser<T extends FieldValues>({
 	preview?: Preview;
 	setPreview?: (preview: Preview) => void;
 	employees?: { id: string; full_name: string; position: string }[];
+	isLoadingEmployees?: boolean;
 }) {
 	// Watch role field value
 	const selectedRole = useWatch({
@@ -56,12 +59,6 @@ export default function FormUser<T extends FieldValues>({
 
 	// Check if role is "employee" (karyawan)
 	const isEmployeeRole = selectedRole === 'employee';
-
-	// Debug: log employees data
-	console.log('Employees data:', employees);
-	console.log('Employee options:', employeeOptions);
-	console.log('Selected role:', selectedRole);
-	console.log('Is employee role:', isEmployeeRole);
 	return (
 		<DialogContent className='sm:max-w-[425px]'>
 			<Form {...form}>
@@ -104,18 +101,31 @@ export default function FormUser<T extends FieldValues>({
 					/>
 					{type === 'Create' && isEmployeeRole && (
 						<>
-							{employeeOptions.length > 0 ? (
-								<FormSelect
+							{isLoadingEmployees ? (
+								<div className='space-y-2'>
+									<label className='text-sm font-medium leading-none'>
+										Select Employee
+									</label>
+									<div className='text-sm text-muted-foreground border rounded-md p-3 bg-muted flex items-center gap-2'>
+										<Loader2 className='h-4 w-4 animate-spin' />
+										Loading employees...
+									</div>
+								</div>
+							) : employeeOptions.length > 0 ? (
+								<FormCombobox
 									form={form}
 									name={'employee_id' as Path<T>}
-									label='Employee (Optional)'
-									selectItem={employeeOptions}
+									label='Select Employee'
+									options={employeeOptions}
 									onValueChange={handleEmployeeChange}
+									placeholder='Select employee...'
+									searchPlaceholder='Search employee by name...'
+									emptyText='No employee found.'
 								/>
 							) : (
 								<div className='space-y-2'>
 									<label className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
-										Employee (Optional)
+										Select Employee
 									</label>
 									<div className='text-sm text-muted-foreground border rounded-md p-3 bg-muted'>
 										No available employees. Create an employee first in the

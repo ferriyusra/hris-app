@@ -19,6 +19,8 @@ export default function DialogCreateUser({ refetch }: { refetch: () => void }) {
 	const [employees, setEmployees] = useState<
 		{ id: string; full_name: string; position: string }[]
 	>([]);
+	const [isLoadingEmployees, setIsLoadingEmployees] = useState(true);
+
 	const form = useForm<CreateUserForm>({
 		resolver: zodResolver(createUserSchema),
 		defaultValues: INITIAL_CREATE_USER_FORM,
@@ -42,9 +44,20 @@ export default function DialogCreateUser({ refetch }: { refetch: () => void }) {
 
 	useEffect(() => {
 		const fetchEmployees = async () => {
-			const { data } = await getAvailableEmployees();
-			if (data) {
-				setEmployees(data);
+			setIsLoadingEmployees(true);
+			try {
+				const { data, error } = await getAvailableEmployees();
+				if (error) {
+					console.error('Failed to fetch employees:', error);
+					toast.error('Failed to load employees');
+				} else if (data) {
+					setEmployees(data);
+				}
+			} catch (error) {
+				console.error('Error fetching employees:', error);
+				toast.error('Failed to load employees');
+			} finally {
+				setIsLoadingEmployees(false);
 			}
 		};
 		fetchEmployees();
@@ -75,6 +88,7 @@ export default function DialogCreateUser({ refetch }: { refetch: () => void }) {
 			preview={preview}
 			setPreview={setPreview}
 			employees={employees}
+			isLoadingEmployees={isLoadingEmployees}
 		/>
 	);
 }
