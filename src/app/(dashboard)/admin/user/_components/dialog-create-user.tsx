@@ -13,8 +13,12 @@ import { createUser } from '../actions';
 import { toast } from 'sonner';
 import { Preview } from '@/types/general';
 import FormUser from './form-user';
+import { getAvailableEmployees } from '../../employee/actions';
 
 export default function DialogCreateUser({ refetch }: { refetch: () => void }) {
+	const [employees, setEmployees] = useState<
+		{ id: string; full_name: string; position: string }[]
+	>([]);
 	const form = useForm<CreateUserForm>({
 		resolver: zodResolver(createUserSchema),
 		defaultValues: INITIAL_CREATE_USER_FORM,
@@ -35,6 +39,16 @@ export default function DialogCreateUser({ refetch }: { refetch: () => void }) {
 			createUserAction(formData);
 		});
 	});
+
+	useEffect(() => {
+		const fetchEmployees = async () => {
+			const { data } = await getAvailableEmployees();
+			if (data) {
+				setEmployees(data);
+			}
+		};
+		fetchEmployees();
+	}, []);
 
 	useEffect(() => {
 		if (createUserState?.status === 'error') {
@@ -60,6 +74,7 @@ export default function DialogCreateUser({ refetch }: { refetch: () => void }) {
 			type='Create'
 			preview={preview}
 			setPreview={setPreview}
+			employees={employees}
 		/>
 	);
 }

@@ -15,6 +15,7 @@ export async function createUser(prevState: AuthFormState, formData: FormData) {
 		name: formData.get('name'),
 		role: formData.get('role'),
 		avatar_url: formData.get('avatar_url'),
+		employee_id: formData.get('employee_id') || undefined,
 	});
 
 	if (!validatedFields.success) {
@@ -54,7 +55,7 @@ export async function createUser(prevState: AuthFormState, formData: FormData) {
 
 	const supabase = await createClient();
 
-	const { error } = await supabase.auth.signUp({
+	const { data: userData, error } = await supabase.auth.signUp({
 		email: validatedFields.data.email,
 		password: validatedFields.data.password,
 		options: {
@@ -74,6 +75,26 @@ export async function createUser(prevState: AuthFormState, formData: FormData) {
 				_form: [error.message],
 			},
 		};
+	}
+
+	// Link user to employee if employee_id is provided
+	if (validatedFields.data.employee_id && userData.user) {
+		const { error: updateError } = await supabase
+			.from('employees')
+			.update({ user_id: userData.user.id })
+			.eq('id', validatedFields.data.employee_id);
+
+		if (updateError) {
+			return {
+				status: 'error',
+				errors: {
+					...prevState.errors,
+					_form: [
+						`User created but failed to link to employee: ${updateError.message}`,
+					],
+				},
+			};
+		}
 	}
 
 	return {

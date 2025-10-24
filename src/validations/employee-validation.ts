@@ -11,7 +11,12 @@ export const employeeSchema = z.object({
 	full_name: z.string(),
 	position: z.string(),
 	phone_number: z.string(),
-	is_active: z.boolean(),
+	is_active: z
+		.union([z.boolean(), z.string()])
+		.transform((val) => {
+			if (typeof val === 'boolean') return val;
+			return val === 'true';
+		}),
 });
 
 export type EmployeeForm = z.infer<typeof employeeFormSchema>;

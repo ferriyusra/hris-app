@@ -20,6 +20,7 @@ export const createUserSchema = z.object({
 		z.string().min(1, 'Image URL is required'),
 		z.instanceof(File),
 	]),
+	employee_id: z.string().optional(),
 });
 
 export const updateUserSchema = z.object({

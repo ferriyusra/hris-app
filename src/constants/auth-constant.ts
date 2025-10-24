@@ -25,6 +25,7 @@ export const INITIAL_CREATE_USER_FORM = {
 	role: '',
 	avatar_url: '',
 	password: '',
+	employee_id: '',
 };
 
 export const INITIAL_STATE_CREATE_USER = {
@@ -34,7 +35,8 @@ export const INITIAL_STATE_CREATE_USER = {
 		password: [],
 		name: [],
 		role: [],
-		avatar_Url: [],
+		avatar_url: [],
+		employee_id: [],
 		_form: [],
 	},
 };

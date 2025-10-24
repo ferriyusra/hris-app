@@ -22,12 +22,14 @@ export default function FormSelect<T extends FieldValues>({
 	name,
 	label,
 	selectItem,
+	onValueChange,
 }: {
 	form: UseFormReturn<T>;
 	name: Path<T>;
 	label: string;
 	placeholder?: string;
 	selectItem: { value: string; label: string; disabled?: boolean }[];
+	onValueChange?: (value: string) => void;
 }) {
 	return (
 		<FormField
@@ -37,7 +39,12 @@ export default function FormSelect<T extends FieldValues>({
 				<FormItem>
 					<FormLabel>{label}</FormLabel>
 					<FormControl>
-						<Select {...rest} onValueChange={onChange}>
+						<Select
+							{...rest}
+							onValueChange={(value) => {
+								onChange(value);
+								onValueChange?.(value);
+							}}>
 							<SelectTrigger
 								className={cn('w-full', {
 									'border-red-500': form.formState.errors[name]?.message,

@@ -29,10 +29,10 @@ export async function createEmployee(
 
 	const { error } = await supabase.from('employees').insert({
 		full_name: validatedFields.data.full_name,
-		user_id: '3f2fd94f-a770-481d-add6-bdc2ce466312',
 		position: validatedFields.data.position,
 		phone_number: validatedFields.data.phone_number,
 		is_active: validatedFields.data.is_active,
+		// user_id will be null by default, and will be set when creating a user
 	});
 
 	if (error) {
@@ -120,4 +120,21 @@ export async function deleteEmployee(
 	}
 
 	return { status: 'success' };
+}
+
+export async function getAvailableEmployees() {
+	const supabase = await createClient();
+
+	const { data, error } = await supabase
+		.from('employees')
+		.select('id, full_name, position')
+		.is('user_id', null)
+		.eq('is_active', true)
+		.order('full_name');
+
+	if (error) {
+		return { data: null, error: error.message };
+	}
+
+	return { data, error: null };
 }
