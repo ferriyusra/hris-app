@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import FormEmployee from './form-employee';
 import { Dialog } from '@radix-ui/react-dialog';
 import {
-	Table,
+	Employee,
 	EmployeeForm,
 	employeeFormSchema,
 } from '@/validations/employee-validation';
@@ -19,7 +19,7 @@ export default function DialogUpdateEmployee({
 	handleChangeAction,
 }: {
 	refetch: () => void;
-	currentData?: Table;
+	currentData?: Employee;
 	open?: boolean;
 	handleChangeAction?: (open: boolean) => void;
 }) {
@@ -31,11 +31,16 @@ export default function DialogUpdateEmployee({
 		useActionState(updateEmployee, INITIAL_STATE_EMPLOYEE);
 
 	const onSubmit = form.handleSubmit((data) => {
+		if (!currentData?.id) {
+			toast.error('Invalid employee data');
+			return;
+		}
+
 		const formData = new FormData();
-		Object.entries(data).forEach(([Key, value]) => {
-			formData.append(Key, value);
+		Object.entries(data).forEach(([key, value]) => {
+			formData.append(key, value);
 		});
-		formData.append('id', currentData?.id ?? '');
+		formData.append('id', currentData.id);
 
 		startTransition(() => {
 			updateEmployeeAction(formData);
@@ -44,27 +49,47 @@ export default function DialogUpdateEmployee({
 
 	useEffect(() => {
 		if (updateEmployeeState?.status === 'error') {
-			toast.error('Update Table Failed', {
-				description: updateEmployeeState.errors?._form?.[0],
+			// Set field-specific errors
+			if (updateEmployeeState.errors) {
+				Object.entries(updateEmployeeState.errors).forEach(([key, value]) => {
+					if (key !== '_form' && value && value.length > 0) {
+						form.setError(key as keyof EmployeeForm, {
+							message: value[0],
+						});
+					}
+				});
+			}
+
+			// Show toast for general error
+			toast.error('Update Employee Failed', {
+				description: updateEmployeeState.errors?._form?.[0] || 'Please check the form',
 			});
 		}
 
 		if (updateEmployeeState?.status === 'success') {
-			toast.success('Update Table Success');
+			toast.success('Update Employee Success');
 			form.reset();
 			handleChangeAction?.(false);
 			refetch();
 		}
-	}, [updateEmployeeState]);
+	}, [updateEmployeeState, form, handleChangeAction, refetch]);
 
 	useEffect(() => {
 		if (currentData) {
-			form.setValue('full_name', currentData.full_name);
-			form.setValue('position', currentData.position);
-			form.setValue('phone_number', currentData.phone_number);
-			form.setValue('status', currentData.status);
+			form.setValue('full_name', currentData.full_name || '');
+			form.setValue('position', currentData.position || '');
+			form.setValue('phone_number', currentData.phone_number || '');
+			form.setValue(
+				'is_active',
+				currentData.is_active !== undefined
+					? String(currentData.is_active)
+					: ''
+			);
+		} else {
+			// Reset form when dialog closes (currentData becomes undefined)
+			form.reset();
 		}
-	}, [currentData]);
+	}, [currentData, form]);
 
 	return (
 		<Dialog open={open} onOpenChange={handleChangeAction}>

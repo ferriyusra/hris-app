@@ -1,4 +1,5 @@
 import FormInput from '@/components/common/form-input';
+import FormPhoneInput from '@/components/common/form-phone-input';
 import FormSelect from '@/components/common/form-select';
 import { Button } from '@/components/ui/button';
 import {
@@ -30,7 +31,7 @@ export default function FormEmployee<T extends FieldValues>({
 		<DialogContent className='sm:max-w-[425px] max-h-[90vh]'>
 			<Form {...form}>
 				<DialogHeader>
-					<DialogTitle>{type} Table</DialogTitle>
+					<DialogTitle>{type} Employee</DialogTitle>
 					<DialogDescription>
 						{type === 'Create' ? 'Add a new employee' : 'Make changes table here'}
 					</DialogDescription>
@@ -49,11 +50,11 @@ export default function FormEmployee<T extends FieldValues>({
 							label='Position'
 							placeholder='Insert position here'
 						/>
-						<FormInput
+						<FormPhoneInput
 							form={form}
 							name={'phone_number' as Path<T>}
 							label='Phone Number'
-							placeholder='Insert phone number here'
+							placeholder='812-3456-7890'
 						/>
 						<FormSelect
 							form={form}
