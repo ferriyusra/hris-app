@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import useDataTable from '@/hooks/use-data-table';
 import { createClient } from '@/lib/supabase/client';
 import { useQuery } from '@tanstack/react-query';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Eye, Pencil, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -18,6 +18,7 @@ import { HEADER_TABLE_EMPLOYEE } from '@/constants/employee-constant';
 import DialogCreateEmployee from './dialog-create-employee';
 import DialogUpdateEmployee from './dialog-update-employee';
 import DialogDeleteEmployee from './dialog-delete-employee';
+import DialogViewEmployee from './dialog-view-employee';
 
 export default function EmployeeManagement() {
 	const supabase = createClient();
@@ -61,7 +62,7 @@ export default function EmployeeManagement() {
 
 	const [selectedAction, setSelectedAction] = useState<{
 		data: Employee;
-		type: 'update' | 'delete';
+		type: 'view' | 'update' | 'delete';
 	} | null>(null);
 
 	const handleChangeAction = (open: boolean) => {
@@ -87,6 +88,20 @@ export default function EmployeeManagement() {
 				</div>,
 				<DropdownAction
 					menu={[
+						{
+							label: (
+								<span className='flex item-center gap-2'>
+									<Eye />
+									View Detail
+								</span>
+							),
+							action: () => {
+								setSelectedAction({
+									data: employee,
+									type: 'view',
+								});
+							},
+						},
 						{
 							label: (
 								<span className='flex item-center gap-2'>
@@ -154,6 +169,11 @@ export default function EmployeeManagement() {
 				currentLimit={currentLimit}
 				onChangePage={handleChangePage}
 				onChangeLimit={handleChangeLimit}
+			/>
+			<DialogViewEmployee
+				employee={selectedAction?.data || null}
+				open={selectedAction !== null && selectedAction.type === 'view'}
+				onOpenChange={handleChangeAction}
 			/>
 			<DialogUpdateEmployee
 				open={selectedAction !== null && selectedAction.type === 'update'}

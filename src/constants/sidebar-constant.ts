@@ -1,8 +1,9 @@
 import {
 	Album,
-	Armchair,
+	CalendarCheck,
 	LayoutDashboard,
 	SquareMenu,
+	User,
 	Users,
 } from 'lucide-react';
 
@@ -26,14 +27,19 @@ export const SIDEBAR_MENU_LIST = {
 		{
 			title: 'Attendance',
 			url: '/admin/attendance',
-			icon: Album,
+			icon: CalendarCheck,
 		},
 	],
 	employee: [
 		{
 			title: 'Attendance',
-			url: '/attendance',
-			icon: Album,
+			url: '/employee-attendance',
+			icon: CalendarCheck,
+		},
+		{
+			title: 'Profile',
+			url: '/employee-profile',
+			icon: User,
 		},
 	],
 };

@@ -168,3 +168,32 @@ export async function getAvailableEmployees() {
 
 	return { data, error: null };
 }
+
+/**
+ * Get user email by user_id (Admin only)
+ * This uses service role to access auth.users
+ */
+export async function getUserEmail(userId: string): Promise<{
+	email: string | null;
+	error: string | null;
+}> {
+	try {
+		const supabase = await createClient({ isAdmin: true });
+
+		// Get user from auth.users using admin client
+		const { data: { user }, error } = await supabase.auth.admin.getUserById(userId);
+
+		if (error) {
+			console.error('getUserEmail - Error:', error);
+			return { email: null, error: error.message };
+		}
+
+		return { email: user?.email || null, error: null };
+	} catch (error) {
+		console.error('getUserEmail - Exception:', error);
+		return {
+			email: null,
+			error: error instanceof Error ? error.message : 'Unknown error',
+		};
+	}
+}
