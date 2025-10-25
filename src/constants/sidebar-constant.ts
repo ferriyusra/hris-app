@@ -32,6 +32,11 @@ export const SIDEBAR_MENU_LIST = {
 	],
 	employee: [
 		{
+			title: 'Dashboard',
+			url: '/employee-dashboard',
+			icon: LayoutDashboard,
+		},
+		{
 			title: 'Attendance',
 			url: '/employee-attendance',
 			icon: CalendarCheck,
