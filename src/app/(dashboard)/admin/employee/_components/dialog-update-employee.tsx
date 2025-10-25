@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { startTransition, useActionState, useEffect, useState } from 'react';
+import { startTransition, useActionState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { updateEmployee } from '../actions';
 import { toast } from 'sonner';
@@ -30,6 +30,8 @@ export default function DialogUpdateEmployee({
 	const [updateEmployeeState, updateEmployeeAction, isPendingupdateEmployee] =
 		useActionState(updateEmployee, INITIAL_STATE_EMPLOYEE);
 
+	const hasShownToastRef = useRef(false);
+
 	const onSubmit = form.handleSubmit((data) => {
 		if (!currentData?.id) {
 			toast.error('Invalid employee data');
@@ -42,12 +44,18 @@ export default function DialogUpdateEmployee({
 		});
 		formData.append('id', currentData.id);
 
+		// Reset the flag before submitting
+		hasShownToastRef.current = false;
+
 		startTransition(() => {
 			updateEmployeeAction(formData);
 		});
 	});
 
 	useEffect(() => {
+		// Skip if we've already processed this state
+		if (hasShownToastRef.current) return;
+
 		if (updateEmployeeState?.status === 'error') {
 			// Set field-specific errors
 			if (updateEmployeeState.errors) {
@@ -64,6 +72,7 @@ export default function DialogUpdateEmployee({
 			toast.error('Update Employee Failed', {
 				description: updateEmployeeState.errors?._form?.[0] || 'Please check the form',
 			});
+			hasShownToastRef.current = true;
 		}
 
 		if (updateEmployeeState?.status === 'success') {
@@ -71,6 +80,7 @@ export default function DialogUpdateEmployee({
 			form.reset();
 			handleChangeAction?.(false);
 			refetch();
+			hasShownToastRef.current = true;
 		}
 	}, [updateEmployeeState, form, handleChangeAction, refetch]);
 
