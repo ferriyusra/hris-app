@@ -1,7 +1,10 @@
 import {
 	Album,
 	CalendarCheck,
+	CalendarDays,
+	ClipboardList,
 	LayoutDashboard,
+	Settings,
 	SquareMenu,
 	User,
 	Users,
@@ -29,6 +32,21 @@ export const SIDEBAR_MENU_LIST = {
 			url: '/admin/attendance',
 			icon: CalendarCheck,
 		},
+		{
+			title: 'Leave',
+			url: '/admin/leave',
+			icon: CalendarDays,
+		},
+		{
+			title: 'Leave Types',
+			url: '/admin/leave-types',
+			icon: Settings,
+		},
+		{
+			title: 'Leave Balance',
+			url: '/admin/leave-balance',
+			icon: ClipboardList,
+		},
 	],
 	employee: [
 		{
@@ -40,6 +58,11 @@ export const SIDEBAR_MENU_LIST = {
 			title: 'Attendance',
 			url: '/employee-attendance',
 			icon: CalendarCheck,
+		},
+		{
+			title: 'Leave',
+			url: '/employee-leave',
+			icon: CalendarDays,
 		},
 		{
 			title: 'Profile',

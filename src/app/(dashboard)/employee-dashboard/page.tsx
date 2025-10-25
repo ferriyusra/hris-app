@@ -4,13 +4,16 @@ import EmployeeStatCard from './_components/employee-stat-card';
 import AttendanceCalendar from './_components/attendance-calendar';
 import { getTodayAttendance } from '../employee-attendance/actions';
 import AttendanceClockInOut from '../employee-attendance/_components/attendance-clock-in-out';
+import { getMyLeaveBalances } from '../employee-leave/actions';
+import LeaveBalanceCards from '../employee-leave/_components/leave-balance-cards';
 
 export default async function EmployeeDashboard() {
 	// Fetch all data in parallel
-	const [statsResult, trendsResult, todayAttendanceResult] = await Promise.all([
+	const [statsResult, trendsResult, todayAttendanceResult, leaveBalancesResult] = await Promise.all([
 		getEmployeeMonthlyStats(),
 		getEmployeeAttendanceTrends(),
 		getTodayAttendance(),
+		getMyLeaveBalances(),
 	]);
 
 	const stats = statsResult.data || {
@@ -24,12 +27,14 @@ export default async function EmployeeDashboard() {
 
 	const trends = trendsResult.data || [];
 	const todayAttendance = todayAttendanceResult.data;
+	const leaveBalances = leaveBalancesResult.data || [];
 
 	// Get current month name
 	const currentMonth = new Date().toLocaleDateString('id-ID', {
 		month: 'long',
 		year: 'numeric',
 	});
+	const currentYear = new Date().getFullYear();
 
 	return (
 		<div className='space-y-6'>
@@ -77,6 +82,14 @@ export default async function EmployeeDashboard() {
 					colorClass='text-red-600'
 					suffix='days'
 				/>
+			</div>
+
+			{/* Leave Balance */}
+			<div>
+				<h2 className='text-xl font-semibold mb-4'>
+					Leave Balance {currentYear}
+				</h2>
+				<LeaveBalanceCards balances={leaveBalances} />
 			</div>
 
 			{/* Attendance Calendar */}

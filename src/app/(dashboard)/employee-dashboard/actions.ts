@@ -29,7 +29,7 @@ export async function getEmployeeMonthlyStats(): Promise<{
 	try {
 		const supabase = await createClient();
 		const cookieStore = await cookies();
-		const profileCookie = cookieStore.get('profile');
+		const profileCookie = cookieStore.get('user_profile');
 
 		if (!profileCookie) {
 			return { data: null, error: 'Not authenticated' };
@@ -116,7 +116,7 @@ export async function getEmployeeAttendanceTrends(): Promise<{
 	try {
 		const supabase = await createClient();
 		const cookieStore = await cookies();
-		const profileCookie = cookieStore.get('profile');
+		const profileCookie = cookieStore.get('user_profile');
 
 		if (!profileCookie) {
 			return { data: null, error: 'Not authenticated' };
