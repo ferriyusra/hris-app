@@ -1,9 +1,9 @@
-import MenuManagement from './_components/menu';
+import AttendanceManagement from './_components/attendance-management';
 
 export const metadata = {
 	title: 'HRIS App | Attendance Management',
 };
 
-export default function MenuManagementPage() {
-	return <MenuManagement />;
+export default function AttendanceManagementPage() {
+	return <AttendanceManagement />;
 }

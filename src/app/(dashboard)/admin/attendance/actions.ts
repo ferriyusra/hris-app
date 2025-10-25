@@ -1,193 +1,420 @@
 'use server';
 
-import { deleteFile, uploadFile } from '@/actions/storage-action';
 import { createClient } from '@/lib/supabase/server';
-import { MenuFormState } from '@/types/menu';
-import { menuSchema } from '@/validations/menu-validation';
+import { revalidatePath } from 'next/cache';
+import type {
+	AttendanceFormState,
+	AttendanceRecordWithEmployee,
+	AttendanceRecord,
+	MonthlyAttendanceSummary,
+} from '@/types/attendance';
+import {
+	attendanceFormSchema,
+	deleteAttendanceSchema,
+} from '@/validations/attendance-validation';
 
-export async function createAttendance(prevState: MenuFormState, formData: FormData) {
-	let validatedFields = menuSchema.safeParse({
-		name: formData.get('name'),
-		description: formData.get('description'),
-		price: parseFloat(formData.get('price') as string),
-		discount: parseFloat(formData.get('discount') as string),
-		category: formData.get('category'),
-		image_url: formData.get('image_url'),
-		is_available: formData.get('is_available') === 'true' ? true : false,
-	});
+/**
+ * Get all attendance records with employee information (Admin only)
+ */
+export async function getAllAttendance(params?: {
+	employeeId?: string;
+	dateFrom?: string;
+	dateTo?: string;
+	status?: string;
+	search?: string;
+	limit?: number;
+	offset?: number;
+}): Promise<{
+	data: AttendanceRecordWithEmployee[] | null;
+	count: number | null;
+	error: string | null;
+}> {
+	try {
+		const supabase = await createClient({ isAdmin: true });
 
-	if (!validatedFields.success) {
+		// Use direct join instead of view for now
+		let query = supabase
+			.from('attendance_records')
+			.select(`
+				*,
+				employee:employees!inner(
+					id,
+					full_name,
+					position
+				)
+			`, { count: 'exact' })
+			.order('date', { ascending: false });
+
+		if (params?.employeeId) {
+			query = query.eq('employee_id', params.employeeId);
+		}
+
+		if (params?.dateFrom) {
+			query = query.gte('date', params.dateFrom);
+		}
+
+		if (params?.dateTo) {
+			query = query.lte('date', params.dateTo);
+		}
+
+		if (params?.status) {
+			query = query.eq('status', params.status);
+		}
+
+		if (params?.search) {
+			query = query.ilike('employee.full_name', `%${params.search}%`);
+		}
+
+		if (params?.limit && params?.offset !== undefined) {
+			query = query.range(
+				params.offset,
+				params.offset + params.limit - 1
+			);
+		}
+
+		const { data, count, error } = await query;
+
+		if (error) {
+			return { data: null, count: null, error: error.message };
+		}
+
+		// Transform data to match AttendanceRecordWithEmployee type
+		const transformedData = data?.map((record: any) => ({
+			...record,
+			employee_name: record.employee?.full_name || '',
+			employee_position: record.employee?.position || '',
+			work_hours: record.clock_out && record.clock_in
+				? (new Date(record.clock_out).getTime() - new Date(record.clock_in).getTime()) / (1000 * 60 * 60)
+				: null,
+		})) || [];
+
 		return {
-			status: 'error',
-			errors: {
-				...validatedFields.error.flatten().fieldErrors,
-				_form: [],
-			},
+			data: transformedData as AttendanceRecordWithEmployee[],
+			count,
+			error: null,
+		};
+	} catch (error) {
+		return {
+			data: null,
+			count: null,
+			error:
+				error instanceof Error
+					? error.message
+					: 'Failed to fetch attendance records',
 		};
 	}
+}
 
-	if (validatedFields.data.image_url instanceof File) {
-		const { errors, data } = await uploadFile(
-			'images',
-			'menus',
-			validatedFields.data.image_url
-		);
-		if (errors) {
+/**
+ * Create attendance record (Admin only)
+ */
+export async function createAttendance(
+	prevState: AttendanceFormState,
+	formData: FormData
+): Promise<AttendanceFormState> {
+	try {
+		const validatedFields = attendanceFormSchema.safeParse({
+			employee_id: formData.get('employee_id'),
+			date: formData.get('date'),
+			clock_in: formData.get('clock_in'),
+			clock_out: formData.get('clock_out') || undefined,
+			status: formData.get('status'),
+			notes: formData.get('notes') || undefined,
+		});
+
+		if (!validatedFields.success) {
 			return {
 				status: 'error',
 				errors: {
-					...prevState.errors,
-					_form: [...errors._form],
+					...validatedFields.error.flatten().fieldErrors,
+					_form: [],
 				},
 			};
 		}
 
-		validatedFields = {
-			...validatedFields,
-			data: {
-				...validatedFields.data,
-				image_url: data.url,
-			},
-		};
-	}
+		const supabase = await createClient({ isAdmin: true });
 
-	const supabase = await createClient();
+		// Check for duplicate entry
+		const { data: existing } = await supabase
+			.from('attendance_records')
+			.select('id')
+			.eq('employee_id', validatedFields.data.employee_id)
+			.eq('date', validatedFields.data.date)
+			.single();
 
-	const { error } = await supabase.from('menus').insert({
-		name: validatedFields.data.name,
-		description: validatedFields.data.description,
-		price: validatedFields.data.price,
-		discount: validatedFields.data.discount,
-		category: validatedFields.data.category,
-		image_url: validatedFields.data.image_url,
-		is_available: validatedFields.data.is_available,
-	});
-
-	if (error) {
-		return {
-			status: 'error',
-			errors: {
-				...prevState.errors,
-				_form: [error.message],
-			},
-		};
-	}
-
-	return {
-		status: 'success',
-	};
-}
-
-export async function updateMenu(prevState: MenuFormState, formData: FormData) {
-	let validatedFields = menuSchema.safeParse({
-		name: formData.get('name'),
-		description: formData.get('description'),
-		price: parseFloat(formData.get('price') as string),
-		discount: parseFloat(formData.get('discount') as string),
-		category: formData.get('category'),
-		image_url: formData.get('image_url'),
-		is_available: formData.get('is_available') === 'true' ? true : false,
-	});
-
-	if (!validatedFields.success) {
-		return {
-			status: 'error',
-			errors: {
-				...validatedFields.error.flatten().fieldErrors,
-				_form: [],
-			},
-		};
-	}
-
-	if (validatedFields.data.image_url instanceof File) {
-		const oldImageUrl = formData.get('old_image_url') as string;
-		const { errors, data } = await uploadFile(
-			'images',
-			'menus',
-			validatedFields.data.image_url,
-			oldImageUrl.split('/images/')[1]
-		);
-		if (errors) {
+		if (existing) {
 			return {
 				status: 'error',
 				errors: {
-					...prevState.errors,
-					_form: [...errors._form],
+					_form: [
+						'An attendance record already exists for this employee on this date',
+					],
 				},
 			};
 		}
 
-		validatedFields = {
-			...validatedFields,
-			data: {
-				...validatedFields.data,
-				image_url: data.url,
-			},
+		const { error } = await supabase.from('attendance_records').insert({
+			employee_id: validatedFields.data.employee_id,
+			date: validatedFields.data.date,
+			clock_in: validatedFields.data.clock_in,
+			clock_out: validatedFields.data.clock_out || null,
+			status: validatedFields.data.status,
+			notes: validatedFields.data.notes || null,
+		});
+
+		if (error) {
+			return {
+				status: 'error',
+				errors: {
+					_form: [error.message],
+				},
+			};
+		}
+
+		revalidatePath('/admin/attendance');
+		revalidatePath('/admin/attendance/reports');
+
+		return {
+			status: 'success',
 		};
-	}
-
-	const supabase = await createClient();
-
-	const { error } = await supabase
-		.from('menus')
-		.update({
-			name: validatedFields.data.name,
-			description: validatedFields.data.description,
-			price: validatedFields.data.price,
-			discount: validatedFields.data.discount,
-			category: validatedFields.data.category,
-			image_url: validatedFields.data.image_url,
-			is_available: validatedFields.data.is_available,
-		})
-		.eq('id', formData.get('id'));
-
-	if (error) {
+	} catch (error) {
 		return {
 			status: 'error',
 			errors: {
-				...prevState.errors,
-				_form: [error.message],
+				_form: [
+					error instanceof Error
+						? error.message
+						: 'Failed to create attendance record',
+				],
 			},
 		};
 	}
-
-	return {
-		status: 'success',
-	};
 }
 
-export async function deleteMenu(prevState: MenuFormState, formData: FormData) {
-	const supabase = await createClient();
-	const image = formData.get('image_url') as string;
-	const { status, errors } = await deleteFile(
-		'images',
-		image.split('/images/')[1]
-	);
+/**
+ * Update attendance record (Admin only)
+ */
+export async function updateAttendance(
+	prevState: AttendanceFormState,
+	formData: FormData
+): Promise<AttendanceFormState> {
+	try {
+		const validatedFields = attendanceFormSchema.safeParse({
+			employee_id: formData.get('employee_id'),
+			date: formData.get('date'),
+			clock_in: formData.get('clock_in'),
+			clock_out: formData.get('clock_out') || undefined,
+			status: formData.get('status'),
+			notes: formData.get('notes') || undefined,
+		});
 
-	if (status === 'error') {
+		if (!validatedFields.success) {
+			return {
+				status: 'error',
+				errors: {
+					...validatedFields.error.flatten().fieldErrors,
+					_form: [],
+				},
+			};
+		}
+
+		const supabase = await createClient({ isAdmin: true });
+
+		const { error } = await supabase
+			.from('attendance_records')
+			.update({
+				date: validatedFields.data.date,
+				clock_in: validatedFields.data.clock_in,
+				clock_out: validatedFields.data.clock_out || null,
+				status: validatedFields.data.status,
+				notes: validatedFields.data.notes || null,
+			})
+			.eq('id', formData.get('id'));
+
+		if (error) {
+			return {
+				status: 'error',
+				errors: {
+					_form: [error.message],
+				},
+			};
+		}
+
+		revalidatePath('/admin/attendance');
+		revalidatePath('/admin/attendance/reports');
+
+		return {
+			status: 'success',
+		};
+	} catch (error) {
 		return {
 			status: 'error',
 			errors: {
-				...prevState.errors,
-				_form: [errors?._form?.[0] ?? 'Unknown error'],
+				_form: [
+					error instanceof Error
+						? error.message
+						: 'Failed to update attendance record',
+				],
 			},
 		};
 	}
+}
 
-	const { error } = await supabase
-		.from('menus')
-		.delete()
-		.eq('id', formData.get('id'));
+/**
+ * Delete attendance record (Admin only)
+ */
+export async function deleteAttendance(
+	prevState: AttendanceFormState,
+	formData: FormData
+): Promise<AttendanceFormState> {
+	try {
+		const validatedFields = deleteAttendanceSchema.safeParse({
+			id: formData.get('id'),
+		});
 
-	if (error) {
+		if (!validatedFields.success) {
+			return {
+				status: 'error',
+				errors: {
+					...validatedFields.error.flatten().fieldErrors,
+					_form: [],
+				},
+			};
+		}
+
+		const supabase = await createClient({ isAdmin: true });
+
+		const { error } = await supabase
+			.from('attendance_records')
+			.delete()
+			.eq('id', validatedFields.data.id);
+
+		if (error) {
+			return {
+				status: 'error',
+				errors: {
+					_form: [error.message],
+				},
+			};
+		}
+
+		revalidatePath('/admin/attendance');
+		revalidatePath('/admin/attendance/reports');
+
+		return {
+			status: 'success',
+		};
+	} catch (error) {
 		return {
 			status: 'error',
 			errors: {
-				...prevState.errors,
-				_form: [error.message],
+				_form: [
+					error instanceof Error
+						? error.message
+						: 'Failed to delete attendance record',
+				],
 			},
 		};
 	}
+}
 
-	return { status: 'success' };
+/**
+ * Get monthly attendance summary for all employees (Admin only)
+ */
+export async function getMonthlyAttendanceSummary(
+	month: string
+): Promise<{
+	data: MonthlyAttendanceSummary[] | null;
+	error: string | null;
+}> {
+	try {
+		const supabase = await createClient({ isAdmin: true });
+
+		// Get all employees
+		const { data: employees, error: employeesError } = await supabase
+			.from('employees')
+			.select('id, full_name, position')
+			.eq('is_active', true);
+
+		if (employeesError) {
+			return { data: null, error: employeesError.message };
+		}
+
+		const [year, monthNum] = month.split('-');
+		const startDate = `${year}-${monthNum}-01`;
+		const endDate = new Date(parseInt(year), parseInt(monthNum), 0)
+			.toISOString()
+			.split('T')[0];
+
+		// Get attendance records for the month
+		const { data: records, error: recordsError } = await supabase
+			.from('attendance_records')
+			.select('*')
+			.gte('date', startDate)
+			.lte('date', endDate);
+
+		if (recordsError) {
+			return { data: null, error: recordsError.message };
+		}
+
+		// Calculate summary for each employee
+		const summary: MonthlyAttendanceSummary[] = employees.map((employee) => {
+			const employeeRecords = records.filter(
+				(r) => r.employee_id === employee.id
+			);
+
+			const totalDays = employeeRecords.length;
+			const presentDays = employeeRecords.filter(
+				(r) => r.status === 'present'
+			).length;
+			const lateDays = employeeRecords.filter(
+				(r) => r.status === 'late'
+			).length;
+			const halfDays = employeeRecords.filter(
+				(r) => r.status === 'half_day'
+			).length;
+			const absentDays = employeeRecords.filter(
+				(r) => r.status === 'absent'
+			).length;
+
+			// Calculate total work hours
+			let totalWorkHours = 0;
+			employeeRecords.forEach((record) => {
+				if (record.clock_in && record.clock_out) {
+					const clockIn = new Date(record.clock_in);
+					const clockOut = new Date(record.clock_out);
+					const hours =
+						(clockOut.getTime() - clockIn.getTime()) / (1000 * 60 * 60);
+					totalWorkHours += hours;
+				}
+			});
+
+			const attendanceRate =
+				totalDays > 0 ? ((presentDays + lateDays) / totalDays) * 100 : 0;
+
+			return {
+				employee_id: employee.id,
+				employee_name: employee.full_name,
+				employee_position: employee.position,
+				month,
+				total_days: totalDays,
+				present_days: presentDays,
+				late_days: lateDays,
+				half_days: halfDays,
+				absent_days: absentDays,
+				attendance_rate: Math.round(attendanceRate * 100) / 100,
+				total_work_hours: Math.round(totalWorkHours * 100) / 100,
+			};
+		});
+
+		return { data: summary, error: null };
+	} catch (error) {
+		return {
+			data: null,
+			error:
+				error instanceof Error
+					? error.message
+					: 'Failed to fetch monthly summary',
+		};
+	}
 }
