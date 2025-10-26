@@ -33,13 +33,13 @@ export default function DialogCreateEmployee({
 
 	useEffect(() => {
 		if (createEmployeeState?.status === 'error') {
-			toast.error('Create Employee Failed', {
+			toast.error('Gagal Membuat Karyawan', {
 				description: createEmployeeState.errors?._form?.[0],
 			});
 		}
 
 		if (createEmployeeState?.status === 'success') {
-			toast.success('Create Employee Success');
+			toast.success('Karyawan Berhasil Dibuat');
 			form.reset();
 			document.querySelector<HTMLButtonElement>('[data-state="open"]')?.click();
 			refetch();
@@ -51,7 +51,7 @@ export default function DialogCreateEmployee({
 			form={form}
 			onSubmit={onSubmit}
 			isLoading={isPendingcreateEmployee}
-			type='Create'
+			type='Tambah'
 		/>
 	);
 }

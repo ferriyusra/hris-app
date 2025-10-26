@@ -131,14 +131,13 @@ export default function MyLeaveRequests({ requests, onRefresh }: MyLeaveRequests
 				onOpenChange={(open) => !open && setSelectedRequest(null)}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Cancel Leave Request</AlertDialogTitle>
+						<AlertDialogTitle>Batal Ajukan Cuti</AlertDialogTitle>
 						<AlertDialogDescription>
-							Are you sure you want to cancel this leave request? This action cannot be
-							undone.
+							Apakah Anda yakin ingin membatalkan permintaan cuti ini? Tindakan ini tidak dapat dibatalkan.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+						<AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
 						<AlertDialogAction onClick={handleCancel} disabled={isPending}>
 							{isPending ? 'Cancelling...' : 'Confirm'}
 						</AlertDialogAction>

@@ -42,7 +42,7 @@ export default function UserManagement() {
 				.ilike('name', `%${currentSearch}%`);
 
 			if (result.error)
-				toast.error('Get User data failed', {
+				toast.error('Gagal mengambil data pengguna', {
 					description: result.error.message,
 				});
 
@@ -73,7 +73,7 @@ export default function UserManagement() {
 							label: (
 								<span className='flex gap-2 item-center'>
 									<Pencil />
-									Edit
+									Ubah
 								</span>
 							),
 							action: () => {
@@ -87,7 +87,7 @@ export default function UserManagement() {
 							label: (
 								<span className='flex gap-2 item-center'>
 									<Trash2 className='text-red-400' />
-									Delete
+									Hapus
 								</span>
 							),
 							variant: 'destructive',
@@ -113,15 +113,15 @@ export default function UserManagement() {
 	return (
 		<div className='w-full'>
 			<div className='flex flex-col justify-between w-full gap-2 mb-4 lg:flex-row'>
-				<h1 className='text-2xl font-bold'>User Management</h1>
+				<h1 className='text-2xl font-bold'>Manajemen Pengguna</h1>
 				<div className='flex gap-2'>
 					<Input
-						placeholder='Search by name'
+						placeholder='Cari berdasarkan nama'
 						onChange={(e) => handleChangeSearch(e.target.value)}
 					/>
 					<Dialog>
 						<DialogTrigger asChild>
-							<Button variant='outline'>Create</Button>
+							<Button variant='outline'>Tambah</Button>
 						</DialogTrigger>
 						<DialogCreateUser refetch={refetch} />
 					</Dialog>

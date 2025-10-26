@@ -29,13 +29,13 @@ export default function DialogDeleteEmployee({
 
 	useEffect(() => {
 		if (deleteEmployeeState?.status === 'error') {
-			toast.error('Delete Employee Failed', {
+			toast.error('Gagal Menghapus Karyawan', {
 				description: deleteEmployeeState.errors?._form?.[0],
 			});
 		}
 
 		if (deleteEmployeeState?.status === 'success') {
-			toast.success('Delete Employee Success');
+			toast.success('Karyawan Berhasil Dihapus');
 			handleChangeAction?.(false);
 			refetch();
 		}
@@ -47,7 +47,7 @@ export default function DialogDeleteEmployee({
 			onOpenChange={handleChangeAction}
 			isLoading={isPendingdeleteEmployee}
 			onSubmit={onSubmit}
-			title='Table'
+			title='Karyawan'
 		/>
 	);
 }

@@ -28,12 +28,12 @@ export default function AdminLeavePage() {
 		<div className='space-y-6'>
 			<div className='flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center'>
 				<div>
-					<h1 className='text-3xl font-bold'>Leave Management</h1>
+					<h1 className='text-3xl font-bold'>Manajemen Cuti</h1>
 					<p className='text-muted-foreground'>
-						Manage employee leave requests
+						Kelola permohonan cuti karyawan
 						{pendingCount > 0 && (
 							<span className='ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800'>
-								{pendingCount} pending
+								{pendingCount} menunggu
 							</span>
 						)}
 					</p>
@@ -42,7 +42,7 @@ export default function AdminLeavePage() {
 
 			<div>
 				{isLoading ? (
-					<p className='text-muted-foreground'>Loading...</p>
+					<p className='text-muted-foreground'>Memuat...</p>
 				) : (
 					<LeaveRequestsManagement requests={requests} onRefresh={fetchData} />
 				)}

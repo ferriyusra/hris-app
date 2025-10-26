@@ -44,13 +44,13 @@ export default function DialogUpdateAttendance({
 
 	useEffect(() => {
 		if (state?.status === 'error') {
-			toast.error('Update Attendance Failed', {
+			toast.error('Gagal Mengubah Kehadiran', {
 				description: state.errors?._form?.[0],
 			});
 		}
 
 		if (state?.status === 'success') {
-			toast.success('Attendance record updated successfully');
+			toast.success('Data kehadiran berhasil diubah');
 			onOpenChange(false);
 			refetch();
 		}
@@ -61,9 +61,9 @@ export default function DialogUpdateAttendance({
 			<DialogContent className='sm:max-w-[500px]'>
 				<form onSubmit={onSubmit}>
 					<DialogHeader>
-						<DialogTitle>Edit Attendance Record</DialogTitle>
+						<DialogTitle>Ubah Data Kehadiran</DialogTitle>
 						<DialogDescription>
-							Update the attendance record details. All changes will be saved immediately.
+							Perbarui detail data kehadiran. Semua perubahan akan langsung disimpan.
 						</DialogDescription>
 					</DialogHeader>
 					<div className='py-4'>
@@ -79,10 +79,10 @@ export default function DialogUpdateAttendance({
 							onClick={() => onOpenChange(false)}
 							disabled={isPending}
 						>
-							Cancel
+							Batal
 						</Button>
 						<Button type='submit' disabled={isPending}>
-							{isPending ? 'Updating...' : 'Update'}
+							{isPending ? 'Menyimpan...' : 'Simpan'}
 						</Button>
 					</DialogFooter>
 				</form>

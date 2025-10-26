@@ -41,13 +41,13 @@ export default function DialogCreateAttendance({
 
 	useEffect(() => {
 		if (state?.status === 'error') {
-			toast.error('Create Attendance Failed', {
+			toast.error('Gagal Menambah Kehadiran', {
 				description: state.errors?._form?.[0],
 			});
 		}
 
 		if (state?.status === 'success') {
-			toast.success('Attendance record created successfully');
+			toast.success('Data kehadiran berhasil ditambahkan');
 			onOpenChange(false);
 			refetch();
 		}
@@ -58,9 +58,9 @@ export default function DialogCreateAttendance({
 			<DialogContent className='sm:max-w-[500px]'>
 				<form onSubmit={onSubmit}>
 					<DialogHeader>
-						<DialogTitle>Create Attendance Record</DialogTitle>
+						<DialogTitle>Tambah Data Kehadiran</DialogTitle>
 						<DialogDescription>
-							Add a new attendance record manually. Fill in all required fields.
+							Tambahkan data kehadiran secara manual. Isi semua kolom yang diperlukan.
 						</DialogDescription>
 					</DialogHeader>
 					<div className='py-4'>
@@ -73,10 +73,10 @@ export default function DialogCreateAttendance({
 							onClick={() => onOpenChange(false)}
 							disabled={isPending}
 						>
-							Cancel
+							Batal
 						</Button>
 						<Button type='submit' disabled={isPending}>
-							{isPending ? 'Creating...' : 'Create'}
+							{isPending ? 'Menyimpan...' : 'Simpan'}
 						</Button>
 					</DialogFooter>
 				</form>

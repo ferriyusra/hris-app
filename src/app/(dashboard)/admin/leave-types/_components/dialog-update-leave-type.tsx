@@ -97,14 +97,14 @@ export default function DialogUpdateLeaveType({
 				});
 			}
 
-			toast.error('Update Leave Type Failed', {
-				description: state.errors?._form?.[0] || 'Please check the form',
+			toast.error('Gagal Mengubah Jenis Cuti', {
+				description: state.errors?._form?.[0] || 'Silakan periksa form',
 			});
 			hasShownToastRef.current = true;
 		}
 
 		if (state.status === 'success') {
-			toast.success('Leave Type Updated Successfully');
+			toast.success('Jenis Cuti Berhasil Diubah');
 			onOpenChange(false);
 			hasShownToastRef.current = true;
 			window.location.reload();
@@ -115,7 +115,7 @@ export default function DialogUpdateLeaveType({
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className='max-w-2xl'>
 				<DialogHeader>
-					<DialogTitle>Update Leave Type</DialogTitle>
+					<DialogTitle>Ubah Jenis Cuti</DialogTitle>
 				</DialogHeader>
 
 				<Form {...form}>
@@ -123,22 +123,22 @@ export default function DialogUpdateLeaveType({
 						<FormInput
 							form={form}
 							name='name'
-							label='Name'
-							placeholder='e.g., Annual Leave, Sick Leave'
+							label='Nama'
+							placeholder='contoh: Cuti Tahunan, Cuti Sakit'
 						/>
 
 						<FormTextarea
 							form={form}
 							name='description'
-							label='Description (Optional)'
-							placeholder='Brief description of this leave type...'
+							label='Deskripsi (Opsional)'
+							placeholder='Deskripsi singkat jenis cuti ini...'
 							rows={3}
 						/>
 
 						<FormInput
 							form={form}
 							name='max_days_per_year'
-							label='Maximum Days Per Year'
+							label='Maksimum Hari Per Tahun'
 							type='number'
 							placeholder='12'
 						/>
@@ -155,9 +155,9 @@ export default function DialogUpdateLeaveType({
 										/>
 									</FormControl>
 									<div className='space-y-1 leading-none'>
-										<FormLabel>Requires Approval</FormLabel>
+										<FormLabel>Memerlukan Persetujuan</FormLabel>
 										<p className='text-sm text-muted-foreground'>
-											Check this if leave requests of this type need admin approval
+											Centang jika permohonan cuti jenis ini memerlukan persetujuan admin
 										</p>
 									</div>
 								</FormItem>
@@ -176,9 +176,9 @@ export default function DialogUpdateLeaveType({
 										/>
 									</FormControl>
 									<div className='space-y-1 leading-none'>
-										<FormLabel>Active</FormLabel>
+										<FormLabel>Aktif</FormLabel>
 										<p className='text-sm text-muted-foreground'>
-											Only active leave types can be selected by employees
+											Hanya jenis cuti aktif yang dapat dipilih oleh karyawan
 										</p>
 									</div>
 								</FormItem>
@@ -191,10 +191,10 @@ export default function DialogUpdateLeaveType({
 								variant='outline'
 								onClick={() => onOpenChange(false)}
 								disabled={isPending}>
-								Cancel
+								Batal
 							</Button>
 							<Button type='submit' disabled={isPending}>
-								{isPending ? 'Updating...' : 'Update Leave Type'}
+								{isPending ? 'Mengubah...' : 'Ubah Jenis Cuti'}
 							</Button>
 						</div>
 					</form>

@@ -14,44 +14,44 @@ export const clockInSchema = z.object({
 
 // Clock-out validation schema
 export const clockOutSchema = z.object({
-  id: z.string().uuid('Invalid attendance record ID'),
+  id: z.string().uuid('Invalid id absensi'),
   clock_out: z.string().datetime('Invalid clock-out timestamp'),
 });
 
 // Create attendance (admin) validation schema
 export const createAttendanceSchema = z.object({
-  employee_id: z.string().min(1, 'Employee is required'),
-  date: z.string().min(1, 'Date is required'),
-  clock_in: z.string().min(1, 'Clock-in time is required'),
+  employee_id: z.string().min(1, 'Karyawan tidak boleh kosong'),
+  date: z.string().min(1, 'Tanggal tidak boleh kosong'),
+  clock_in: z.string().min(1, 'Jam masuk tidak boleh kosong'),
   clock_out: z.string().optional(),
-  status: z.string().min(1, 'Status is required'),
+  status: z.string().min(1, 'Status tidak boleh kosong'),
   notes: z.string().optional(),
 });
 
 // Update attendance (admin) validation schema
 export const updateAttendanceSchema = z.object({
-  id: z.string().uuid('Invalid attendance record ID'),
-  employee_id: z.string().min(1, 'Employee is required').optional(),
-  date: z.string().min(1, 'Date is required').optional(),
-  clock_in: z.string().min(1, 'Clock-in time is required').optional(),
+  id: z.string().uuid('Invalid id absensi'),
+  employee_id: z.string().min(1, 'Karyawan tidak boleh kosong').optional(),
+  date: z.string().min(1, 'Tanggal tidak boleh kosong').optional(),
+  clock_in: z.string().min(1, 'Jam masuk tidak boleh kosong').optional(),
   clock_out: z.string().optional(),
-  status: z.string().min(1, 'Status is required').optional(),
+  status: z.string().min(1, 'Status tidak boleh kosong').optional(),
   notes: z.string().optional(),
 });
 
 // Delete attendance validation schema
 export const deleteAttendanceSchema = z.object({
-  id: z.string().uuid('Invalid attendance record ID'),
+  id: z.string().uuid('Invalid id absensi'),
 });
 
 // Attendance form schema (for admin forms)
 export const attendanceFormSchema = z
   .object({
-    employee_id: z.string().min(1, 'Employee is required'),
-    date: z.string().min(1, 'Date is required'),
-    clock_in: z.string().min(1, 'Clock-in time is required'),
+    employee_id: z.string().min(1, 'Karyawan tidak boleh kosong'),
+    date: z.string().min(1, 'Tanggal tidak boleh kosong'),
+    clock_in: z.string().min(1, 'Jam masuk tidak boleh kosong'),
     clock_out: z.string().optional(),
-    status: z.string().min(1, 'Status is required'),
+    status: z.string().min(1, 'Status tidak boleh kosong'),
     notes: z.string().optional(),
   })
   .refine(
@@ -65,7 +65,7 @@ export const attendanceFormSchema = z
       return true;
     },
     {
-      message: 'Clock-out time must be after clock-in time',
+      message: 'Waktu keluar harus setelah waktu masuk',
       path: ['clock_out'],
     }
   );
@@ -92,7 +92,7 @@ export const dateRangeSchema = z
       return toDate >= fromDate;
     },
     {
-      message: 'End date must be after or equal to start date',
+      message: 'Tanggal Akhir must be after or equal to Tanggal Mulai',
       path: ['to'],
     }
   );

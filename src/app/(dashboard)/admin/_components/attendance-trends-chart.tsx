@@ -33,7 +33,7 @@ export default function AttendanceTrendsChart({ data }: AttendanceTrendsChartPro
 			<CardHeader>
 				<CardTitle className='text-lg flex items-center gap-2'>
 					<TrendingUp className='h-5 w-5 text-blue-600' />
-					Attendance Trends (Last 7 Days)
+					Tren Kehadiran (7 Hari Terakhir)
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
@@ -65,7 +65,7 @@ export default function AttendanceTrendsChart({ data }: AttendanceTrendsChartPro
 							stroke='#10b981'
 							fill='#10b981'
 							fillOpacity={0.6}
-							name='Present'
+							name='Hadir'
 						/>
 						<Area
 							type='monotone'
@@ -74,7 +74,7 @@ export default function AttendanceTrendsChart({ data }: AttendanceTrendsChartPro
 							stroke='#f59e0b'
 							fill='#f59e0b'
 							fillOpacity={0.6}
-							name='Late'
+							name='Terlambat'
 						/>
 						<Area
 							type='monotone'
@@ -83,7 +83,7 @@ export default function AttendanceTrendsChart({ data }: AttendanceTrendsChartPro
 							stroke='#ef4444'
 							fill='#ef4444'
 							fillOpacity={0.6}
-							name='Absent'
+							name='Tidak Hadir'
 						/>
 					</AreaChart>
 				</ResponsiveContainer>

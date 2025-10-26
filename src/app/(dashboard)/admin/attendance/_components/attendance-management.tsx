@@ -52,7 +52,7 @@ export default function AttendanceManagement() {
 			});
 
 			if (result.error) {
-				toast.error('Failed to fetch attendance records', {
+				toast.error('Gagal mengambil data kehadiran', {
 					description: result.error,
 				});
 			}
@@ -91,7 +91,7 @@ export default function AttendanceManagement() {
 						label: (
 							<span className='flex items-center gap-2'>
 								<Pencil className='h-4 w-4' />
-								Edit
+								Ubah
 							</span>
 						),
 						action: () => {
@@ -105,7 +105,7 @@ export default function AttendanceManagement() {
 						label: (
 							<span className='flex items-center gap-2'>
 								<Trash2 className='h-4 w-4 text-red-400' />
-								Delete
+								Hapus
 							</span>
 						),
 						variant: 'destructive',
@@ -127,7 +127,7 @@ export default function AttendanceManagement() {
 
 	const handleExport = () => {
 		// Export functionality
-		toast.success('Export feature coming soon');
+		toast.success('Fitur ekspor akan segera hadir');
 	};
 
 	return (
@@ -135,15 +135,15 @@ export default function AttendanceManagement() {
 			{/* Header */}
 			<div className='flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center'>
 				<div>
-					<h1 className='text-2xl font-bold'>Attendance Management</h1>
+					<h1 className='text-2xl font-bold'>Manajemen Kehadiran</h1>
 					<p className='text-muted-foreground'>
-						Manage employee attendance records and view detailed reports
+						Kelola catatan kehadiran karyawan dan lihat laporan terperinci
 					</p>
 				</div>
 				<Link href='/admin/attendance/reports'>
 					<Button variant='outline'>
 						<FileDown className='mr-2 h-4 w-4' />
-						View Reports
+						Lihat Laporan
 					</Button>
 				</Link>
 			</div>
@@ -151,16 +151,16 @@ export default function AttendanceManagement() {
 			{/* Filters */}
 			<div className='flex flex-col sm:flex-row gap-2'>
 				<Input
-					placeholder='Search employee name...'
+					placeholder='Cari nama karyawan...'
 					onChange={(e) => handleChangeSearch(e.target.value)}
 					className='sm:max-w-xs'
 				/>
 				<Select value={statusFilter} onValueChange={setStatusFilter}>
 					<SelectTrigger className='sm:w-[180px]'>
-						<SelectValue placeholder='Filter by status' />
+						<SelectValue placeholder='Filter berdasarkan status' />
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value='all'>All Status</SelectItem>
+						<SelectItem value='all'>Semua Status</SelectItem>
 						{ATTENDANCE_STATUS_LIST.map((status) => (
 							<SelectItem key={status.value} value={status.value}>
 								{status.label}
@@ -170,7 +170,7 @@ export default function AttendanceManagement() {
 				</Select>
 				<Button onClick={() => setCreateDialogOpen(true)} className='sm:ml-auto'>
 					<Plus className='mr-2 h-4 w-4' />
-					Create Record
+					Tambah Kehadiran
 				</Button>
 			</div>
 

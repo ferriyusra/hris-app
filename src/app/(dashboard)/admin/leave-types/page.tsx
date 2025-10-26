@@ -43,9 +43,9 @@ export default function AdminLeaveTypesPage() {
 				startIndex + index + 1,
 				<span key={`name-${type.id}`} className='font-medium'>{type.name}</span>,
 				<span key={`desc-${type.id}`} className='text-sm text-muted-foreground'>{type.description || '-'}</span>,
-				<span key={`days-${type.id}`}>{type.max_days_per_year} days</span>,
+				<span key={`days-${type.id}`}>{type.max_days_per_year} hari</span>,
 				<Badge key={`approval-${type.id}`} variant={type.requires_approval ? 'default' : 'secondary'}>
-					{type.requires_approval ? 'Yes' : 'No'}
+					{type.requires_approval ? 'Ya' : 'Tidak'}
 				</Badge>,
 				<Badge
 					key={`status-${type.id}`}
@@ -54,7 +54,7 @@ export default function AdminLeaveTypesPage() {
 							? 'bg-green-100 text-green-800 border-green-200'
 							: 'bg-gray-100 text-gray-800 border-gray-200'
 					}>
-					{type.is_active ? 'Active' : 'Inactive'}
+					{type.is_active ? 'Aktif' : 'Nonaktif'}
 				</Badge>,
 				<div key={`actions-${type.id}`} className='flex gap-1'>
 					<Button
@@ -91,20 +91,20 @@ export default function AdminLeaveTypesPage() {
 		<div className='space-y-6'>
 			<div className='flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center'>
 				<div>
-					<h1 className='text-3xl font-bold'>Leave Types Management</h1>
+					<h1 className='text-3xl font-bold'>Manajemen Jenis Cuti</h1>
 					<p className='text-muted-foreground'>
-						Manage leave types and configure their settings
+						Kelola jenis cuti dan konfigurasi pengaturannya
 					</p>
 				</div>
 				<Button onClick={() => setActionType('create')}>
 					<Plus className='h-4 w-4 mr-2' />
-					Create Leave Type
+					Tambah Jenis Cuti
 				</Button>
 			</div>
 
 			<div>
 				{isLoading ? (
-					<p className='text-muted-foreground'>Loading...</p>
+					<p className='text-muted-foreground'>Memuat...</p>
 				) : (
 					<DataTable
 						header={HEADER_TABLE_LEAVE_TYPES}

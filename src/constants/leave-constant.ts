@@ -5,9 +5,9 @@ export const LEAVE_STATUS = {
 } as const;
 
 export const LEAVE_STATUS_LABELS = {
-	pending: 'Pending',
-	approved: 'Approved',
-	rejected: 'Rejected',
+	pending: 'Menunggu',
+	approved: 'Disetujui',
+	rejected: 'Ditolak',
 } as const;
 
 export const LEAVE_STATUS_COLORS = {
@@ -18,33 +18,33 @@ export const LEAVE_STATUS_COLORS = {
 
 export const HEADER_TABLE_LEAVE_REQUEST = [
 	'No',
-	'Employee',
-	'Leave Type',
-	'Start Date',
-	'End Date',
-	'Days',
-	'Reason',
+	'Karyawan',
+	'Jenis Cuti',
+	'Tanggal Mulai',
+	'Tanggal Selesai',
+	'Hari',
+	'Alasan',
 	'Status',
-	'Action',
+	'Aksi',
 ];
 
 export const HEADER_TABLE_MY_LEAVE = [
 	'No',
-	'Leave Type',
-	'Start Date',
-	'End Date',
-	'Days',
-	'Reason',
+	'Jenis Cuti',
+	'Tanggal Mulai',
+	'Tanggal Selesai',
+	'Hari',
+	'Alasan',
 	'Status',
-	'Action',
+	'Aksi',
 ];
 
 export const HEADER_TABLE_LEAVE_TYPES = [
 	'No',
-	'Name',
-	'Description',
-	'Max Days/Year',
-	'Requires Approval',
+	'Nama',
+	'Deskripsi',
+	'Maks Hari/Tahun',
+	'Perlu Persetujuan',
 	'Status',
-	'Action',
+	'Aksi',
 ];

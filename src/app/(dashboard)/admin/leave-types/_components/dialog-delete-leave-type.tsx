@@ -51,14 +51,14 @@ export default function DialogDeleteLeaveType({
 		if (hasShownToastRef.current) return;
 
 		if (state.status === 'error') {
-			toast.error('Delete Leave Type Failed', {
-				description: state.errors?._form?.[0] || 'Failed to delete leave type',
+			toast.error('Gagal Menghapus Jenis Cuti', {
+				description: state.errors?._form?.[0] || 'Gagal menghapus jenis cuti',
 			});
 			hasShownToastRef.current = true;
 		}
 
 		if (state.status === 'success') {
-			toast.success('Leave Type Deleted Successfully');
+			toast.success('Jenis Cuti Berhasil Dihapus');
 			onOpenChange(false);
 			hasShownToastRef.current = true;
 			window.location.reload();
@@ -69,17 +69,17 @@ export default function DialogDeleteLeaveType({
 		<AlertDialog open={open} onOpenChange={onOpenChange}>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>Delete Leave Type</AlertDialogTitle>
+					<AlertDialogTitle>Hapus Jenis Cuti</AlertDialogTitle>
 					<AlertDialogDescription>
-						Are you sure you want to delete <strong>{leaveType?.name}</strong>? This
-						action cannot be undone and will affect all related leave balances and
-						requests.
+						Apakah Anda yakin ingin menghapus <strong>{leaveType?.name}</strong>? Tindakan ini
+						tidak dapat dibatalkan dan akan mempengaruhi semua saldo cuti dan permohonan
+						terkait.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+					<AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
 					<AlertDialogAction onClick={handleDelete} disabled={isPending}>
-						{isPending ? 'Deleting...' : 'Delete'}
+						{isPending ? 'Menghapus...' : 'Hapus'}
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

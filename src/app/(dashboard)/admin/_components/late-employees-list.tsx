@@ -15,12 +15,12 @@ export default function LateEmployeesList({ employees }: LateEmployeesListProps)
 				<CardHeader>
 					<CardTitle className='text-lg flex items-center gap-2'>
 						<Clock className='h-5 w-5 text-orange-600' />
-						Late Employees Today
+						Karyawan Terlambat Hari Ini
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<p className='text-sm text-muted-foreground text-center py-4'>
-						No late employees today! 🎉
+						Tidak ada karyawan yang terlambat hari ini!
 					</p>
 				</CardContent>
 			</Card>
@@ -32,7 +32,7 @@ export default function LateEmployeesList({ employees }: LateEmployeesListProps)
 			<CardHeader>
 				<CardTitle className='text-lg flex items-center gap-2'>
 					<Clock className='h-5 w-5 text-orange-600' />
-					Late Employees Today ({employees.length})
+					Karyawan Terlambat Hari Ini ({employees.length})
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
@@ -44,12 +44,12 @@ export default function LateEmployeesList({ employees }: LateEmployeesListProps)
 							<div>
 								<p className='font-medium'>{employee.employee_name}</p>
 								<p className='text-sm text-muted-foreground'>
-									Clock in: {employee.clock_in}
+									Jam masuk: {employee.clock_in}
 								</p>
 							</div>
 							<div className='text-right'>
 								<p className='text-sm font-semibold text-orange-600'>
-									{employee.minutes_late} min late
+									Terlambat {employee.minutes_late} menit
 								</p>
 							</div>
 						</div>

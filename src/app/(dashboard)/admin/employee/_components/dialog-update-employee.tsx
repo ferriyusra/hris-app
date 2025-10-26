@@ -34,7 +34,7 @@ export default function DialogUpdateEmployee({
 
 	const onSubmit = form.handleSubmit((data) => {
 		if (!currentData?.id) {
-			toast.error('Invalid employee data');
+			toast.error('Data karyawan tidak valid');
 			return;
 		}
 
@@ -69,14 +69,14 @@ export default function DialogUpdateEmployee({
 			}
 
 			// Show toast for general error
-			toast.error('Update Employee Failed', {
-				description: updateEmployeeState.errors?._form?.[0] || 'Please check the form',
+			toast.error('Gagal Mengubah Karyawan', {
+				description: updateEmployeeState.errors?._form?.[0] || 'Silakan periksa form',
 			});
 			hasShownToastRef.current = true;
 		}
 
 		if (updateEmployeeState?.status === 'success') {
-			toast.success('Update Employee Success');
+			toast.success('Karyawan Berhasil Diubah');
 			form.reset();
 			handleChangeAction?.(false);
 			refetch();
@@ -107,7 +107,7 @@ export default function DialogUpdateEmployee({
 				form={form}
 				onSubmit={onSubmit}
 				isLoading={isPendingupdateEmployee}
-				type='Update'
+				type='Ubah'
 			/>
 		</Dialog>
 	);

@@ -4,16 +4,16 @@ import z from 'zod';
 const indonesianPhoneRegex = /^\+62\d{8,13}$/;
 
 export const employeeFormSchema = z.object({
-	full_name: z.string().min(1, 'Full Name is required'),
-	position: z.string().min(1, 'Position is required'),
+	full_name: z.string().min(1, 'Nama lengkap wajib diisi'),
+	position: z.string().min(1, 'Posisi wajib diisi'),
 	phone_number: z
 		.string()
-		.min(1, 'Phone Number is required')
+		.min(1, 'Nomor telepon wajib diisi')
 		.regex(
 			indonesianPhoneRegex,
-			'Phone number must be a valid Indonesian number (e.g., +628123456789)'
+			'Nomor telepon harus berformat Indonesia (contoh: +628123456789)'
 		),
-	is_active: z.string().min(1, 'Status is required'),
+	is_active: z.string().min(1, 'Status wajib diisi'),
 });
 
 export const employeeSchema = z.object({
@@ -23,7 +23,7 @@ export const employeeSchema = z.object({
 		.string()
 		.regex(
 			indonesianPhoneRegex,
-			'Phone number must be a valid Indonesian number'
+			'Nomor telepon harus berformat Indonesia yang valid'
 		),
 	is_active: z
 		.union([z.boolean(), z.string()])

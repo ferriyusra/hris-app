@@ -31,7 +31,7 @@ export default function FormUser<T extends FieldValues>({
 	form: UseFormReturn<T>;
 	onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 	isLoading: boolean;
-	type: 'Create' | 'Update';
+	type: 'Tambah' | 'Update';
 	preview?: Preview;
 	setPreview?: (preview: Preview) => void;
 	employees?: { id: string; full_name: string; position: string }[];
@@ -65,8 +65,8 @@ export default function FormUser<T extends FieldValues>({
 				<DialogHeader>
 					<DialogTitle>{type} User</DialogTitle>
 					<DialogDescription>
-						{type === 'Create'
-							? 'Register a new user'
+						{type === 'Tambah'
+							? 'Tambah user baru'
 							: 'Make changes user here'}
 					</DialogDescription>
 				</DialogHeader>
@@ -77,7 +77,7 @@ export default function FormUser<T extends FieldValues>({
 						label='Name'
 						placeholder='Insert your name'
 					/>
-					{type === 'Create' && (
+					{type === 'Tambah' && (
 						<FormInput
 							form={form}
 							name={'email' as Path<T>}
@@ -99,7 +99,7 @@ export default function FormUser<T extends FieldValues>({
 						label='Role'
 						selectItem={ROLE_LIST}
 					/>
-					{type === 'Create' && isEmployeeRole && (
+					{type === 'Tambah' && isEmployeeRole && (
 						<>
 							{isLoadingEmployees ? (
 								<div className='space-y-2'>
@@ -135,7 +135,7 @@ export default function FormUser<T extends FieldValues>({
 							)}
 						</>
 					)}
-					{type === 'Create' && (
+					{type === 'Tambah' && (
 						<FormInput
 							form={form}
 							name={'password' as Path<T>}
@@ -146,7 +146,7 @@ export default function FormUser<T extends FieldValues>({
 					)}
 					<DialogFooter>
 						<DialogClose asChild>
-							<Button variant='outline'>Cancel</Button>
+							<Button variant='outline'>Batal</Button>
 						</DialogClose>
 						<Button type='submit'>
 							{isLoading ? <Loader2 className='animate-spin' /> : type}

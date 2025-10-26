@@ -53,8 +53,8 @@ export default function AttendanceClockInOut() {
 			const status = await getTodayAttendance();
 			setTodayStatus(status);
 		} catch (error) {
-			toast.error('Failed to load attendance status', {
-				description: error instanceof Error ? error.message : 'Unknown error',
+			toast.error('Gagal memuat status kehadiran', {
+				description: error instanceof Error ? error.message : 'Kesalahan tidak diketahui',
 			});
 		} finally {
 			setIsLoading(false);
@@ -64,10 +64,10 @@ export default function AttendanceClockInOut() {
 	// Handle clock-in response
 	useEffect(() => {
 		if (clockInState.status === 'success') {
-			toast.success('Clocked in successfully');
+			toast.success('Berhasil absen masuk');
 			loadTodayStatus();
 		} else if (clockInState.status === 'error' && clockInState.errors?._form) {
-			toast.error('Clock-in failed', {
+			toast.error('Gagal absen masuk', {
 				description: clockInState.errors._form[0],
 			});
 		}
@@ -76,10 +76,10 @@ export default function AttendanceClockInOut() {
 	// Handle clock-out response
 	useEffect(() => {
 		if (clockOutState.status === 'success') {
-			toast.success('Clocked out successfully');
+			toast.success('Berhasil absen keluar');
 			loadTodayStatus();
 		} else if (clockOutState.status === 'error' && clockOutState.errors?._form) {
-			toast.error('Clock-out failed', {
+			toast.error('Gagal absen keluar', {
 				description: clockOutState.errors._form[0],
 			});
 		}
@@ -114,7 +114,7 @@ export default function AttendanceClockInOut() {
 				<Link href='/employee-attendance/history'>
 					<Button variant='outline'>
 						<Calendar className='mr-2 h-4 w-4' />
-						View History
+						Lihat Riwayat
 					</Button>
 				</Link>
 			</div>
@@ -124,7 +124,7 @@ export default function AttendanceClockInOut() {
 				<CardHeader>
 					<CardTitle className='flex items-center gap-2'>
 						<Clock className='h-5 w-5' />
-						Current Time
+						Waktu Saat Ini
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
@@ -144,9 +144,9 @@ export default function AttendanceClockInOut() {
 			{/* Today's Status Card */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Today's Attendance</CardTitle>
+					<CardTitle>Kehadiran Hari Ini</CardTitle>
 					<CardDescription>
-						{currentTime ? format(currentTime, 'dd MMMM yyyy') : 'Loading...'}
+						{currentTime ? format(currentTime, 'dd MMMM yyyy') : 'Memuat...'}
 					</CardDescription>
 				</CardHeader>
 				<CardContent className='space-y-6'>
@@ -165,12 +165,12 @@ export default function AttendanceClockInOut() {
 									{todayStatus?.record ? (
 										<AttendanceStatusBadge status={todayStatus.record.status} />
 									) : (
-										<span className='text-sm text-muted-foreground'>Not clocked in</span>
+										<span className='text-sm text-muted-foreground'>Belum absen</span>
 									)}
 								</div>
 
 								<div className='space-y-2'>
-									<div className='text-sm font-medium text-muted-foreground'>Clock In</div>
+									<div className='text-sm font-medium text-muted-foreground'>Absen Masuk</div>
 									{todayStatus?.record?.clock_in ? (
 										<TimeDisplay
 											timestamp={todayStatus.record.clock_in}
@@ -183,7 +183,7 @@ export default function AttendanceClockInOut() {
 								</div>
 
 								<div className='space-y-2'>
-									<div className='text-sm font-medium text-muted-foreground'>Clock Out</div>
+									<div className='text-sm font-medium text-muted-foreground'>Absen Keluar</div>
 									{todayStatus?.record?.clock_out ? (
 										<TimeDisplay
 											timestamp={todayStatus.record.clock_out}
@@ -205,7 +205,7 @@ export default function AttendanceClockInOut() {
 									size='lg'
 								>
 									<LogIn className='mr-2 h-5 w-5' />
-									{isClockingIn ? 'Clocking In...' : 'Clock In'}
+									{isClockingIn ? 'Memproses...' : 'Absen Masuk'}
 								</Button>
 
 								<Button
@@ -216,20 +216,20 @@ export default function AttendanceClockInOut() {
 									size='lg'
 								>
 									<LogOut className='mr-2 h-5 w-5' />
-									{isClockingOut ? 'Clocking Out...' : 'Clock Out'}
+									{isClockingOut ? 'Memproses...' : 'Absen Keluar'}
 								</Button>
 							</div>
 
 							{/* Help Text */}
 							<div className='text-sm text-muted-foreground text-center pt-2'>
 								{!todayStatus?.has_record && (
-									<p>Click "Clock In" to start your work day</p>
+									<p>Klik "Absen Masuk" untuk memulai hari kerja Anda</p>
 								)}
 								{todayStatus?.has_record && !todayStatus?.is_clocked_out && (
-									<p>Don't forget to clock out at the end of your work day</p>
+									<p>Jangan lupa absen keluar di akhir hari kerja Anda</p>
 								)}
 								{todayStatus?.is_clocked_out && (
-									<p>You have completed your attendance for today</p>
+									<p>Anda telah menyelesaikan kehadiran untuk hari ini</p>
 								)}
 							</div>
 						</>
@@ -241,12 +241,12 @@ export default function AttendanceClockInOut() {
 			{todayStatus?.record && todayStatus.is_clocked_in && todayStatus.is_clocked_out && (
 				<Card>
 					<CardHeader>
-						<CardTitle>Today's Summary</CardTitle>
+						<CardTitle>Ringkasan Hari Ini</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className='grid grid-cols-2 gap-4'>
 							<div>
-								<div className='text-sm text-muted-foreground'>Total Work Time</div>
+								<div className='text-sm text-muted-foreground'>Total Waktu Kerja</div>
 								<div className='text-2xl font-bold'>
 									{(() => {
 										const clockIn = new Date(todayStatus.record!.clock_in!);
@@ -254,7 +254,7 @@ export default function AttendanceClockInOut() {
 										const diff = clockOut.getTime() - clockIn.getTime();
 										const hours = Math.floor(diff / (1000 * 60 * 60));
 										const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-										return `${hours}h ${minutes}m`;
+										return `${hours}j ${minutes}m`;
 									})()}
 								</div>
 							</div>

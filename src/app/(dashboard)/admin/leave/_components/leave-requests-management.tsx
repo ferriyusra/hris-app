@@ -73,16 +73,16 @@ export default function LeaveRequestsManagement({ requests, onRefresh }: LeaveRe
 
 			return [
 				startIndex + index + 1,
-				request.employee?.full_name || 'Unknown',
-				request.leave_type?.name || 'Unknown',
+				request.employee?.full_name || 'Tidak Diketahui',
+				request.leave_type?.name || 'Tidak Diketahui',
 				formatDate(request.start_date),
 				formatDate(request.end_date),
-				`${request.total_days} days`,
+				`${request.total_days} hari`,
 				<div key={`reason-${request.id}`} className='max-w-xs truncate' title={request.reason}>
 					{request.reason}
 				</div>,
 				<Badge key={`status-${request.id}`} className={LEAVE_STATUS_COLORS[request.status]}>
-					{request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+					{request.status === 'pending' ? 'Menunggu' : request.status === 'approved' ? 'Disetujui' : 'Ditolak'}
 				</Badge>,
 				isPending ? (
 					<div key={`actions-${request.id}`} className='flex gap-1'>
@@ -151,14 +151,14 @@ export default function LeaveRequestsManagement({ requests, onRefresh }: LeaveRe
 		if (hasShownToastRef.current) return;
 
 		if (approveState.status === 'error') {
-			toast.error('Approve Leave Failed', {
-				description: approveState.errors?._form?.[0] || 'Failed to approve leave request',
+			toast.error('Gagal Menyetujui Cuti', {
+				description: approveState.errors?._form?.[0] || 'Gagal menyetujui permohonan cuti',
 			});
 			hasShownToastRef.current = true;
 		}
 
 		if (approveState.status === 'success') {
-			toast.success('Leave Request Approved');
+			toast.success('Permohonan Cuti Disetujui');
 			closeDialog();
 			hasShownToastRef.current = true;
 
@@ -173,14 +173,14 @@ export default function LeaveRequestsManagement({ requests, onRefresh }: LeaveRe
 		if (hasShownToastRef.current) return;
 
 		if (rejectState.status === 'error') {
-			toast.error('Reject Leave Failed', {
-				description: rejectState.errors?._form?.[0] || 'Failed to reject leave request',
+			toast.error('Gagal Menolak Cuti', {
+				description: rejectState.errors?._form?.[0] || 'Gagal menolak permohonan cuti',
 			});
 			hasShownToastRef.current = true;
 		}
 
 		if (rejectState.status === 'success') {
-			toast.success('Leave Request Rejected');
+			toast.success('Permohonan Cuti Ditolak');
 			closeDialog();
 			hasShownToastRef.current = true;
 
@@ -194,9 +194,9 @@ export default function LeaveRequestsManagement({ requests, onRefresh }: LeaveRe
 	return (
 		<>
 			<div className='flex flex-col lg:flex-row mb-4 gap-2 justify-between w-full'>
-				<h1 className='text-2xl font-bold'>Leave Requests Management</h1>
+				<h1 className='text-2xl font-bold'>Manajemen Permohonan Cuti</h1>
 				<Input
-					placeholder='Search by employee, leave type, or status...'
+					placeholder='Cari berdasarkan karyawan, jenis cuti, atau status...'
 					onChange={(e) => handleChangeSearch(e.target.value)}
 				/>
 			</div>
@@ -217,18 +217,18 @@ export default function LeaveRequestsManagement({ requests, onRefresh }: LeaveRe
 				onOpenChange={(open) => !open && closeDialog()}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Approve Leave Request</DialogTitle>
+						<DialogTitle>Setujui Permohonan Cuti</DialogTitle>
 						<DialogDescription>
-							Are you sure you want to approve this leave request from{' '}
+							Apakah Anda yakin ingin menyetujui permohonan cuti dari{' '}
 							<strong>{selectedRequest?.employee?.full_name}</strong>?
 						</DialogDescription>
 					</DialogHeader>
 					<DialogFooter>
 						<Button variant='outline' onClick={closeDialog} disabled={isApprovePending}>
-							Cancel
+							Batal
 						</Button>
 						<Button onClick={handleApprove} disabled={isApprovePending}>
-							{isApprovePending ? 'Approving...' : 'Approve'}
+							{isApprovePending ? 'Menyetujui...' : 'Setujui'}
 						</Button>
 					</DialogFooter>
 				</DialogContent>
@@ -240,32 +240,32 @@ export default function LeaveRequestsManagement({ requests, onRefresh }: LeaveRe
 				onOpenChange={(open) => !open && closeDialog()}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Reject Leave Request</DialogTitle>
+						<DialogTitle>Tolak Permohonan Cuti</DialogTitle>
 						<DialogDescription>
-							Please provide a reason for rejecting this leave request from{' '}
+							Silakan berikan alasan penolakan permohonan cuti dari{' '}
 							<strong>{selectedRequest?.employee?.full_name}</strong>.
 						</DialogDescription>
 					</DialogHeader>
 					<div className='py-4'>
-						<Label htmlFor='rejection_reason'>Rejection Reason</Label>
+						<Label htmlFor='rejection_reason'>Alasan Penolakan</Label>
 						<Textarea
 							id='rejection_reason'
 							value={rejectionReason}
 							onChange={(e) => setRejectionReason(e.target.value)}
-							placeholder='Enter reason for rejection...'
+							placeholder='Masukkan alasan penolakan...'
 							rows={4}
 							className='mt-2'
 						/>
 					</div>
 					<DialogFooter>
 						<Button variant='outline' onClick={closeDialog} disabled={isRejectPending}>
-							Cancel
+							Batal
 						</Button>
 						<Button
 							variant='destructive'
 							onClick={handleReject}
 							disabled={isRejectPending || !rejectionReason.trim()}>
-							{isRejectPending ? 'Rejecting...' : 'Reject'}
+							{isRejectPending ? 'Menolak...' : 'Tolak'}
 						</Button>
 					</DialogFooter>
 				</DialogContent>

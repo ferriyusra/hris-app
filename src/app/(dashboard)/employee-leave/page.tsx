@@ -42,22 +42,22 @@ export default function EmployeeLeavePage() {
 		<div className='space-y-6'>
 			<div className='flex justify-between items-center'>
 				<div>
-					<h1 className='text-3xl font-bold'>My Leave</h1>
+					<h1 className='text-3xl font-bold'>Cuti Saya</h1>
 					<p className='text-muted-foreground'>
-						Manage your leave requests and view your leave balance
+						Kelola permintaan cuti Anda dan lihat saldo cuti Anda
 					</p>
 				</div>
 				<Button
 					onClick={() => setOpenDialog(true)}
 					disabled={assignedLeaveTypes.length === 0}>
 					<Plus className='h-4 w-4 mr-2' />
-					Request Leave
+					Ajukan Cuti
 				</Button>
 			</div>
 
 			<div>
 				<h2 className='text-xl font-semibold mb-4'>
-					Leave Balance {currentYear}
+					Saldo Cuti {currentYear}
 				</h2>
 				{isLoading ? (
 					<p className='text-muted-foreground'>Loading...</p>
@@ -76,7 +76,7 @@ export default function EmployeeLeavePage() {
 			</div>
 
 			<div>
-				<h2 className='text-xl font-semibold mb-4'>My Leave Requests</h2>
+				<h2 className='text-xl font-semibold mb-4'>Pengajuan Cuti Saya</h2>
 				{isLoading ? (
 					<p className='text-muted-foreground'>Loading...</p>
 				) : (

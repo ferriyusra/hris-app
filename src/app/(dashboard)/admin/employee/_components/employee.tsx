@@ -52,7 +52,7 @@ export default function EmployeeManagement() {
 			const result = await query;
 
 			if (result.error)
-				toast.error('Get Employee data failed', {
+				toast.error('Gagal mengambil data karyawan', {
 					description: result.error.message,
 				});
 
@@ -84,7 +84,7 @@ export default function EmployeeManagement() {
 						 'bg-green-600': employee.is_active,
     					'bg-red-600': !employee.is_active,
 					})}>
-					 {employee.is_active ? 'Active' : 'Inactive'}
+					 {employee.is_active ? 'Aktif' : 'Tidak Aktif'}
 				</div>,
 				<DropdownAction
 					menu={[
@@ -92,7 +92,7 @@ export default function EmployeeManagement() {
 							label: (
 								<span className='flex item-center gap-2'>
 									<Eye />
-									View Detail
+									Lihat Detail
 								</span>
 							),
 							action: () => {
@@ -106,7 +106,7 @@ export default function EmployeeManagement() {
 							label: (
 								<span className='flex item-center gap-2'>
 									<Pencil />
-									Edit
+									Ubah
 								</span>
 							),
 							action: () => {
@@ -120,7 +120,7 @@ export default function EmployeeManagement() {
 							label: (
 								<span className='flex item-center gap-2'>
 									<Trash2 className='text-red-400' />
-									Delete
+									Hapus
 								</span>
 							),
 							variant: 'destructive',
@@ -146,15 +146,15 @@ export default function EmployeeManagement() {
 	return (
 		<div className='w-full'>
 			<div className='flex flex-col lg:flex-row mb-4 gap-2 justify-between w-full'>
-				<h1 className='text-2xl font-bold'>Employee Management</h1>
+				<h1 className='text-2xl font-bold'>Manajemen Karyawan</h1>
 				<div className='flex gap-2'>
 					<Input
-						placeholder='Search...'
+						placeholder='Cari...'
 						onChange={(e) => handleChangeSearch(e.target.value)}
 					/>
 					<Dialog>
 						<DialogTrigger asChild>
-							<Button variant='outline'>Create</Button>
+							<Button variant='outline'>Tambah</Button>
 						</DialogTrigger>
 						<DialogCreateEmployee refetch={refetch} />
 					</Dialog>

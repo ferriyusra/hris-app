@@ -122,7 +122,7 @@ export default function DialogCreateLeave({
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className='max-w-2xl max-h-[90vh] overflow-y-auto'>
 				<DialogHeader>
-					<DialogTitle>Request Leave</DialogTitle>
+					<DialogTitle>Ajukan Cuti</DialogTitle>
 				</DialogHeader>
 
 				{leaveTypes.length === 0 ? (
@@ -142,7 +142,7 @@ export default function DialogCreateLeave({
 								name='leave_type_id'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Leave Type</FormLabel>
+										<FormLabel>Tipe Cuti</FormLabel>
 										<Select
 											onValueChange={field.onChange}
 											defaultValue={field.value}>
@@ -184,14 +184,14 @@ export default function DialogCreateLeave({
 							<FormInput
 								form={form}
 								name='start_date'
-								label='Start Date'
+								label='Tanggal Mulai'
 								type='date'
 								placeholder=''
 							/>
 							<FormInput
 								form={form}
 								name='end_date'
-								label='End Date'
+								label='Tanggal Akhir'
 								type='date'
 								placeholder=''
 							/>
@@ -214,7 +214,7 @@ export default function DialogCreateLeave({
 									Cancel
 								</Button>
 								<Button type='submit' disabled={isPending}>
-									{isPending ? 'Submitting...' : 'Submit Request'}
+									{isPending ? 'Submitting...' : 'Ajukan Cuti'}
 								</Button>
 							</div>
 						</form>

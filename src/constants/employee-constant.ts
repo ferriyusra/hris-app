@@ -1,21 +1,21 @@
 export const HEADER_TABLE_EMPLOYEE = [
 	'No',
-	'Employee ID',
-	'Full Name',
-	'Position',
-	'Phone Number',
+	'ID Karyawan',
+	'Nama Lengkap',
+	'Posisi',
+	'Nomor Telepon',
 	'Status',
-	'Action',
+	'Aksi',
 ];
 
 export const STATUS_TABLE_EMPLOYEE = [
 	{
 		value: 'true',
-		label: 'Active',
+		label: 'Aktif',
 	},
 	{
 		value: 'false',
-		label: 'Non Active',
+		label: 'Tidak Aktif',
 	},
 ];
 

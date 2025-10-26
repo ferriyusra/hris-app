@@ -14,64 +14,64 @@ import {
 export const SIDEBAR_MENU_LIST = {
 	admin: [
 		{
-			title: 'Dashboard',
+			title: 'Dasbor',
 			url: '/admin',
 			icon: LayoutDashboard,
 		},
 		{
-			title: 'User',
+			title: 'Pengguna',
 			url: '/admin/user',
 			icon: Users,
 		},
 		{
-			title: 'Employee',
+			title: 'Karyawan',
 			url: '/admin/employee',
 			icon: SquareMenu,
 		},
 		{
-			title: 'Attendance',
+			title: 'Kehadiran',
 			url: '/admin/attendance',
 			icon: CalendarCheck,
 		},
 		{
-			title: 'Leave',
+			title: 'Cuti',
 			url: '/admin/leave',
 			icon: CalendarDays,
 		},
 		{
-			title: 'Leave Types',
+			title: 'Jenis Cuti',
 			url: '/admin/leave-types',
 			icon: Settings,
 		},
 		{
-			title: 'Leave Balance',
+			title: 'Saldo Cuti',
 			url: '/admin/leave-balance',
 			icon: ClipboardList,
 		},
 		{
-			title: 'Work Time',
+			title: 'Waktu Kerja',
 			url: '/admin/work-time',
 			icon: Clock,
 		},
 	],
 	employee: [
 		{
-			title: 'Dashboard',
+			title: 'Dasbor',
 			url: '/employee-dashboard',
 			icon: LayoutDashboard,
 		},
 		{
-			title: 'Attendance',
+			title: 'Kehadiran',
 			url: '/employee-attendance',
 			icon: CalendarCheck,
 		},
 		{
-			title: 'Leave',
+			title: 'Cuti',
 			url: '/employee-leave',
 			icon: CalendarDays,
 		},
 		{
-			title: 'Profile',
+			title: 'Profil',
 			url: '/employee-profile',
 			icon: User,
 		},

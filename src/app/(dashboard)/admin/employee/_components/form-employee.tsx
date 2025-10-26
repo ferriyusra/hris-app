@@ -25,15 +25,15 @@ export default function FormEmployee<T extends FieldValues>({
 	form: UseFormReturn<T>;
 	onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 	isLoading: boolean;
-	type: 'Create' | 'Update';
+	type: 'Tambah' | 'Ubah';
 }) {
 	return (
 		<DialogContent className='sm:max-w-[425px] max-h-[90vh]'>
 			<Form {...form}>
 				<DialogHeader>
-					<DialogTitle>{type} Employee</DialogTitle>
+					<DialogTitle>{type} Karyawan</DialogTitle>
 					<DialogDescription>
-						{type === 'Create' ? 'Add a new employee' : 'Make changes table here'}
+						{type === 'Tambah' ? 'Tambahkan karyawan baru' : 'Ubah data karyawan di sini'}
 					</DialogDescription>
 				</DialogHeader>
 				<form onSubmit={onSubmit} className='space-y-4'>
@@ -41,19 +41,19 @@ export default function FormEmployee<T extends FieldValues>({
 						<FormInput
 							form={form}
 							name={'full_name' as Path<T>}
-							label='Full Name'
-							placeholder='Insert full name here'
+							label='Nama Lengkap'
+							placeholder='Masukkan nama lengkap'
 						/>
 						<FormInput
 							form={form}
 							name={'position' as Path<T>}
-							label='Position'
-							placeholder='Insert position here'
+							label='Posisi'
+							placeholder='Masukkan posisi'
 						/>
 						<FormPhoneInput
 							form={form}
 							name={'phone_number' as Path<T>}
-							label='Phone Number'
+							label='Nomor Telepon'
 							placeholder='812-3456-7890'
 						/>
 						<FormSelect
@@ -65,7 +65,7 @@ export default function FormEmployee<T extends FieldValues>({
 					</div>
 					<DialogFooter>
 						<DialogClose asChild>
-							<Button variant='outline'>Cancel</Button>
+							<Button variant='outline'>Batal</Button>
 						</DialogClose>
 						<Button type='submit'>
 							{isLoading ? <Loader2 className='animate-spin' /> : type}

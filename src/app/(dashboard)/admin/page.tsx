@@ -27,31 +27,31 @@ export default async function AdminDashboard() {
 	return (
 		<div className='space-y-6'>
 			<div>
-				<h1 className='text-3xl font-bold'>Dashboard</h1>
-				<p className='text-muted-foreground'>Welcome to your HRIS dashboard</p>
+				<h1 className='text-3xl font-bold'>Dasbor</h1>
+				<p className='text-muted-foreground'>Selamat datang di dasbor HRIS Anda</p>
 			</div>
 
 			{/* Employee Statistics */}
 			<div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
 				<StatCard
-					title='Total Employees'
+					title='Total Karyawan'
 					value={stats.totalEmployees}
 					icon={Users}
-					description='All registered employees'
+					description='Semua karyawan terdaftar'
 					colorClass='text-blue-600'
 				/>
 				<StatCard
-					title='Active Employees'
+					title='Karyawan Aktif'
 					value={stats.activeEmployees}
 					icon={UserCheck}
-					description='Currently active employees'
+					description='Karyawan yang saat ini aktif'
 					colorClass='text-green-600'
 				/>
 				<StatCard
-					title='Inactive Employees'
+					title='Karyawan Tidak Aktif'
 					value={stats.inactiveEmployees}
 					icon={UserX}
-					description='Currently inactive employees'
+					description='Karyawan yang saat ini tidak aktif'
 					colorClass='text-gray-600'
 				/>
 			</div>
@@ -59,24 +59,24 @@ export default async function AdminDashboard() {
 			{/* Today's Attendance */}
 			<div className='grid gap-4 md:grid-cols-3'>
 				<StatCard
-					title='Present Today'
+					title='Hadir Hari Ini'
 					value={stats.todayPresent}
 					icon={CalendarCheck}
-					description='Employees who clocked in'
+					description='Karyawan yang sudah absen masuk'
 					colorClass='text-green-600'
 				/>
 				<StatCard
-					title='Late Today'
+					title='Terlambat Hari Ini'
 					value={stats.todayLate}
 					icon={Clock}
-					description='Employees who came late'
+					description='Karyawan yang datang terlambat'
 					colorClass='text-orange-600'
 				/>
 				<StatCard
-					title='Absent Today'
+					title='Tidak Hadir Hari Ini'
 					value={stats.todayAbsent}
 					icon={UserX}
-					description='Employees not present'
+					description='Karyawan yang tidak hadir'
 					colorClass='text-red-600'
 				/>
 			</div>

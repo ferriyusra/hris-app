@@ -1,6 +1,6 @@
--- Create work_time_config table
--- This table stores the work time configuration settings
--- Only one row should exist in this table (singleton pattern)
+-- Membuat tabel work_time_config
+-- Tabel ini menyimpan pengaturan konfigurasi waktu kerja
+-- Hanya satu baris yang harus ada di tabel ini (pola singleton)
 CREATE TABLE IF NOT EXISTS public.work_time_config (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   work_start_time TIME NOT NULL DEFAULT '09:00:00',
@@ -11,20 +11,20 @@ CREATE TABLE IF NOT EXISTS public.work_time_config (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Add check constraint to ensure only one row exists
+-- Menambahkan constraint untuk memastikan hanya satu baris yang ada
 CREATE UNIQUE INDEX IF NOT EXISTS idx_work_time_config_singleton
   ON public.work_time_config ((id IS NOT NULL));
 
--- Enable Row Level Security
+-- Mengaktifkan Row Level Security
 ALTER TABLE public.work_time_config ENABLE ROW LEVEL SECURITY;
 
--- RLS Policies - Everyone can view, only admins can modify
-CREATE POLICY "Everyone can view work time config"
+-- Kebijakan RLS - Semua orang dapat melihat, hanya admin yang dapat mengubah
+CREATE POLICY "Semua orang dapat melihat konfigurasi waktu kerja"
   ON public.work_time_config FOR SELECT
   TO authenticated
   USING (true);
 
-CREATE POLICY "Only admins can update work time config"
+CREATE POLICY "Hanya admin yang dapat mengubah konfigurasi waktu kerja"
   ON public.work_time_config FOR UPDATE
   TO authenticated
   USING (
@@ -35,7 +35,7 @@ CREATE POLICY "Only admins can update work time config"
     )
   );
 
-CREATE POLICY "Only admins can insert work time config"
+CREATE POLICY "Hanya admin yang dapat menambahkan konfigurasi waktu kerja"
   ON public.work_time_config FOR INSERT
   TO authenticated
   WITH CHECK (
@@ -46,13 +46,13 @@ CREATE POLICY "Only admins can insert work time config"
     )
   );
 
--- Add trigger for auto-updating updated_at
+-- Menambahkan trigger untuk auto-update updated_at
 CREATE TRIGGER set_updated_at_work_time_config
   BEFORE UPDATE ON public.work_time_config
   FOR EACH ROW
   EXECUTE FUNCTION public.handle_updated_at();
 
--- Insert default work time configuration
+-- Memasukkan konfigurasi waktu kerja default
 INSERT INTO public.work_time_config (
   work_start_time,
   work_end_time,
@@ -66,7 +66,7 @@ INSERT INTO public.work_time_config (
 )
 ON CONFLICT DO NOTHING;
 
--- Add check constraints for validation
+-- Menambahkan constraint validasi
 ALTER TABLE public.work_time_config
   ADD CONSTRAINT check_work_time_valid
   CHECK (work_start_time < work_end_time);

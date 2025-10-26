@@ -65,13 +65,13 @@ export default function DialogCreateUser({ refetch }: { refetch: () => void }) {
 
 	useEffect(() => {
 		if (createUserState?.status === 'error') {
-			toast.error('Create User Failed', {
+			toast.error('Tambah User Failed', {
 				description: createUserState.errors?._form?.[0],
 			});
 		}
 
 		if (createUserState?.status === 'success') {
-			toast.success('Create User Success');
+			toast.success('Tambah User Success');
 			form.reset();
 			setPreview(undefined);
 			document.querySelector<HTMLButtonElement>('[data-state="open"]')?.click();
@@ -84,7 +84,7 @@ export default function DialogCreateUser({ refetch }: { refetch: () => void }) {
 			form={form}
 			onSubmit={onSubmit}
 			isLoading={isPendingCreateUser}
-			type='Create'
+			type='Tambah'
 			preview={preview}
 			setPreview={setPreview}
 			employees={employees}

@@ -81,14 +81,14 @@ export default function AdminLeaveBalancePage() {
 		if (hasShownToastRef.current) return;
 
 		if (removeState.status === 'error') {
-			toast.error('Remove Leave Balance Failed', {
-				description: removeState.errors?._form?.[0] || 'Failed to remove leave balance',
+			toast.error('Gagal Menghapus Saldo Cuti', {
+				description: removeState.errors?._form?.[0] || 'Gagal menghapus saldo cuti',
 			});
 			hasShownToastRef.current = true;
 		}
 
 		if (removeState.status === 'success') {
-			toast.success('Leave Balance Removed Successfully');
+			toast.success('Saldo Cuti Berhasil Dihapus');
 			setBalanceToRemove(null);
 			hasShownToastRef.current = true;
 			window.location.reload();
@@ -100,16 +100,16 @@ export default function AdminLeaveBalancePage() {
 	return (
 		<div className='space-y-6'>
 			<div>
-				<h1 className='text-3xl font-bold'>Employee Leave Balance</h1>
+				<h1 className='text-3xl font-bold'>Saldo Cuti Karyawan</h1>
 				<p className='text-muted-foreground'>
-					Assign and manage leave balances for employees ({currentYear})
+					Atur dan kelola saldo cuti untuk karyawan ({currentYear})
 				</p>
 			</div>
 
 			{isLoading ? (
-				<p className='text-muted-foreground'>Loading...</p>
+				<p className='text-muted-foreground'>Memuat...</p>
 			) : employees.length === 0 ? (
-				<p className='text-muted-foreground'>No active employees found</p>
+				<p className='text-muted-foreground'>Tidak ada karyawan aktif</p>
 			) : (
 				<div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
 					{employees.map((employee) => (
@@ -133,7 +133,7 @@ export default function AdminLeaveBalancePage() {
 							<CardContent>
 								{employee.balances.length === 0 ? (
 									<p className='text-sm text-muted-foreground'>
-										No leave balances assigned
+										Belum ada saldo cuti
 									</p>
 								) : (
 									<div className='space-y-3'>
@@ -143,17 +143,17 @@ export default function AdminLeaveBalancePage() {
 												className='flex items-center justify-between p-3 rounded-lg border bg-card'>
 												<div className='flex-1'>
 													<p className='font-medium text-sm'>
-														{balance.leave_type?.name || 'Unknown'}
+														{balance.leave_type?.name || 'Tidak Diketahui'}
 													</p>
 													<div className='flex gap-2 mt-1'>
 														<Badge variant='outline' className='text-xs'>
-															Total: {balance.total_days}d
+															Total: {balance.total_days}h
 														</Badge>
 														<Badge variant='outline' className='text-xs text-orange-600'>
-															Used: {balance.used_days}d
+															Terpakai: {balance.used_days}h
 														</Badge>
 														<Badge variant='outline' className='text-xs text-green-600'>
-															Remaining: {balance.remaining_days}d
+															Sisa: {balance.remaining_days}h
 														</Badge>
 													</div>
 												</div>
@@ -188,16 +188,16 @@ export default function AdminLeaveBalancePage() {
 				onOpenChange={(open) => !open && setBalanceToRemove(null)}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Remove Leave Balance</AlertDialogTitle>
+						<AlertDialogTitle>Hapus Saldo Cuti</AlertDialogTitle>
 						<AlertDialogDescription>
-							Are you sure you want to remove this leave balance? This action cannot
-							be undone.
+							Apakah Anda yakin ingin menghapus saldo cuti ini? Tindakan ini tidak dapat
+							dibatalkan.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel disabled={isRemoving}>Cancel</AlertDialogCancel>
+						<AlertDialogCancel disabled={isRemoving}>Batal</AlertDialogCancel>
 						<AlertDialogAction onClick={handleRemoveBalance} disabled={isRemoving}>
-							{isRemoving ? 'Removing...' : 'Remove'}
+							{isRemoving ? 'Menghapus...' : 'Hapus'}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

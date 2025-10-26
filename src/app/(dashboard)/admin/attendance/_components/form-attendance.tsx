@@ -68,7 +68,7 @@ export default function FormAttendance({
 			{/* Employee Selection */}
 			<div className='space-y-2'>
 				<Label htmlFor='employee_id'>
-					Employee <span className='text-red-500'>*</span>
+					Karyawan <span className='text-red-500'>*</span>
 				</Label>
 				<select
 					id='employee_id'
@@ -80,7 +80,7 @@ export default function FormAttendance({
 					)}
 					required
 				>
-					<option value='' disabled>Select employee</option>
+					<option value='' disabled>Pilih karyawan</option>
 					{employees?.map((emp) => (
 						<option key={emp.id} value={emp.id}>
 							{emp.full_name} - {emp.position}
@@ -95,7 +95,7 @@ export default function FormAttendance({
 			{/* Date */}
 			<div className='space-y-2'>
 				<Label htmlFor='date'>
-					Date <span className='text-red-500'>*</span>
+					Tanggal <span className='text-red-500'>*</span>
 				</Label>
 				<input
 					type='date'
@@ -114,7 +114,7 @@ export default function FormAttendance({
 			{/* Clock In Time */}
 			<div className='space-y-2'>
 				<Label htmlFor='clock_in_time'>
-					Clock In Time <span className='text-red-500'>*</span>
+					Waktu Masuk <span className='text-red-500'>*</span>
 				</Label>
 				<input
 					type='time'
@@ -132,7 +132,7 @@ export default function FormAttendance({
 
 			{/* Clock Out Time (Optional) */}
 			<div className='space-y-2'>
-				<Label htmlFor='clock_out_time'>Clock Out Time (Optional)</Label>
+				<Label htmlFor='clock_out_time'>Waktu Keluar (Opsional)</Label>
 				<input
 					type='time'
 					id='clock_out_time'
@@ -174,11 +174,11 @@ export default function FormAttendance({
 
 			{/* Notes (Optional) */}
 			<div className='space-y-2'>
-				<Label htmlFor='notes'>Notes (Optional)</Label>
+				<Label htmlFor='notes'>Catatan (Opsional)</Label>
 				<Textarea
 					id='notes'
 					name='notes'
-					placeholder='Add any notes about this attendance record...'
+					placeholder='Tambahkan catatan tentang data kehadiran ini...'
 					defaultValue={currentData?.notes}
 					className='resize-none'
 					rows={3}

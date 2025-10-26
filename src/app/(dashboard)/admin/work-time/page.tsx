@@ -38,9 +38,9 @@ export default function AdminWorkTimePage() {
 		const result = await updateWorkTimeConfig(config);
 
 		if (result.status === 'success') {
-			toast.success('Work time configuration updated successfully');
+			toast.success('Konfigurasi waktu kerja berhasil diperbarui');
 		} else {
-			toast.error(result.errors?._form?.[0] || 'Failed to update work time configuration');
+			toast.error(result.errors?._form?.[0] || 'Gagal memperbarui konfigurasi waktu kerja');
 		}
 
 		setIsSaving(false);
@@ -50,10 +50,10 @@ export default function AdminWorkTimePage() {
 		return (
 			<div className='space-y-6'>
 				<div>
-					<h1 className='text-3xl font-bold'>Work Time Configuration</h1>
-					<p className='text-muted-foreground'>Configure working hours and attendance rules</p>
+					<h1 className='text-3xl font-bold'>Konfigurasi Waktu Kerja</h1>
+					<p className='text-muted-foreground'>Atur jam kerja dan aturan kehadiran</p>
 				</div>
-				<p className='text-muted-foreground'>Loading...</p>
+				<p className='text-muted-foreground'>Memuat...</p>
 			</div>
 		);
 	}
@@ -62,54 +62,54 @@ export default function AdminWorkTimePage() {
 		<div className='space-y-6'>
 			<div className='flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center'>
 				<div>
-					<h1 className='text-3xl font-bold'>Work Time Configuration</h1>
-					<p className='text-muted-foreground'>Configure working hours and attendance rules</p>
+					<h1 className='text-3xl font-bold'>Konfigurasi Waktu Kerja</h1>
+					<p className='text-muted-foreground'>Atur jam kerja dan aturan kehadiran</p>
 				</div>
 				<Button onClick={handleSave} disabled={isSaving}>
 					<Save className='h-4 w-4 mr-2' />
-					{isSaving ? 'Saving...' : 'Save Changes'}
+					{isSaving ? 'Menyimpan...' : 'Simpan Perubahan'}
 				</Button>
 			</div>
 
 			<div className='grid gap-6 md:grid-cols-2'>
 				<Card>
 					<CardHeader>
-						<CardTitle>Working Hours</CardTitle>
-						<CardDescription>Set the standard working hours for your organization</CardDescription>
+						<CardTitle>Jam Kerja</CardTitle>
+						<CardDescription>Atur jam kerja standar untuk organisasi Anda</CardDescription>
 					</CardHeader>
 					<CardContent className='space-y-4'>
 						<div className='space-y-2'>
-							<Label htmlFor='work_start_time'>Work Start Time</Label>
+							<Label htmlFor='work_start_time'>Waktu Mulai Kerja</Label>
 							<Input
 								id='work_start_time'
 								type='time'
 								value={config.work_start_time}
 								onChange={(e) => setConfig({ ...config, work_start_time: e.target.value })}
 							/>
-							<p className='text-sm text-muted-foreground'>Default: 09:00 AM</p>
+							<p className='text-sm text-muted-foreground'>Default: 09:00</p>
 						</div>
 
 						<div className='space-y-2'>
-							<Label htmlFor='work_end_time'>Work End Time</Label>
+							<Label htmlFor='work_end_time'>Waktu Selesai Kerja</Label>
 							<Input
 								id='work_end_time'
 								type='time'
 								value={config.work_end_time}
 								onChange={(e) => setConfig({ ...config, work_end_time: e.target.value })}
 							/>
-							<p className='text-sm text-muted-foreground'>Default: 05:00 PM</p>
+							<p className='text-sm text-muted-foreground'>Default: 17:00</p>
 						</div>
 					</CardContent>
 				</Card>
 
 				<Card>
 					<CardHeader>
-						<CardTitle>Attendance Rules</CardTitle>
-						<CardDescription>Configure attendance thresholds and rules</CardDescription>
+						<CardTitle>Aturan Kehadiran</CardTitle>
+						<CardDescription>Konfigurasi ambang batas dan aturan kehadiran</CardDescription>
 					</CardHeader>
 					<CardContent className='space-y-4'>
 						<div className='space-y-2'>
-							<Label htmlFor='late_threshold_minutes'>Late Threshold (Minutes)</Label>
+							<Label htmlFor='late_threshold_minutes'>Batas Keterlambatan (Menit)</Label>
 							<Input
 								id='late_threshold_minutes'
 								type='number'
@@ -120,12 +120,12 @@ export default function AdminWorkTimePage() {
 								}
 							/>
 							<p className='text-sm text-muted-foreground'>
-								Employees are marked as late if they clock in after this many minutes
+								Karyawan dianggap terlambat jika clock in setelah waktu ini (dalam menit)
 							</p>
 						</div>
 
 						<div className='space-y-2'>
-							<Label htmlFor='half_day_hours'>Half Day Threshold (Hours)</Label>
+							<Label htmlFor='half_day_hours'>Batas Setengah Hari (Jam)</Label>
 							<Input
 								id='half_day_hours'
 								type='number'
@@ -137,7 +137,7 @@ export default function AdminWorkTimePage() {
 								}
 							/>
 							<p className='text-sm text-muted-foreground'>
-								Attendance is marked as half day if worked less than this many hours
+								Kehadiran dianggap setengah hari jika bekerja kurang dari jam ini
 							</p>
 						</div>
 					</CardContent>
@@ -146,23 +146,23 @@ export default function AdminWorkTimePage() {
 
 			<Card>
 				<CardHeader>
-					<CardTitle>Current Configuration Summary</CardTitle>
+					<CardTitle>Ringkasan Konfigurasi Saat Ini</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<dl className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 						<div>
-							<dt className='text-sm font-medium text-muted-foreground'>Working Hours</dt>
+							<dt className='text-sm font-medium text-muted-foreground'>Jam Kerja</dt>
 							<dd className='text-lg font-semibold'>
 								{config.work_start_time} - {config.work_end_time}
 							</dd>
 						</div>
 						<div>
-							<dt className='text-sm font-medium text-muted-foreground'>Late After</dt>
-							<dd className='text-lg font-semibold'>{config.late_threshold_minutes} minutes</dd>
+							<dt className='text-sm font-medium text-muted-foreground'>Terlambat Setelah</dt>
+							<dd className='text-lg font-semibold'>{config.late_threshold_minutes} menit</dd>
 						</div>
 						<div>
-							<dt className='text-sm font-medium text-muted-foreground'>Half Day If Less Than</dt>
-							<dd className='text-lg font-semibold'>{config.half_day_hours} hours</dd>
+							<dt className='text-sm font-medium text-muted-foreground'>Setengah Hari Jika Kurang Dari</dt>
+							<dd className='text-lg font-semibold'>{config.half_day_hours} jam</dd>
 						</div>
 					</dl>
 				</CardContent>

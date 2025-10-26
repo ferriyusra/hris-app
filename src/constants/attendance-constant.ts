@@ -1,41 +1,41 @@
 // Attendance Table Headers
 export const HEADER_TABLE_ATTENDANCE = [
 	'No',
-	'Employee Name',
-	'Date',
-	'Clock In',
-	'Clock Out',
-	'Duration',
+	'Nama Karyawan',
+	'Tanggal',
+	'Jam Masuk',
+	'Jam Keluar',
+	'Durasi',
 	'Status',
-	'Action',
+	'Aksi',
 ];
 
 // Attendance Status List
 export const ATTENDANCE_STATUS_LIST = [
 	{
 		value: 'present',
-		label: 'Present',
+		label: 'Hadir',
 		color: 'bg-green-500',
 		textColor: 'text-green-700',
 		bgColor: 'bg-green-100',
 	},
 	{
 		value: 'late',
-		label: 'Late',
+		label: 'Terlambat',
 		color: 'bg-yellow-500',
 		textColor: 'text-yellow-700',
 		bgColor: 'bg-yellow-100',
 	},
 	{
 		value: 'half_day',
-		label: 'Half Day',
+		label: 'Setengah Hari',
 		color: 'bg-blue-500',
 		textColor: 'text-blue-700',
 		bgColor: 'bg-blue-100',
 	},
 	{
 		value: 'absent',
-		label: 'Absent',
+		label: 'Tidak Hadir',
 		color: 'bg-red-500',
 		textColor: 'text-red-700',
 		bgColor: 'bg-red-100',
@@ -52,31 +52,31 @@ export const HALF_DAY_HOURS = 4; // Half day if worked less than 4 hours
 export const DATE_FILTER_PRESETS = [
 	{
 		value: 'today',
-		label: 'Today',
+		label: 'Hari Ini',
 	},
 	{
 		value: 'yesterday',
-		label: 'Yesterday',
+		label: 'Kemarin',
 	},
 	{
 		value: 'this_week',
-		label: 'This Week',
+		label: 'Minggu Ini',
 	},
 	{
 		value: 'last_week',
-		label: 'Last Week',
+		label: 'Minggu Lalu',
 	},
 	{
 		value: 'this_month',
-		label: 'This Month',
+		label: 'Bulan Ini',
 	},
 	{
 		value: 'last_month',
-		label: 'Last Month',
+		label: 'Bulan Lalu',
 	},
 	{
 		value: 'custom',
-		label: 'Custom Range',
+		label: 'Rentang Kustom',
 	},
 ];
 

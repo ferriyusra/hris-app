@@ -3,8 +3,8 @@ import { z } from 'zod';
 export const leaveRequestSchema = z
 	.object({
 		leave_type_id: z.string().uuid('Invalid leave type'),
-		start_date: z.string().min(1, 'Start date is required'),
-		end_date: z.string().min(1, 'End date is required'),
+		start_date: z.string().min(1, 'Tanggal Mulai tidak boleh kosong'),
+		end_date: z.string().min(1, 'Tanggal Akhir tidak boleh kosong'),
 		reason: z.string().min(10, 'Reason must be at least 10 characters'),
 	})
 	.refine(
@@ -14,7 +14,7 @@ export const leaveRequestSchema = z
 			return end >= start;
 		},
 		{
-			message: 'End date must be after or equal to start date',
+			message: 'Tanggal Akhir must be after or equal to Tanggal Mulai',
 			path: ['end_date'],
 		}
 	);
