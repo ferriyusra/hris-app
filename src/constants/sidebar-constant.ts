@@ -2,6 +2,7 @@ import {
 	Album,
 	CalendarCheck,
 	CalendarDays,
+	Clock,
 	ClipboardList,
 	LayoutDashboard,
 	Settings,
@@ -46,6 +47,11 @@ export const SIDEBAR_MENU_LIST = {
 			title: 'Leave Balance',
 			url: '/admin/leave-balance',
 			icon: ClipboardList,
+		},
+		{
+			title: 'Work Time',
+			url: '/admin/work-time',
+			icon: Clock,
 		},
 	],
 	employee: [
