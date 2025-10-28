@@ -147,16 +147,16 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
 			<div>
 				<h1 className='text-2xl font-bold'>Update Data Diri</h1>
 				<p className='text-muted-foreground'>
-					Update your personal information
+					Perbarui informasi pribadi Anda
 				</p>
 			</div>
 
 			{/* Read-Only Information Card */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Employee Information</CardTitle>
+					<CardTitle>Informasi Karyawan</CardTitle>
 					<CardDescription>
-						Your employment information (read-only)
+						Informasi pekerjaan Anda (hanya baca)
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
@@ -185,7 +185,7 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
 						<div className='space-y-2'>
 							<Label className='text-muted-foreground flex items-center gap-2'>
 								<IdCard className='h-4 w-4' />
-								Employee ID
+								ID Karyawan
 							</Label>
 							<div className='px-3 py-2 bg-muted rounded-md font-mono text-sm'>
 								{initialData.employee_id}
@@ -205,7 +205,7 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
 						<div className='space-y-2'>
 							<Label className='text-muted-foreground flex items-center gap-2'>
 								<Briefcase className='h-4 w-4' />
-								Position
+								Posisi
 							</Label>
 							<div className='px-3 py-2 bg-muted rounded-md font-medium text-sm'>
 								{initialData.position}
@@ -215,7 +215,7 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
 						<div className='space-y-2'>
 							<Label className='text-muted-foreground flex items-center gap-2'>
 								<Calendar className='h-4 w-4' />
-								Join Date
+								Tanggal Bergabung
 							</Label>
 							<div className='px-3 py-2 bg-muted rounded-md text-sm'>
 								{formatDate(initialData.join_date)}
@@ -228,9 +228,9 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
 			{/* Editable Profile Form */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Update Your Profile</CardTitle>
+					<CardTitle>Perbarui Profil Anda</CardTitle>
 					<CardDescription>
-						Make changes to your personal information and contact details
+						Ubah informasi pribadi dan detail kontak Anda
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
@@ -240,24 +240,24 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
 								<FormImage
 									form={form}
 									name='avatar_url'
-									label='Profile Photo'
+									label='Foto Profil'
 									preview={preview}
 									setPreview={setPreview}
 								/>
 
 								<div className='pt-2 border-t'>
-									<h4 className='text-sm font-semibold mb-4'>Personal Information</h4>
+									<h4 className='text-sm font-semibold mb-4'>Informasi Pribadi</h4>
 									<div className='space-y-4'>
 										<FormInput
 											form={form}
 											name='name'
-											label='Full Name'
-											placeholder='Enter your full name'
+											label='Nama Lengkap'
+											placeholder='Masukkan nama lengkap Anda'
 										/>
 										<FormInput
 											form={form}
 											name='phone_number'
-											label='Phone Number'
+											label='Nomor Telepon'
 											placeholder='+628123456789'
 											type='tel'
 										/>
@@ -272,7 +272,7 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
 									disabled={isLoading}
 									onClick={() => form.reset()}
 								>
-									Reset
+									Atur Ulang
 								</Button>
 								<Button
 									type='submit'
@@ -282,10 +282,10 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
 									{isLoading ? (
 										<>
 											<Loader2 className='mr-2 h-4 w-4 animate-spin' />
-											Saving Changes...
+											Menyimpan Perubahan...
 										</>
 									) : (
-										'Save Changes'
+										'Simpan'
 									)}
 								</Button>
 							</div>

@@ -114,7 +114,7 @@ export default function AttendanceHistory() {
 
 	const handleExport = () => {
 		// Convert data to CSV
-		const headers = ['No', 'Date', 'Clock In', 'Clock Out', 'Duration', 'Status'];
+		const headers = ['No', 'Tanggal', 'Masuk', 'Keluar', 'Durasi', 'Status'];
 		const csvData = records.map((record: AttendanceRecord, index: number) => {
 			const clockIn = record.clock_in ? format(new Date(record.clock_in), 'HH:mm:ss') : '-';
 			const clockOut = record.clock_out ? format(new Date(record.clock_out), 'HH:mm:ss') : '-';
@@ -162,12 +162,12 @@ export default function AttendanceHistory() {
 							<ArrowLeft className='h-4 w-4' />
 						</Button>
 					</Link>
-					<h1 className='text-2xl font-bold'>Attendance History</h1>
+					<h1 className='text-2xl font-bold'>Riwayat Kehadiran</h1>
 				</div>
 				<div className='flex gap-2'>
 					<Select value={dateFilter} onValueChange={setDateFilter}>
 						<SelectTrigger className='w-[180px]'>
-							<SelectValue placeholder='Select period' />
+							<SelectValue placeholder='Pilih periode' />
 						</SelectTrigger>
 						<SelectContent>
 							{DATE_FILTER_PRESETS.filter((p) => p.value !== 'custom').map((preset) => (
@@ -179,7 +179,7 @@ export default function AttendanceHistory() {
 					</Select>
 					<Button variant='outline' onClick={handleExport} disabled={records.length === 0}>
 						<Download className='mr-2 h-4 w-4' />
-						Export CSV
+						Ekspor CSV
 					</Button>
 				</div>
 			</div>
@@ -202,26 +202,26 @@ export default function AttendanceHistory() {
 				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
 					<Card>
 						<CardHeader>
-							<CardDescription>Total Days</CardDescription>
+							<CardDescription>Total Hari</CardDescription>
 							<CardTitle className='text-3xl'>{stats.total_days}</CardTitle>
 						</CardHeader>
 					</Card>
 					<Card>
 						<CardHeader>
-							<CardDescription>Attendance Rate</CardDescription>
+							<CardDescription>Tingkat Kehadiran</CardDescription>
 							<CardTitle className='text-3xl'>{stats.attendance_rate}%</CardTitle>
 						</CardHeader>
 					</Card>
 					<Card>
 						<CardHeader>
-							<CardDescription>Total Work Hours</CardDescription>
-							<CardTitle className='text-3xl'>{stats.total_work_hours}h</CardTitle>
+							<CardDescription>Total Jam Kerja</CardDescription>
+							<CardTitle className='text-3xl'>{stats.total_work_hours}j</CardTitle>
 						</CardHeader>
 					</Card>
 					<Card>
 						<CardHeader>
-							<CardDescription>Average Hours/Day</CardDescription>
-							<CardTitle className='text-3xl'>{stats.average_work_hours}h</CardTitle>
+							<CardDescription>Rata-rata Jam/Hari</CardDescription>
+							<CardTitle className='text-3xl'>{stats.average_work_hours}j</CardTitle>
 						</CardHeader>
 					</Card>
 				</div>
@@ -231,7 +231,7 @@ export default function AttendanceHistory() {
 			{stats && (
 				<Card>
 					<CardHeader>
-						<CardTitle>Attendance Breakdown</CardTitle>
+						<CardTitle>Rincian Kehadiran</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
@@ -259,15 +259,15 @@ export default function AttendanceHistory() {
 			{/* Attendance Records Table */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Attendance Records</CardTitle>
+					<CardTitle>Catatan Kehadiran</CardTitle>
 					<CardDescription>
-						Showing records from {format(new Date(dateRange.from), 'dd MMM yyyy')} to{' '}
+						Menampilkan catatan dari {format(new Date(dateRange.from), 'dd MMM yyyy')} hingga{' '}
 						{format(new Date(dateRange.to), 'dd MMM yyyy')}
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<DataTable
-						header={['No', 'Date', 'Clock In', 'Clock Out', 'Duration', 'Status']}
+						header={['No', 'Tanggal', 'Masuk', 'Keluar', 'Durasi', 'Status']}
 						data={tableData}
 						isLoading={isLoadingRecords}
 						totalPages={1}

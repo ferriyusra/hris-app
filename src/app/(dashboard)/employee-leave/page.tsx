@@ -60,14 +60,14 @@ export default function EmployeeLeavePage() {
 					Saldo Cuti {currentYear}
 				</h2>
 				{isLoading ? (
-					<p className='text-muted-foreground'>Loading...</p>
+					<p className='text-muted-foreground'>Memuat...</p>
 				) : balances.length === 0 ? (
 					<div className='text-center py-8 border rounded-lg bg-muted/50'>
 						<p className='text-muted-foreground'>
-							No leave balances assigned yet.
+							Belum ada saldo cuti yang ditetapkan.
 						</p>
 						<p className='text-sm text-muted-foreground mt-2'>
-							Please contact your admin to get leave balances assigned.
+							Silakan hubungi admin untuk mendapatkan saldo cuti.
 						</p>
 					</div>
 				) : (
@@ -78,7 +78,7 @@ export default function EmployeeLeavePage() {
 			<div>
 				<h2 className='text-xl font-semibold mb-4'>Pengajuan Cuti Saya</h2>
 				{isLoading ? (
-					<p className='text-muted-foreground'>Loading...</p>
+					<p className='text-muted-foreground'>Memuat...</p>
 				) : (
 					<MyLeaveRequests requests={requests} onRefresh={fetchData} />
 				)}

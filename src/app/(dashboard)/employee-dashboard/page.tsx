@@ -7,6 +7,10 @@ import AttendanceClockInOut from '../employee-attendance/_components/attendance-
 import { getMyLeaveBalances } from '../employee-leave/actions';
 import LeaveBalanceCards from '../employee-leave/_components/leave-balance-cards';
 
+export const metadata = {
+	title: 'HRIS App | Dasbor Karyawan',
+};
+
 export default async function EmployeeDashboard() {
 	// Fetch all data in parallel
 	const [statsResult, trendsResult, todayAttendanceResult, leaveBalancesResult] = await Promise.all([
@@ -39,9 +43,9 @@ export default async function EmployeeDashboard() {
 	return (
 		<div className='space-y-6'>
 			<div>
-				<h1 className='text-3xl font-bold'>My Dashboard</h1>
+				<h1 className='text-3xl font-bold'>Dasbor</h1>
 				<p className='text-muted-foreground'>
-					Your attendance overview for {currentMonth}
+					Ikhtisar kehadiran Anda untuk {currentMonth}
 				</p>
 			</div>
 
@@ -51,43 +55,43 @@ export default async function EmployeeDashboard() {
 			{/* Monthly Statistics */}
 			<div className='grid gap-4 md:grid-cols-4'>
 				<EmployeeStatCard
-					title='Working Days'
+					title='Hari Kerja'
 					value={stats.totalDays}
 					icon={Calendar}
-					description='Total working days this month'
+					description='Total hari kerja bulan ini'
 					colorClass='text-blue-600'
-					suffix='days'
+					suffix='hari'
 				/>
 				<EmployeeStatCard
-					title='Present Days'
+					title='Hari Hadir'
 					value={stats.presentDays}
 					icon={CheckCircle2}
-					description='Days you came on time'
+					description='Hari Anda datang tepat waktu'
 					colorClass='text-green-600'
-					suffix='days'
+					suffix='hari'
 				/>
 				<EmployeeStatCard
-					title='Late Days'
+					title='Hari Terlambat'
 					value={stats.lateDays}
 					icon={Clock}
-					description='Days you came late'
+					description='Hari Anda datang terlambat'
 					colorClass='text-orange-600'
-					suffix='days'
+					suffix='hari'
 				/>
 				<EmployeeStatCard
-					title='Absent Days'
+					title='Hari Tidak Hadir'
 					value={stats.absentDays}
 					icon={XCircle}
-					description='Days you were absent'
+					description='Hari Anda tidak hadir'
 					colorClass='text-red-600'
-					suffix='days'
+					suffix='hari'
 				/>
 			</div>
 
 			{/* Leave Balance */}
 			<div>
 				<h2 className='text-xl font-semibold mb-4'>
-					Leave Balance {currentYear}
+					Saldo Cuti {currentYear}
 				</h2>
 				<LeaveBalanceCards balances={leaveBalances} />
 			</div>

@@ -4,6 +4,10 @@ import StatCard from './_components/stat-card';
 import LateEmployeesList from './_components/late-employees-list';
 import AttendanceTrendsChart from './_components/attendance-trends-chart';
 
+export const metadata = {
+	title: 'HRIS App | Dasbor Admin',
+};
+
 export default async function AdminDashboard() {
 	// Fetch all data in parallel
 	const [statsResult, lateEmployeesResult, trendsResult] = await Promise.all([

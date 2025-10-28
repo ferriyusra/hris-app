@@ -58,7 +58,7 @@ export default function MyLeaveRequests({ requests, onRefresh }: MyLeaveRequests
 				request.leave_type?.name || 'Unknown',
 				formatDate(request.start_date),
 				formatDate(request.end_date),
-				`${request.total_days} days`,
+				`${request.total_days} hari`,
 				<div className='max-w-xs truncate' title={request.reason}>
 					{request.reason}
 				</div>,
@@ -95,14 +95,14 @@ export default function MyLeaveRequests({ requests, onRefresh }: MyLeaveRequests
 		if (hasShownToastRef.current) return;
 
 		if (state.status === 'error') {
-			toast.error('Cancel Leave Request Failed', {
-				description: state.errors?._form?.[0] || 'Failed to cancel leave request',
+			toast.error('Gagal Membatalkan Permintaan Cuti', {
+				description: state.errors?._form?.[0] || 'Gagal membatalkan permintaan cuti',
 			});
 			hasShownToastRef.current = true;
 		}
 
 		if (state.status === 'success') {
-			toast.success('Leave Request Cancelled');
+			toast.success('Permintaan Cuti Berhasil Dibatalkan');
 			setSelectedRequest(null);
 			hasShownToastRef.current = true;
 
@@ -139,7 +139,7 @@ export default function MyLeaveRequests({ requests, onRefresh }: MyLeaveRequests
 					<AlertDialogFooter>
 						<AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
 						<AlertDialogAction onClick={handleCancel} disabled={isPending}>
-							{isPending ? 'Cancelling...' : 'Confirm'}
+							{isPending ? 'Membatalkan...' : 'Konfirmasi'}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

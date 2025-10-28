@@ -1,7 +1,7 @@
 import AttendanceClockInOut from './_components/attendance-clock-in-out';
 
 export const metadata = {
-	title: 'HRIS App | My Attendance',
+	title: 'HRIS App | Absensi Karyawan',
 };
 
 export default function EmployeeAttendancePage() {

@@ -1,7 +1,7 @@
 import AttendanceHistory from './_components/attendance-history';
 
 export const metadata = {
-	title: 'HRIS App | Attendance History',
+	title: 'HRIS App | Riwayat Kehadiran',
 };
 
 export default function AttendanceHistoryPage() {

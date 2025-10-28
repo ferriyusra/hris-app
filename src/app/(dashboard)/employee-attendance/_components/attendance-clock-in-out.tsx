@@ -110,7 +110,7 @@ export default function AttendanceClockInOut() {
 		<div className='w-full max-w-4xl mx-auto space-y-6'>
 			{/* Header */}
 			<div className='flex justify-between items-center'>
-				<h1 className='text-2xl font-bold'>My Attendance</h1>
+				<h1 className='text-2xl font-bold'>Absensi Saya</h1>
 				<Link href='/employee-attendance/history'>
 					<Button variant='outline'>
 						<Calendar className='mr-2 h-4 w-4' />

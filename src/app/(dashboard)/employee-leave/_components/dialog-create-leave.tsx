@@ -93,15 +93,15 @@ export default function DialogCreateLeave({
 				});
 			}
 
-			toast.error('Create Leave Request Failed', {
-				description: state.errors?._form?.[0] || 'Please check the form',
+			toast.error('Gagal Mengajukan Permintaan Cuti', {
+				description: state.errors?._form?.[0] || 'Silakan periksa formulir',
 			});
 			hasShownToastRef.current = true;
 		}
 
 		if (state.status === 'success') {
-			toast.success('Leave Request Submitted', {
-				description: 'Your leave request has been submitted for approval',
+			toast.success('Permintaan Cuti Berhasil Diajukan', {
+				description: 'Permintaan cuti Anda telah diajukan untuk disetujui',
 			});
 			form.reset();
 			onOpenChange(false);
@@ -128,10 +128,10 @@ export default function DialogCreateLeave({
 				{leaveTypes.length === 0 ? (
 					<div className='py-8 text-center'>
 						<p className='text-muted-foreground'>
-							No leave balances assigned yet.
+							Belum ada saldo cuti yang ditetapkan.
 						</p>
 						<p className='text-sm text-muted-foreground mt-2'>
-							Please contact your admin to get leave balances assigned.
+							Silakan hubungi admin untuk mendapatkan saldo cuti.
 						</p>
 					</div>
 				) : (
@@ -148,7 +148,7 @@ export default function DialogCreateLeave({
 											defaultValue={field.value}>
 											<FormControl>
 												<SelectTrigger>
-													<SelectValue placeholder='Select leave type' />
+													<SelectValue placeholder='Pilih tipe cuti' />
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
@@ -156,7 +156,7 @@ export default function DialogCreateLeave({
 													const balance = balances.find((b) => b.leave_type_id === type.id);
 													return (
 														<SelectItem key={type.id} value={type.id}>
-															{type.name} - Available: {balance?.remaining_days || 0} days
+															{type.name} - Tersedia: {balance?.remaining_days || 0} hari
 														</SelectItem>
 													);
 												})}
@@ -165,13 +165,13 @@ export default function DialogCreateLeave({
 										{selectedBalance && (
 											<div className='flex gap-2 mt-2'>
 												<Badge variant='outline'>
-													Total: {selectedBalance.total_days} days
+													Total: {selectedBalance.total_days} hari
 												</Badge>
 												<Badge variant='outline' className='text-orange-600'>
-													Used: {selectedBalance.used_days} days
+													Terpakai: {selectedBalance.used_days} hari
 												</Badge>
 												<Badge variant='outline' className='text-green-600'>
-													Remaining: {selectedBalance.remaining_days} days
+													Tersisa: {selectedBalance.remaining_days} hari
 												</Badge>
 											</div>
 										)}
@@ -200,8 +200,8 @@ export default function DialogCreateLeave({
 						<FormTextarea
 							form={form}
 							name='reason'
-							label='Reason'
-							placeholder='Please provide a reason for your leave request...'
+							label='Alasan'
+							placeholder='Berikan alasan untuk pengajuan cuti Anda...'
 							rows={4}
 						/>
 
@@ -211,10 +211,10 @@ export default function DialogCreateLeave({
 									variant='outline'
 									onClick={() => onOpenChange(false)}
 									disabled={isPending}>
-									Cancel
+									Batal
 								</Button>
 								<Button type='submit' disabled={isPending}>
-									{isPending ? 'Submitting...' : 'Ajukan Cuti'}
+									{isPending ? 'Mengajukan...' : 'Ajukan Cuti'}
 								</Button>
 							</div>
 						</form>

@@ -4,7 +4,7 @@ import ProfileForm from './_components/profile-form';
 
 export const metadata = {
 	title: 'HRIS App | Update Data Diri',
-	description: 'Update your personal profile information',
+	description: 'Perbarui informasi profil pribadi Anda',
 };
 
 export default async function EmployeeProfilePage() {
