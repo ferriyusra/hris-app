@@ -68,14 +68,14 @@ export default function DataTable({
 						{data?.length === 0 && !isLoading && (
 							<TableRow>
 								<TableCell colSpan={header.length} className='h-24 text-center'>
-									No Result Data
+									Tidak Ada Data
 								</TableCell>
 							</TableRow>
 						)}
 						{isLoading && (
 							<TableRow>
 								<TableCell colSpan={header.length} className='h-24 text-center'>
-									Loading...
+									Memuat...
 								</TableCell>
 							</TableRow>
 						)}
