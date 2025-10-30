@@ -200,6 +200,7 @@ export async function getMyLeaveRequests() {
 
 /**
  * Get employee's leave balances
+ * OPTIMIZED: Select only needed fields
  */
 export async function getMyLeaveBalances() {
 	try {
@@ -207,58 +208,48 @@ export async function getMyLeaveBalances() {
 		const cookieStore = await cookies();
 		const profileCookie = cookieStore.get('user_profile');
 
-		console.log('=== DEBUG getMyLeaveBalances START ===');
-
 		if (!profileCookie) {
-			console.log('DEBUG: No profile cookie found');
 			return { data: null, error: 'Not authenticated' };
 		}
 
 		const profile = JSON.parse(profileCookie.value);
-		console.log('DEBUG: Profile ID:', profile.id);
 
-		// Get employee record
+		// Get employee record - select only id
 		const { data: employee, error: employeeError } = await supabase
 			.from('employees')
-			.select('id, user_id')
+			.select('id')
 			.eq('user_id', profile.id)
 			.single();
 
-		console.log('DEBUG: Employee query result:', { employee, employeeError });
-
 		if (employeeError || !employee) {
-			console.log('DEBUG: Employee not found for user_id:', profile.id);
 			return { data: null, error: 'Employee record not found' };
 		}
 
-		console.log('DEBUG: Employee ID:', employee.id);
-
 		const currentYear = new Date().getFullYear();
-		console.log('DEBUG: Current year:', currentYear);
 
+		// Select only needed fields from leave_balances and leave_types
 		const { data, error } = await supabase
 			.from('leave_balances')
 			.select(
 				`
-				*,
-				leave_type:leave_types(*)
+				id,
+				total_days,
+				used_days,
+				remaining_days,
+				year,
+				leave_type:leave_types(
+					id,
+					name,
+					description
+				)
 			`
 			)
 			.eq('employee_id', employee.id)
 			.eq('year', currentYear);
 
-		console.log('DEBUG: Leave balances query result:', {
-			dataCount: data?.length || 0,
-			data,
-			error
-		});
-
 		if (error) {
-			console.error('getMyLeaveBalances - Query error:', error);
 			throw error;
 		}
-
-		console.log('=== DEBUG getMyLeaveBalances END ===');
 
 		return { data, error: null };
 	} catch (error) {

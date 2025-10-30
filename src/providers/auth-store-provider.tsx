@@ -18,7 +18,8 @@ export default function AuthStoreProvider({
 			useAuthStore.getState().setUser(user);
 			useAuthStore.getState().setProfile(profile);
 		});
-	});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [profile.id, profile.name, profile.avatar_url, profile.role]);
 
 	return <>{children}</>;
 }

@@ -7,7 +7,10 @@
       "Bash(npx tsc:*)",
       "Bash(npx eslint:*)",
       "Bash(mkdir:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(test:*)",
+      "Bash(npm run build:*)",
+      "Bash(timeout 90s npm run build:*)"
     ],
     "deny": [],
     "ask": []

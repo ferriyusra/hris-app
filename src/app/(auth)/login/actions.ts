@@ -67,9 +67,13 @@ export async function login(
 	revalidatePath('/', 'layout');
 
 	// Redirect based on user role
+	console.log('Profile role:', profile?.role, 'Type:', typeof profile?.role);
+
 	if (profile?.role === 'admin') {
+		console.log('Redirecting to /admin');
 		redirect('/admin');
 	} else {
+		console.log('Redirecting to /employee-dashboard');
 		redirect('/employee-dashboard');
 	}
 }

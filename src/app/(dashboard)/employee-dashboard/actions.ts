@@ -108,6 +108,7 @@ export async function getEmployeeMonthlyStats(): Promise<{
 
 /**
  * Get employee's attendance trends for last 30 days
+ * OPTIMIZED: Single query instead of N+1 queries
  */
 export async function getEmployeeAttendanceTrends(): Promise<{
 	data: MonthlyTrend[] | null;
@@ -135,9 +136,34 @@ export async function getEmployeeAttendanceTrends(): Promise<{
 			return { data: null, error: 'Employee record not found' };
 		}
 
-		// Get last 30 days
-		const trends: MonthlyTrend[] = [];
+		// Calculate date range for last 30 days
 		const today = new Date();
+		const thirtyDaysAgo = new Date(today);
+		thirtyDaysAgo.setDate(today.getDate() - 29);
+
+		const startDateStr = thirtyDaysAgo.toISOString().split('T')[0];
+		const todayStr = today.toISOString().split('T')[0];
+
+		// OPTIMIZATION: Fetch all attendance records in a single query
+		const { data: attendanceRecords, error: queryError } = await supabase
+			.from('attendance_records')
+			.select('date, status, clock_in, clock_out')
+			.eq('employee_id', employee.id)
+			.gte('date', startDateStr)
+			.lte('date', todayStr)
+			.order('date', { ascending: true });
+
+		if (queryError) {
+			throw queryError;
+		}
+
+		// Create a map for quick lookup
+		const attendanceMap = new Map(
+			attendanceRecords?.map((record) => [record.date, record]) || []
+		);
+
+		// Generate trends for last 30 days
+		const trends: MonthlyTrend[] = [];
 
 		for (let i = 29; i >= 0; i--) {
 			const date = new Date(today);
@@ -150,12 +176,7 @@ export async function getEmployeeAttendanceTrends(): Promise<{
 				continue;
 			}
 
-			const { data: attendance } = await supabase
-				.from('attendance_records')
-				.select('status, clock_in, clock_out')
-				.eq('employee_id', employee.id)
-				.eq('date', dateStr)
-				.single();
+			const attendance = attendanceMap.get(dateStr);
 
 			if (attendance) {
 				// Format times for display
