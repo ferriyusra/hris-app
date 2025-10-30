@@ -11,7 +11,7 @@ import { TimeDisplay, DateDisplay, DurationDisplay } from '@/components/common/t
 import { ArrowLeft, Download } from 'lucide-react';
 import Link from 'next/link';
 import { getMyAttendance, getMyAttendanceStats } from '../../actions';
-import { DATE_FILTER_PRESETS } from '@/constants/attendance-constant';
+import { DATE_FILTER_PRESETS, getStatusLabel } from '@/constants/attendance-constant';
 import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, subMonths, subWeeks, subDays, format } from 'date-fns';
 import type { AttendanceRecord, AttendanceStats } from '@/types/attendance';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -131,7 +131,7 @@ export default function AttendanceHistory() {
 				clockIn,
 				clockOut,
 				duration,
-				record.status,
+				getStatusLabel(record.status),
 			];
 		});
 

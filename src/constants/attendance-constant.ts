@@ -104,3 +104,9 @@ export const INITIAL_STATE_ATTENDANCE = {
 		_form: [] as string[],
 	},
 };
+
+// Helper function to convert status to Indonesian
+export const getStatusLabel = (status: string): string => {
+	const statusConfig = ATTENDANCE_STATUS_LIST.find((s) => s.value === status);
+	return statusConfig?.label || status;
+};
