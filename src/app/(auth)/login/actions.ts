@@ -65,5 +65,11 @@ export async function login(
 	}
 
 	revalidatePath('/', 'layout');
-	redirect('/');
+
+	// Redirect based on user role
+	if (profile?.role === 'admin') {
+		redirect('/admin');
+	} else {
+		redirect('/employee-dashboard');
+	}
 }
