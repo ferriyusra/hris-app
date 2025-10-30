@@ -11,20 +11,27 @@ import { ArrowLeft, Download } from 'lucide-react';
 import Link from 'next/link';
 import { getMonthlyAttendanceSummary } from '../../actions';
 import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
 import { toast } from 'sonner';
 import type { MonthlyAttendanceSummary } from '@/types/attendance';
 
 export default function AttendanceReports() {
-	const [selectedMonth, setSelectedMonth] = useState(format(new Date(), 'yyyy-MM'));
+	const [selectedMonth, setSelectedMonth] = useState('all');
+	const [currentPage, setCurrentPage] = useState(1);
+	const [limit, setLimit] = useState(10);
 
 	// Generate month options (last 12 months)
-	const monthOptions = Array.from({ length: 12 }, (_, i) => {
-		const date = new Date();
-		date.setMonth(date.getMonth() - i);
-		const value = format(date, 'yyyy-MM');
-		const label = format(date, 'MMMM yyyy');
-		return { value, label };
-	});
+	const monthOptions = [
+		{ value: 'all', label: 'Semua Bulan' },
+		...Array.from({ length: 12 }, (_, i) => {
+			const date = new Date();
+			date.setDate(1); // Set to first day of month to avoid rollover issues
+			date.setMonth(date.getMonth() - i);
+			const value = format(date, 'yyyy-MM');
+			const label = format(date, 'MMMM yyyy', { locale: id });
+			return { value, label };
+		}),
+	];
 
 	const {
 		data: summaryData,
@@ -35,12 +42,16 @@ export default function AttendanceReports() {
 		queryFn: async () => {
 			const result = await getMonthlyAttendanceSummary(selectedMonth);
 			if (result.error) {
-				toast.error('Failed to fetch summary', {
+				toast.error('Gagal mengambil ringkasan', {
 					description: result.error,
 				});
 			}
 			return result;
 		},
+		enabled: !!selectedMonth,
+		refetchOnMount: true,
+		refetchOnWindowFocus: false,
+		staleTime: 0,
 	});
 
 	const summary = summaryData?.data || [];
@@ -70,8 +81,14 @@ export default function AttendanceReports() {
 			? summary.reduce((acc, emp) => acc + emp.attendance_rate, 0) / summary.length
 			: 0;
 
-	const tableData = summary.map((emp: MonthlyAttendanceSummary, index: number) => [
-		index + 1,
+	// Pagination logic
+	const totalPages = Math.ceil(summary.length / limit);
+	const startIndex = (currentPage - 1) * limit;
+	const endIndex = startIndex + limit;
+	const paginatedSummary = summary.slice(startIndex, endIndex);
+
+	const tableData = paginatedSummary.map((emp: MonthlyAttendanceSummary, index: number) => [
+		startIndex + index + 1,
 		<div key={`employee-${emp.employee_id}`}>
 			<div className='font-medium'>{emp.employee_name}</div>
 			<div className='text-sm text-muted-foreground'>{emp.employee_position}</div>
@@ -84,18 +101,30 @@ export default function AttendanceReports() {
 		`${emp.total_work_hours}h`,
 	]);
 
+	// Reset to page 1 when month changes
+	const handleMonthChange = (month: string) => {
+		setSelectedMonth(month);
+		setCurrentPage(1);
+	};
+
+	// Reset to page 1 when limit changes
+	const handleLimitChange = (newLimit: number) => {
+		setLimit(newLimit);
+		setCurrentPage(1);
+	};
+
 	const handleExport = () => {
 		// Convert data to CSV
 		const headers = [
 			'No',
-			'Employee Name',
-			'Position',
-			'Total Days',
-			'Present',
-			'Late',
-			'Absent',
-			'Attendance Rate',
-			'Total Hours',
+			'Nama Karyawan',
+			'Posisi',
+			'Total Hari',
+			'Hadir',
+			'Terlambat',
+			'Tidak Hadir',
+			'Tingkat Kehadiran',
+			'Total Jam',
 		];
 
 		const csvData = summary.map((emp: MonthlyAttendanceSummary, index: number) => [
@@ -120,13 +149,13 @@ export default function AttendanceReports() {
 		const url = window.URL.createObjectURL(blob);
 		const a = document.createElement('a');
 		a.href = url;
-		a.download = `attendance-report-${selectedMonth}.csv`;
+		a.download = `laporan-kehadiran-${selectedMonth}.csv`;
 		document.body.appendChild(a);
 		a.click();
 		document.body.removeChild(a);
 		window.URL.revokeObjectURL(url);
 
-		toast.success('Report exported successfully');
+		toast.success('Laporan berhasil diexport');
 	};
 
 	return (
@@ -140,16 +169,16 @@ export default function AttendanceReports() {
 						</Button>
 					</Link>
 					<div>
-						<h1 className='text-2xl font-bold'>Attendance Reports</h1>
+						<h1 className='text-2xl font-bold'>Laporan Kehadiran</h1>
 						<p className='text-muted-foreground'>
-							Monthly attendance summary and analytics
+							Ringkasan dan analitik kehadiran bulanan
 						</p>
 					</div>
 				</div>
 				<div className='flex gap-2'>
-					<Select value={selectedMonth} onValueChange={setSelectedMonth}>
+					<Select value={selectedMonth} onValueChange={handleMonthChange}>
 						<SelectTrigger className='w-[180px]'>
-							<SelectValue placeholder='Select month' />
+							<SelectValue placeholder='Pilih bulan' />
 						</SelectTrigger>
 						<SelectContent>
 							{monthOptions.map((option) => (
@@ -161,7 +190,7 @@ export default function AttendanceReports() {
 					</Select>
 					<Button variant='outline' onClick={handleExport} disabled={summary.length === 0}>
 						<Download className='mr-2 h-4 w-4' />
-						Export CSV
+						Ekspor CSV
 					</Button>
 				</div>
 			</div>
@@ -170,25 +199,25 @@ export default function AttendanceReports() {
 			<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
 				<Card>
 					<CardHeader>
-						<CardDescription>Total Employees</CardDescription>
+						<CardDescription>Total Karyawan</CardDescription>
 						<CardTitle className='text-3xl'>{overallStats.totalEmployees}</CardTitle>
 					</CardHeader>
 				</Card>
 				<Card>
 					<CardHeader>
-						<CardDescription>Avg Attendance Rate</CardDescription>
+						<CardDescription>Rata-rata Tingkat Kehadiran</CardDescription>
 						<CardTitle className='text-3xl'>{avgAttendanceRate.toFixed(1)}%</CardTitle>
 					</CardHeader>
 				</Card>
 				<Card>
 					<CardHeader>
-						<CardDescription>Total Work Hours</CardDescription>
-						<CardTitle className='text-3xl'>{overallStats.totalWorkHours.toFixed(0)}h</CardTitle>
+						<CardDescription>Total Jam Kerja</CardDescription>
+						<CardTitle className='text-3xl'>{overallStats.totalWorkHours.toFixed(0)}j</CardTitle>
 					</CardHeader>
 				</Card>
 				<Card>
 					<CardHeader>
-						<CardDescription>Total Absences</CardDescription>
+						<CardDescription>Total Ketidakhadiran</CardDescription>
 						<CardTitle className='text-3xl'>{overallStats.totalAbsent}</CardTitle>
 					</CardHeader>
 				</Card>
@@ -197,32 +226,32 @@ export default function AttendanceReports() {
 			{/* Attendance Breakdown */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Attendance Breakdown</CardTitle>
-					<CardDescription>Overview of attendance status distribution</CardDescription>
+					<CardTitle>Rincian Kehadiran</CardTitle>
+					<CardDescription>Gambaran distribusi status kehadiran</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
 						<div className='flex flex-col items-center gap-2 p-4 border rounded-lg'>
 							<AttendanceStatusBadge status='present' />
 							<span className='text-2xl font-bold'>{overallStats.totalPresent}</span>
-							<span className='text-sm text-muted-foreground'>Present Days</span>
+							<span className='text-sm text-muted-foreground'>Hari Hadir</span>
 						</div>
 						<div className='flex flex-col items-center gap-2 p-4 border rounded-lg'>
 							<AttendanceStatusBadge status='late' />
 							<span className='text-2xl font-bold'>{overallStats.totalLate}</span>
-							<span className='text-sm text-muted-foreground'>Late Days</span>
+							<span className='text-sm text-muted-foreground'>Hari Terlambat</span>
 						</div>
 						<div className='flex flex-col items-center gap-2 p-4 border rounded-lg'>
 							<AttendanceStatusBadge status='half_day' />
 							<span className='text-2xl font-bold'>
 								{summary.reduce((acc, emp) => acc + emp.half_days, 0)}
 							</span>
-							<span className='text-sm text-muted-foreground'>Half Days</span>
+							<span className='text-sm text-muted-foreground'>Hari Setengah</span>
 						</div>
 						<div className='flex flex-col items-center gap-2 p-4 border rounded-lg'>
 							<AttendanceStatusBadge status='absent' />
 							<span className='text-2xl font-bold'>{overallStats.totalAbsent}</span>
-							<span className='text-sm text-muted-foreground'>Absent Days</span>
+							<span className='text-sm text-muted-foreground'>Hari Tidak Hadir</span>
 						</div>
 					</div>
 				</CardContent>
@@ -231,30 +260,30 @@ export default function AttendanceReports() {
 			{/* Employee Summary Table */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Employee Summary</CardTitle>
+					<CardTitle>Ringkasan Karyawan</CardTitle>
 					<CardDescription>
-						Detailed attendance summary for {monthOptions.find((m) => m.value === selectedMonth)?.label}
+						Ringkasan kehadiran terperinci untuk {monthOptions.find((m) => m.value === selectedMonth)?.label}
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<DataTable
 						header={[
 							'No',
-							'Employee',
-							'Total Days',
-							'Present',
-							'Late',
-							'Absent',
-							'Attendance Rate',
-							'Total Hours',
+							'Karyawan',
+							'Total Hari',
+							'Hadir',
+							'Terlambat',
+							'Tidak Hadir',
+							'Tingkat Kehadiran',
+							'Total Jam',
 						]}
 						data={tableData}
 						isLoading={isLoading}
-						totalPages={1}
-						currentPage={1}
-						currentLimit={summary.length || 10}
-						onChangePage={() => {}}
-						onChangeLimit={() => {}}
+						totalPages={totalPages}
+						currentPage={currentPage}
+						currentLimit={limit}
+						onChangePage={setCurrentPage}
+						onChangeLimit={handleLimitChange}
 					/>
 				</CardContent>
 			</Card>

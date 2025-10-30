@@ -340,72 +340,90 @@ export async function getMonthlyAttendanceSummary(
 			return { data: null, error: employeesError.message };
 		}
 
-		const [year, monthNum] = month.split('-');
-		const startDate = `${year}-${monthNum}-01`;
-		const endDate = new Date(parseInt(year), parseInt(monthNum), 0)
-			.toISOString()
-			.split('T')[0];
+		// Get attendance records - if month is 'all', get all records, otherwise filter by month
+		let records;
+		let recordsError;
 
-		// Get attendance records for the month
-		const { data: records, error: recordsError } = await supabase
-			.from('attendance_records')
-			.select('*')
-			.gte('date', startDate)
-			.lte('date', endDate);
+		if (month === 'all') {
+			// Get all attendance records
+			const result = await supabase
+				.from('attendance_records')
+				.select('*');
+			records = result.data;
+			recordsError = result.error;
+		} else {
+			// Get records for specific month
+			const [year, monthNum] = month.split('-');
+			const startDate = `${year}-${monthNum}-01`;
+			const yearInt = parseInt(year);
+			const monthInt = parseInt(monthNum);
+			const lastDay = new Date(yearInt, monthInt, 0).getDate();
+			const endDate = `${year}-${monthNum}-${lastDay.toString().padStart(2, '0')}`;
+
+			const result = await supabase
+				.from('attendance_records')
+				.select('*')
+				.gte('date', startDate)
+				.lte('date', endDate);
+			records = result.data;
+			recordsError = result.error;
+		}
 
 		if (recordsError) {
 			return { data: null, error: recordsError.message };
 		}
 
 		// Calculate summary for each employee
-		const summary: MonthlyAttendanceSummary[] = employees.map((employee) => {
-			const employeeRecords = records.filter(
-				(r) => r.employee_id === employee.id
-			);
+		const summary: MonthlyAttendanceSummary[] = employees
+			.map((employee) => {
+				const employeeRecords = records?.filter(
+					(r) => r.employee_id === employee.id
+				);
 
-			const totalDays = employeeRecords.length;
-			const presentDays = employeeRecords.filter(
-				(r) => r.status === 'present'
-			).length;
-			const lateDays = employeeRecords.filter(
-				(r) => r.status === 'late'
-			).length;
-			const halfDays = employeeRecords.filter(
-				(r) => r.status === 'half_day'
-			).length;
-			const absentDays = employeeRecords.filter(
-				(r) => r.status === 'absent'
-			).length;
+				const totalDays = employeeRecords?.length;
+				const presentDays = employeeRecords?.filter(
+					(r) => r.status === 'present'
+				).length;
+				const lateDays = employeeRecords?.filter(
+					(r) => r.status === 'late'
+				).length;
+				const halfDays = employeeRecords?.filter(
+					(r) => r.status === 'half_day'
+				).length;
+				const absentDays = employeeRecords?.filter(
+					(r) => r.status === 'absent'
+				).length;
 
-			// Calculate total work hours
-			let totalWorkHours = 0;
-			employeeRecords.forEach((record) => {
-				if (record.clock_in && record.clock_out) {
-					const clockIn = new Date(record.clock_in);
-					const clockOut = new Date(record.clock_out);
-					const hours =
-						(clockOut.getTime() - clockIn.getTime()) / (1000 * 60 * 60);
-					totalWorkHours += hours;
-				}
-			});
+				// Calculate total work hours
+				let totalWorkHours = 0;
+				employeeRecords?.forEach((record) => {
+					if (record.clock_in && record.clock_out) {
+						const clockIn = new Date(record.clock_in);
+						const clockOut = new Date(record.clock_out);
+						const hours =
+							(clockOut.getTime() - clockIn.getTime()) / (1000 * 60 * 60);
+						totalWorkHours += hours;
+					}
+				});
 
-			const attendanceRate =
-				totalDays > 0 ? ((presentDays + lateDays) / totalDays) * 100 : 0;
+				const attendanceRate =
+					totalDays > 0 ? ((presentDays + lateDays) / totalDays) * 100 : 0;
 
-			return {
-				employee_id: employee.id,
-				employee_name: employee.full_name,
-				employee_position: employee.position,
-				month,
-				total_days: totalDays,
-				present_days: presentDays,
-				late_days: lateDays,
-				half_days: halfDays,
-				absent_days: absentDays,
-				attendance_rate: Math.round(attendanceRate * 100) / 100,
-				total_work_hours: Math.round(totalWorkHours * 100) / 100,
-			};
-		});
+				return {
+					employee_id: employee.id,
+					employee_name: employee.full_name,
+					employee_position: employee.position,
+					month,
+					total_days: totalDays,
+					present_days: presentDays,
+					late_days: lateDays,
+					half_days: halfDays,
+					absent_days: absentDays,
+					attendance_rate: Math.round(attendanceRate * 100) / 100,
+					total_work_hours: Math.round(totalWorkHours * 100) / 100,
+				};
+			})
+			.filter((emp) => emp.total_days > 0); // Only include employees with attendance records
 
 		return { data: summary, error: null };
 	} catch (error) {
