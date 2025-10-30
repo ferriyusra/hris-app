@@ -15,7 +15,7 @@ const eslintConfig = [
 
 eslintConfig.push({
   rules: {
-    'react-hooks/exhautive-deps': 'off', // Disable exhaustive-deps rule for react-hookss
+    'react-hooks/exhaustive-deps': 'off', // Disable exhaustive-deps rule for react-hookss
     'react-jsx-key': 'off', // Disable react-jsx-key rule
     '@typescript-eslint/no-explicit-any': 'off', // Disable no-explicit-any rule
     '@typescript-eslint/no-unused-vars': 'off', // Disable no-unused-vars rules

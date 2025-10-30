@@ -1,5 +1,5 @@
 import { DarkModeToggle } from "@/components/common/darkmode-toggle"
-import { Coffee } from "lucide-react"
+import { Shield } from "lucide-react"
 import { ReactNode } from "react"
 
 type AuthLayoutProps = {
@@ -15,7 +15,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
       <div className="flex w-full max-w-sm flex-col gap-6">
         <div className="flex items-center gap-2 self-center font-medium">
           <div className="bg-teal-500 flex p-2 items-center justify-center rounded-md">
-            <Coffee className="size-4" />
+            <Shield className="size-4" />
           </div>
           HRIS App
         </div>
