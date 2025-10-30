@@ -5,4 +5,4 @@ export type FormState = {
 	status?: string;
 };
 
-export type Preview = { file: File; displayUrl: string };
+export type Preview = { file: File | null; displayUrl: string };

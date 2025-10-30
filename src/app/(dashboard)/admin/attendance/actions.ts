@@ -380,19 +380,19 @@ export async function getMonthlyAttendanceSummary(
 					(r) => r.employee_id === employee.id
 				);
 
-				const totalDays = employeeRecords?.length;
+				const totalDays = employeeRecords?.length ?? 0;
 				const presentDays = employeeRecords?.filter(
 					(r) => r.status === 'present'
-				).length;
+				).length ?? 0;
 				const lateDays = employeeRecords?.filter(
 					(r) => r.status === 'late'
-				).length;
+				).length ?? 0;
 				const halfDays = employeeRecords?.filter(
 					(r) => r.status === 'half_day'
-				).length;
+				).length ?? 0;
 				const absentDays = employeeRecords?.filter(
 					(r) => r.status === 'absent'
-				).length;
+				).length ?? 0;
 
 				// Calculate total work hours
 				let totalWorkHours = 0;

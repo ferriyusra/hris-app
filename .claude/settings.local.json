@@ -6,7 +6,8 @@
       "Bash(npx shadcn@latest add alert-dialog:*)",
       "Bash(npx tsc:*)",
       "Bash(npx eslint:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []
