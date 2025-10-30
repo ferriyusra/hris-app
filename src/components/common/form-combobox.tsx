@@ -44,9 +44,9 @@ export default function FormCombobox<T extends FieldValues>({
 								onChange(newValue);
 								onValueChange?.(newValue);
 							}}
-							placeholder={placeholder || `Select ${label}`}
-							searchPlaceholder={searchPlaceholder || `Search ${label.toLowerCase()}...`}
-							emptyText={emptyText || `No ${label.toLowerCase()} found.`}
+							placeholder={placeholder || `Pilih ${label}`}
+							searchPlaceholder={searchPlaceholder || `Cari ${label.toLowerCase()}...`}
+							emptyText={emptyText || `Tidak ada ${label.toLowerCase()} ditemukan`}
 							className={cn({
 								'border-red-500': form.formState.errors[name]?.message,
 							})}

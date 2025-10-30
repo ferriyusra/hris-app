@@ -40,9 +40,9 @@ export function Combobox({
   options,
   value,
   onValueChange,
-  placeholder = "Select an option...",
-  searchPlaceholder = "Search...",
-  emptyText = "No results found.",
+  placeholder = "Pilih opsi...",
+  searchPlaceholder = "Cari...",
+  emptyText = "Tidak ada hasil ditemukan",
   className,
   disabled = false,
 }: ComboboxProps) {

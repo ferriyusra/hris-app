@@ -196,19 +196,19 @@ export default function AttendanceReports() {
 			</div>
 
 			{/* Overall Statistics */}
-			<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+			<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
 				<Card>
 					<CardHeader>
 						<CardDescription>Total Karyawan</CardDescription>
 						<CardTitle className='text-3xl'>{overallStats.totalEmployees}</CardTitle>
 					</CardHeader>
 				</Card>
-				<Card>
+				{/* <Card>
 					<CardHeader>
 						<CardDescription>Rata-rata Tingkat Kehadiran</CardDescription>
 						<CardTitle className='text-3xl'>{avgAttendanceRate.toFixed(1)}%</CardTitle>
 					</CardHeader>
-				</Card>
+				</Card> */}
 				<Card>
 					<CardHeader>
 						<CardDescription>Total Jam Kerja</CardDescription>

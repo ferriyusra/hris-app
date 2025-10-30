@@ -104,7 +104,7 @@ export default function FormUser<T extends FieldValues>({
 							{isLoadingEmployees ? (
 								<div className='space-y-2'>
 									<label className='text-sm font-medium leading-none'>
-										Select Employee
+										Pilih Karyawan
 									</label>
 									<div className='text-sm text-muted-foreground border rounded-md p-3 bg-muted flex items-center gap-2'>
 										<Loader2 className='h-4 w-4 animate-spin' />
@@ -115,21 +115,21 @@ export default function FormUser<T extends FieldValues>({
 								<FormCombobox
 									form={form}
 									name={'employee_id' as Path<T>}
-									label='Select Employee'
+									label='Pilih Karyawan'
 									options={employeeOptions}
 									onValueChange={handleEmployeeChange}
-									placeholder='Select employee...'
-									searchPlaceholder='Search employee by name...'
-									emptyText='No employee found.'
+									placeholder='Pilih karyawan...'
+									searchPlaceholder='Cari karyawan berdasarkan nama...'
+									emptyText='Tidak ada karyawan ditemukan'
 								/>
 							) : (
 								<div className='space-y-2'>
 									<label className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
-										Select Employee
+										Pilih Karyawan
 									</label>
 									<div className='text-sm text-muted-foreground border rounded-md p-3 bg-muted'>
-										No available employees. Create an employee first in the
-										Employee menu.
+										Tidak ada karyawan tersedia. Buat karyawan terlebih dahulu di menu
+										Karyawan.
 									</div>
 								</div>
 							)}

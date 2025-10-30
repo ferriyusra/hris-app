@@ -35,11 +35,11 @@ export default function AttendanceCalendar({ trends }: AttendanceCalendarProps) 
 	const getStatusLabel = (status: 'present' | 'late' | 'absent') => {
 		switch (status) {
 			case 'present':
-				return 'Present';
+				return 'Hadir';
 			case 'late':
-				return 'Late';
+				return 'Terlambat';
 			case 'absent':
-				return 'Absent';
+				return 'Tidak Hadir';
 		}
 	};
 
@@ -48,14 +48,14 @@ export default function AttendanceCalendar({ trends }: AttendanceCalendarProps) 
 			<CardHeader>
 				<CardTitle className='text-lg flex items-center gap-2'>
 					<Calendar className='h-5 w-5 text-blue-600' />
-					Attendance History (Last 30 Days)
+					Riwayat Kehadiran (30 Hari Terakhir)
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<div className='space-y-2'>
 					{trends.length === 0 ? (
 						<p className='text-sm text-muted-foreground text-center py-8'>
-							No attendance records yet
+							Belum ada catatan kehadiran
 						</p>
 					) : (
 						trends.map((trend) => {

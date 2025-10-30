@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import useDataTable from '@/hooks/use-data-table';
 import { LeaveRequest } from '@/types/leave';
-import { HEADER_TABLE_MY_LEAVE, LEAVE_STATUS_COLORS } from '@/constants/leave-constant';
+import { HEADER_TABLE_MY_LEAVE, LEAVE_STATUS_COLORS, LEAVE_STATUS_LABELS } from '@/constants/leave-constant';
 import { useMemo, useState, useActionState, useEffect, useRef } from 'react';
 import { Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -63,7 +63,7 @@ export default function MyLeaveRequests({ requests, onRefresh }: MyLeaveRequests
 					{request.reason}
 				</div>,
 				<Badge className={LEAVE_STATUS_COLORS[request.status]}>
-					{request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+					{LEAVE_STATUS_LABELS[request.status]}
 				</Badge>,
 				canCancel ? (
 					<Button

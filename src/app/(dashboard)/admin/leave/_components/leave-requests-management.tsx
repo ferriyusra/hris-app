@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import useDataTable from '@/hooks/use-data-table';
 import { LeaveRequest } from '@/types/leave';
-import { HEADER_TABLE_LEAVE_REQUEST, LEAVE_STATUS_COLORS } from '@/constants/leave-constant';
+import { HEADER_TABLE_LEAVE_REQUEST, LEAVE_STATUS_COLORS, LEAVE_STATUS_LABELS } from '@/constants/leave-constant';
 import { useMemo, useState, useEffect, useRef, startTransition } from 'react';
 import { useActionState } from 'react';
 import { Check, X } from 'lucide-react';
@@ -82,7 +82,7 @@ export default function LeaveRequestsManagement({ requests, onRefresh }: LeaveRe
 					{request.reason}
 				</div>,
 				<Badge key={`status-${request.id}`} className={LEAVE_STATUS_COLORS[request.status]}>
-					{request.status === 'pending' ? 'Menunggu' : request.status === 'approved' ? 'Disetujui' : 'Ditolak'}
+					{LEAVE_STATUS_LABELS[request.status]}
 				</Badge>,
 				isPending ? (
 					<div key={`actions-${request.id}`} className='flex gap-1'>

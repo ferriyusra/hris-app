@@ -199,31 +199,31 @@ export default function AttendanceHistory() {
 					))}
 				</div>
 			) : stats ? (
-				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4'>
 					<Card>
 						<CardHeader>
 							<CardDescription>Total Hari</CardDescription>
 							<CardTitle className='text-3xl'>{stats.total_days}</CardTitle>
 						</CardHeader>
 					</Card>
-					<Card>
+					{/* <Card>
 						<CardHeader>
 							<CardDescription>Tingkat Kehadiran</CardDescription>
 							<CardTitle className='text-3xl'>{stats.attendance_rate}%</CardTitle>
 						</CardHeader>
-					</Card>
+					</Card> */}
 					<Card>
 						<CardHeader>
 							<CardDescription>Total Jam Kerja</CardDescription>
 							<CardTitle className='text-3xl'>{stats.total_work_hours}j</CardTitle>
 						</CardHeader>
 					</Card>
-					<Card>
+					{/* <Card>
 						<CardHeader>
 							<CardDescription>Rata-rata Jam/Hari</CardDescription>
 							<CardTitle className='text-3xl'>{stats.average_work_hours}j</CardTitle>
 						</CardHeader>
-					</Card>
+					</Card> */}
 				</div>
 			) : null}
 
