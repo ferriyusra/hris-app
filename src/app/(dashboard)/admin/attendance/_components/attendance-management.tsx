@@ -9,9 +9,10 @@ import DataTable from '@/components/common/data-table';
 import DropdownAction from '@/components/common/dropdown-action';
 import { AttendanceStatusBadge } from '@/components/common/attendance-status-badge';
 import { TimeDisplay, DateDisplay, DurationDisplay } from '@/components/common/time-display';
-import { Pencil, Trash2, Plus, FileDown } from 'lucide-react';
+import { Pencil, Trash2, Plus, FileDown, Wifi, WifiOff } from 'lucide-react';
 import { toast } from 'sonner';
 import useDataTable from '@/hooks/use-data-table';
+import { useAttendanceRealtime } from '@/hooks/use-attendance-realtime';
 import { getAllAttendance } from '../actions';
 import { HEADER_TABLE_ATTENDANCE, ATTENDANCE_STATUS_LIST } from '@/constants/attendance-constant';
 import DialogCreateAttendance from './dialog-create-attendance';
@@ -58,6 +59,29 @@ export default function AttendanceManagement() {
 			}
 
 			return result;
+		},
+	});
+
+	// Setup realtime subscription for attendance records
+	const { connectionStatus, isConnected, error: realtimeError } = useAttendanceRealtime({
+		enabled: true,
+		queryKeys: [
+			['admin-attendance', currentPage, currentLimit, currentSearch, statusFilter],
+		],
+		onInsert: () => {
+			toast.success('Data kehadiran baru ditambahkan', {
+				description: 'Data tabel telah diperbarui secara otomatis',
+			});
+		},
+		onUpdate: () => {
+			toast.info('Data kehadiran diperbarui', {
+				description: 'Data tabel telah diperbarui secara otomatis',
+			});
+		},
+		onDelete: () => {
+			toast.info('Data kehadiran dihapus', {
+				description: 'Data tabel telah diperbarui secara otomatis',
+			});
 		},
 	});
 
@@ -135,10 +159,45 @@ export default function AttendanceManagement() {
 			{/* Header */}
 			<div className='flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center'>
 				<div>
-					<h1 className='text-2xl font-bold'>Manajemen Kehadiran</h1>
+					<div className='flex items-center gap-2'>
+						<h1 className='text-2xl font-bold'>Manajemen Kehadiran</h1>
+						<div
+							className='flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors'
+							style={{
+								backgroundColor: isConnected ? 'rgba(34, 197, 94, 0.1)' : 'rgba(156, 163, 175, 0.1)',
+								color: isConnected ? 'rgb(34, 197, 94)' : 'rgb(156, 163, 175)',
+							}}
+							title={
+								isConnected
+									? 'Realtime terhubung - Data akan diperbarui otomatis'
+									: `Status: ${connectionStatus} - Data perlu direfresh manual`
+							}
+						>
+							{isConnected ? (
+								<>
+									<Wifi className='h-3 w-3' />
+									<span>Live</span>
+								</>
+							) : (
+								<>
+									<WifiOff className='h-3 w-3' />
+									<span>{connectionStatus === 'connecting' ? 'Connecting...' : 'Offline'}</span>
+								</>
+							)}
+						</div>
+					</div>
 					<p className='text-muted-foreground'>
 						Kelola catatan kehadiran karyawan dan lihat laporan terperinci
 					</p>
+					{realtimeError && (
+						<p className='text-sm text-red-500 mt-1'>
+							⚠️ Realtime error: {realtimeError.message}
+							<br />
+							<span className='text-xs'>
+								Lihat browser console (F12) untuk detail lebih lanjut
+							</span>
+						</p>
+					)}
 				</div>
 				<Link href='/admin/attendance/reports'>
 					<Button variant='outline'>

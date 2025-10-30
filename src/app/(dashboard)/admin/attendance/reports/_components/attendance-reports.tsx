@@ -7,12 +7,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import DataTable from '@/components/common/data-table';
 import { AttendanceStatusBadge } from '@/components/common/attendance-status-badge';
-import { ArrowLeft, Download } from 'lucide-react';
+import { ArrowLeft, Download, Wifi, WifiOff } from 'lucide-react';
 import Link from 'next/link';
 import { getMonthlyAttendanceSummary } from '../../actions';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { toast } from 'sonner';
+import { useAttendanceRealtime } from '@/hooks/use-attendance-realtime';
 import type { MonthlyAttendanceSummary } from '@/types/attendance';
 
 export default function AttendanceReports() {
@@ -52,6 +53,27 @@ export default function AttendanceReports() {
 		refetchOnMount: true,
 		refetchOnWindowFocus: false,
 		staleTime: 0,
+	});
+
+	// Setup realtime subscription for attendance records
+	const { connectionStatus, isConnected, error: realtimeError } = useAttendanceRealtime({
+		enabled: true,
+		queryKeys: [['monthly-attendance-summary', selectedMonth]],
+		onInsert: () => {
+			toast.info('Data kehadiran baru, memperbarui laporan', {
+				description: 'Laporan telah diperbarui secara otomatis',
+			});
+		},
+		onUpdate: () => {
+			toast.info('Data kehadiran diperbarui, memperbarui laporan', {
+				description: 'Laporan telah diperbarui secara otomatis',
+			});
+		},
+		onDelete: () => {
+			toast.info('Data kehadiran dihapus, memperbarui laporan', {
+				description: 'Laporan telah diperbarui secara otomatis',
+			});
+		},
 	});
 
 	const summary = summaryData?.data || [];
@@ -169,10 +191,24 @@ export default function AttendanceReports() {
 						</Button>
 					</Link>
 					<div>
-						<h1 className='text-2xl font-bold'>Laporan Kehadiran</h1>
+						<div className='flex items-center gap-2'>
+							<h1 className='text-2xl font-bold'>Laporan Kehadiran</h1>
+							<div title={isConnected ? 'Realtime connected' : `Status: ${connectionStatus}`}>
+								{isConnected ? (
+									<Wifi className='h-4 w-4 text-green-500' />
+								) : (
+									<WifiOff className='h-4 w-4 text-gray-400' />
+								)}
+							</div>
+						</div>
 						<p className='text-muted-foreground'>
 							Ringkasan dan analitik kehadiran bulanan
 						</p>
+						{realtimeError && (
+							<p className='text-sm text-red-500 mt-1'>
+								Realtime error: {realtimeError.message}
+							</p>
+						)}
 					</div>
 				</div>
 				<div className='flex gap-2'>

@@ -35,13 +35,13 @@ export default function DialogDeleteAttendance({
 
 	useEffect(() => {
 		if (state?.status === 'error') {
-			toast.error('Delete Attendance Failed', {
+			toast.error('Hapus Kehadiran Gagal', {
 				description: state.errors?._form?.[0],
 			});
 		}
 
 		if (state?.status === 'success') {
-			toast.success('Attendance record deleted successfully');
+			toast.success('Catatan kehadiran berhasil dihapus');
 			onOpenChange(false);
 			refetch();
 		}
