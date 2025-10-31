@@ -255,7 +255,7 @@ export default function DialogViewEmployee({
 							<Separator />
 							<div className='bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900 rounded-lg p-4'>
 								<p className='text-sm text-amber-800 dark:text-amber-200'>
-									<strong>Note:</strong> This employee is not linked to any user account yet.
+									<strong>Catatan:</strong> Karyawan ini belum terhubung dengan akun pengguna mana pun.
 								</p>
 							</div>
 						</>
@@ -265,11 +265,11 @@ export default function DialogViewEmployee({
 					<Separator />
 					<div className='grid gap-4 sm:grid-cols-2 text-xs text-muted-foreground'>
 						<div>
-							<span className='font-medium'>Created:</span>{' '}
+							<span className='font-medium'>Dibuat:</span>{' '}
 							{new Date(employee.created_at).toLocaleString('id-ID')}
 						</div>
 						<div>
-							<span className='font-medium'>Last Updated:</span>{' '}
+							<span className='font-medium'>Update Terakhir:</span>{' '}
 							{new Date(employee.updated_at).toLocaleString('id-ID')}
 						</div>
 					</div>

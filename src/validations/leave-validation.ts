@@ -66,10 +66,10 @@ export const rejectLeaveSchema = z.object({
 export const leaveTypeSchema = z.object({
 	name: z.string().min(3, 'Nama harus minimal 3 karakter'),
 	description: z.string().optional(),
-	max_days_per_year: z.coerce.number().min(1, 'Harus minimal 1 hari').max(365, 'Tidak dapat melebihi 365 hari'),
-	requires_approval: z.boolean().default(true),
-	is_active: z.boolean().default(true),
-	allows_flexible_end_date: z.boolean().default(false),
+	max_days_per_year: z.number().min(1, 'Harus minimal 1 hari').max(365, 'Tidak dapat melebihi 365 hari'),
+	requires_approval: z.boolean(),
+	is_active: z.boolean(),
+	allows_flexible_end_date: z.boolean(),
 });
 
 export type LeaveRequestForm = z.infer<typeof leaveRequestSchema>;

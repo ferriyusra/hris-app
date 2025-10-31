@@ -75,14 +75,14 @@ export default function DialogCreateLeave({
 
 		const formData = new FormData();
 		Object.entries(data).forEach(([key, value]) => {
-			// Only append end_date if it has a value (not empty string)
-			// For flexible end date leave types, end_date will be empty
-			if (key === 'end_date' && (!value || value.toString().trim() === '')) {
+			// Only append end_date if it has a value (not empty string or null)
+			// For flexible end date leave types, end_date will be empty or null
+			if (key === 'end_date' && (!value || value === null || value.toString().trim() === '')) {
 				console.log('CLIENT: Skipping empty end_date');
 				return; // Skip empty end_date
 			}
 			console.log(`CLIENT: Appending ${key}:`, value);
-			formData.append(key, value);
+			formData.append(key, String(value));
 		});
 
 		console.log('=== END CLIENT Form Submit ===');

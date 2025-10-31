@@ -5,6 +5,7 @@ export const INITIAL_LOGIN_FORM = {
 
 export const INITIAL_STATE_LOGIN_FORM = {
 	status: 'idle',
+	role: '',
 	errors: {
 		email: [],
 		password: [],

@@ -3,7 +3,7 @@ import { startTransition, useActionState, useEffect } from 'react';
 import { deleteEmployee } from '../actions';
 import { INITIAL_STATE_ACTION } from '@/constants/general-constant';
 import { toast } from 'sonner';
-import { Table } from '@/validations/employee-validation';
+import { Employee } from '@/validations/employee-validation';
 
 export default function DialogDeleteEmployee({
 	open,
@@ -12,7 +12,7 @@ export default function DialogDeleteEmployee({
 	handleChangeAction,
 }: {
 	refetch: () => void;
-	currentData?: Table;
+	currentData?: Employee;
 	open: boolean;
 	handleChangeAction: (open: boolean) => void;
 }) {

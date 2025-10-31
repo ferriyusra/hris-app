@@ -4,6 +4,8 @@ import StatCard from './_components/stat-card';
 import LateEmployeesList from './_components/late-employees-list';
 import AttendanceTrendsChart from './_components/attendance-trends-chart';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
 	title: 'HRIS App | Dasbor Admin',
 };

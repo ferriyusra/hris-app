@@ -3,12 +3,13 @@ import { Calendar, CheckCircle2, Clock, XCircle } from 'lucide-react';
 import { getEmployeeMonthlyStats, getEmployeeAttendanceTrends } from './actions';
 import EmployeeStatCard from './_components/employee-stat-card';
 import AttendanceCalendar from './_components/attendance-calendar';
-import { getTodayAttendance } from '../employee-attendance/actions';
 import AttendanceClockInOut from '../employee-attendance/_components/attendance-clock-in-out';
 import { getMyLeaveBalances } from '../employee-leave/actions';
 import LeaveBalanceCards from '../employee-leave/_components/leave-balance-cards';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
 	title: 'HRIS App | Dasbor Karyawan',
@@ -16,8 +17,7 @@ export const metadata = {
 
 // Separate components for Suspense boundaries
 async function ClockInOutSection() {
-	const todayAttendance = await getTodayAttendance();
-	return <AttendanceClockInOut todayAttendance={todayAttendance} />;
+	return <AttendanceClockInOut />;
 }
 
 async function MonthlyStatsSection() {

@@ -56,6 +56,27 @@ export default function DialogUpdateAttendance({
 		}
 	}, [state]);
 
+	// Transform currentData to convert null to undefined for form compatibility
+	const transformedData: {
+		id?: string;
+		employee_id?: string;
+		date?: string;
+		clock_in?: string;
+		clock_out?: string;
+		status?: string;
+		notes?: string;
+	} | undefined = currentData
+		? {
+				id: currentData.id,
+				employee_id: currentData.employee_id,
+				date: currentData.date,
+				clock_in: currentData.clock_in ?? undefined,
+				clock_out: currentData.clock_out ?? undefined,
+				status: currentData.status,
+				notes: currentData.notes ?? undefined,
+		  }
+		: undefined;
+
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className='sm:max-w-[500px]'>
@@ -69,7 +90,7 @@ export default function DialogUpdateAttendance({
 					<div className='py-4'>
 						<FormAttendance
 							state={state}
-							currentData={currentData}
+							currentData={transformedData}
 						/>
 					</div>
 					<DialogFooter>

@@ -61,9 +61,6 @@ export async function assignLeaveBalance(
 		const totalDays = parseInt(formData.get('total_days') as string);
 		const year = parseInt(formData.get('year') as string);
 
-		console.log('=== DEBUG assignLeaveBalance START ===');
-		console.log('DEBUG: Form data:', { employeeId, leaveTypeId, totalDays, year });
-
 		if (!employeeId || !leaveTypeId || !totalDays || !year) {
 			return {
 				status: 'error',
@@ -89,8 +86,6 @@ export async function assignLeaveBalance(
 			.eq('year', year)
 			.single();
 
-		console.log('DEBUG: Check existing result:', { existing, checkError });
-
 		if (existing) {
 			// Update existing balance
 			console.log('DEBUG: Updating existing balance ID:', existing.id);
@@ -100,13 +95,11 @@ export async function assignLeaveBalance(
 				.eq('id', existing.id);
 
 			if (error) {
-				console.error('DEBUG: Update error:', error);
 				return {
 					status: 'error',
 					errors: { _form: [error.message] },
 				};
 			}
-			console.log('DEBUG: Update successful');
 		} else {
 			// Create new balance
 			console.log('DEBUG: Creating new balance');

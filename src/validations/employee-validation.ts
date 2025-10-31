@@ -34,4 +34,10 @@ export const employeeSchema = z.object({
 });
 
 export type EmployeeForm = z.infer<typeof employeeFormSchema>;
-export type Employee = z.infer<typeof employeeSchema> & { id: string };
+export type Employee = z.infer<typeof employeeSchema> & {
+	id: string;
+	user_id?: string | null;
+	join_date: string;
+	created_at: string;
+	updated_at: string;
+};

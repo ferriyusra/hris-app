@@ -74,8 +74,8 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
 			const result = await updateMyProfile(initialState, formData);
 
 			if (result.status === 'success') {
-				toast.success('Profile updated successfully', {
-					description: 'Your profile information has been updated.',
+				toast.success('Profil berhasil diperbarui', {
+					description: 'Informasi profil Anda telah diperbarui.',
 				});
 
 				// Reset preview to new avatar
@@ -90,12 +90,12 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
 				window.location.reload();
 			} else {
 				if (result.errors?._form) {
-					toast.error('Failed to update profile', {
+					toast.error('Gagal memperbarui profil', {
 						description: result.errors._form[0],
 					});
 				} else {
-					toast.error('Failed to update profile', {
-						description: 'Please check the form for errors.',
+					toast.error('Gagal memperbarui profil', {
+						description: 'Silakan periksa formulir untuk mengetahui kesalahannya.',
 					});
 				}
 
@@ -115,7 +115,7 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
 				}
 			}
 		} catch (error) {
-			toast.error('Failed to update profile', {
+			toast.error('Gagal memperbarui profil', {
 				description: 'An unexpected error occurred.',
 			});
 		} finally {
@@ -156,7 +156,7 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
 				<CardHeader>
 					<CardTitle>Informasi Karyawan</CardTitle>
 					<CardDescription>
-						Informasi pekerjaan Anda (hanya baca)
+						Informasi pekerjaan Anda
 					</CardDescription>
 				</CardHeader>
 				<CardContent>

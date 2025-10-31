@@ -43,7 +43,8 @@ export default function LeaveRequestsManagement({ requests, onRefresh }: LeaveRe
 	const [rejectState, rejectAction, isRejectPending] = useActionState(rejectLeaveRequest, INITIAL_STATE);
 	const hasShownToastRef = useRef(false);
 
-	const formatDate = (dateStr: string) => {
+	const formatDate = (dateStr: string | null) => {
+		if (!dateStr) return 'Fleksibel';
 		return new Date(dateStr).toLocaleDateString('id-ID', {
 			day: 'numeric',
 			month: 'short',

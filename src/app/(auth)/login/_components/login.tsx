@@ -48,8 +48,9 @@ export default function Login() {
 
 	useEffect(() => {
 		if (loginState?.status === 'error') {
+			const errorMessage = loginState.errors?._form?.[0] || 'An error occurred';
 			toast.error('Login Failed', {
-				description: loginState.errors?._form?.[0] || 'An error occurred',
+				description: errorMessage,
 			});
 			startTransition(() => {
 				loginAction(null);
@@ -62,7 +63,7 @@ export default function Login() {
 			});
 
 			// Redirect based on role
-			const redirectPath = loginState.role === 'admin' ? '/admin' : '/employee-dashboard';
+			const redirectPath = loginState?.role === 'admin' ? '/admin' : '/employee-dashboard';
 			router.push(redirectPath);
 			router.refresh();
 		}

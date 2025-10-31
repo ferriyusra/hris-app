@@ -21,8 +21,10 @@ import {
 	FormField,
 	FormItem,
 	FormLabel,
+	FormMessage,
 } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
 
 const INITIAL_STATE = {
 	status: 'idle' as const,
@@ -120,12 +122,29 @@ export default function DialogCreateLeaveType({
 						/>
 
 						<div className='space-y-2'>
-							<FormInput
-								form={form}
+							<FormField
+								control={form.control}
 								name='max_days_per_year'
-								label='Maksimum Hari Per Tahun'
-								type='number'
-								placeholder='12'
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Maksimum Hari Per Tahun</FormLabel>
+										<FormControl>
+											<Input
+												type='number'
+												placeholder='12'
+												min='1'
+												max='365'
+												{...field}
+												value={field.value ?? ''}
+												onChange={(e) => {
+													const value = e.target.valueAsNumber;
+													field.onChange(isNaN(value) ? undefined : value);
+												}}
+											/>
+										</FormControl>
+										<FormMessage className='text-xs' />
+									</FormItem>
+								)}
 							/>
 							<p className='text-xs text-muted-foreground'>
 								Jumlah maksimal hari cuti yang dapat digunakan dalam setahun.

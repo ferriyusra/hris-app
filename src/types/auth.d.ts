@@ -8,6 +8,7 @@ export type AuthFormState = {
 		role?: string[];
 		avatar_url?: string[];
 		_form?: string[];
+		[key: string]: string[] | undefined;
 	};
 };
 

@@ -23,6 +23,7 @@ export async function login(
 	if (!validatedFields.success) {
 		return {
 			status: 'error',
+			role: '',
 			errors: {
 				...validatedFields.error.flatten().fieldErrors,
 				_form: [],
@@ -40,6 +41,7 @@ export async function login(
 	if (error) {
 		return {
 			status: 'error',
+			role: '',
 			errors: {
 				...prevState.errors,
 				_form: [error.message],
@@ -68,7 +70,11 @@ export async function login(
 	// Return success with role for client-side redirect
 	return {
 		status: 'success',
-		errors: {},
+		errors: {
+			email: [],
+			password: [],
+			_form: [],
+		},
 		role: profile?.role || 'employee',
 	};
 }

@@ -273,17 +273,20 @@ export async function getMyLeaveBalances() {
 		console.log('DEBUG: Current year:', currentYear);
 		console.log('DEBUG: Employee ID:', employee.id);
 
-		// Select only needed fields from leave_balances and leave_types
+		// Select all needed fields from leave_balances and leave_types
 		const { data, error } = await supabase
 			.from('leave_balances')
 			.select(
 				`
 				id,
+				employee_id,
 				total_days,
 				used_days,
 				remaining_days,
 				year,
 				leave_type_id,
+				created_at,
+				updated_at,
 				leave_type:leave_types!leave_balances_leave_type_id_fkey(
 					id,
 					name,
@@ -306,8 +309,16 @@ export async function getMyLeaveBalances() {
 			throw error;
 		}
 
+		// Transform data to ensure leave_type is an object, not an array
+		const transformedData = data?.map((balance: any) => ({
+			...balance,
+			leave_type: Array.isArray(balance.leave_type) && balance.leave_type.length > 0
+				? balance.leave_type[0]
+				: undefined
+		}));
+
 		console.log('=== DEBUG getMyLeaveBalances END ===');
-		return { data, error: null };
+		return { data: transformedData, error: null };
 	} catch (error) {
 		console.error('getMyLeaveBalances error:', error);
 		return {

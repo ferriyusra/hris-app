@@ -49,7 +49,6 @@ export async function approveLeaveRequest(
 		const profileCookie = cookieStore.get('user_profile');
 
 		if (!profileCookie) {
-			console.log('DEBUG: No profile cookie');
 			return {
 				status: 'error',
 				errors: { _form: ['Not authenticated'] },
@@ -58,8 +57,6 @@ export async function approveLeaveRequest(
 
 		const profile = JSON.parse(profileCookie.value);
 		const id = formData.get('id') as string;
-
-		console.log('DEBUG: Approving leave request:', { id, approved_by: profile.id });
 
 		const { data, error } = await supabase
 			.from('leave_requests')
@@ -71,8 +68,6 @@ export async function approveLeaveRequest(
 			.eq('id', id)
 			.select();
 
-		console.log('DEBUG: Update result:', { data, error });
-
 		if (error) {
 			console.error('DEBUG: Update error:', error);
 			return {
@@ -81,7 +76,6 @@ export async function approveLeaveRequest(
 			};
 		}
 
-		console.log('=== DEBUG approveLeaveRequest END (SUCCESS) ===');
 		revalidatePath('/admin/leave');
 
 		return { status: 'success' };
@@ -109,8 +103,6 @@ export async function rejectLeaveRequest(
 		const id = formData.get('id') as string;
 		const rejectionReason = formData.get('rejection_reason') as string;
 
-		console.log('DEBUG: Rejecting leave request:', { id, rejectionReason });
-
 		if (!rejectionReason || rejectionReason.trim().length < 5) {
 			return {
 				status: 'error',
@@ -127,8 +119,6 @@ export async function rejectLeaveRequest(
 			.eq('id', id)
 			.select();
 
-		console.log('DEBUG: Update result:', { data, error });
-
 		if (error) {
 			console.error('DEBUG: Update error:', error);
 			return {
@@ -137,7 +127,6 @@ export async function rejectLeaveRequest(
 			};
 		}
 
-		console.log('=== DEBUG rejectLeaveRequest END (SUCCESS) ===');
 		revalidatePath('/admin/leave');
 
 		return { status: 'success' };

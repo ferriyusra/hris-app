@@ -223,7 +223,7 @@ export default function AttendanceClockInOut() {
 							{/* Help Text */}
 							<div className='text-sm text-muted-foreground text-center pt-2'>
 								{!todayStatus?.has_record && (
-									<p>Klik "Absen Masuk" untuk memulai hari kerja Anda</p>
+									<p>Klik &quot;Absen Masuk&quot; untuk memulai hari kerja Anda</p>
 								)}
 								{todayStatus?.has_record && !todayStatus?.is_clocked_out && (
 									<p>Jangan lupa absen keluar di akhir hari kerja Anda</p>
