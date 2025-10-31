@@ -9,7 +9,7 @@ import DataTable from '@/components/common/data-table';
 import DropdownAction from '@/components/common/dropdown-action';
 import { AttendanceStatusBadge } from '@/components/common/attendance-status-badge';
 import { TimeDisplay, DateDisplay, DurationDisplay } from '@/components/common/time-display';
-import { Pencil, Trash2, Plus, FileDown, Wifi, WifiOff } from 'lucide-react';
+import { Pencil, Trash2, Plus, FileDown, Wifi, WifiOff, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import useDataTable from '@/hooks/use-data-table';
 import { useAttendanceRealtime } from '@/hooks/use-attendance-realtime';
@@ -94,7 +94,7 @@ export default function AttendanceManagement() {
 
 	const tableData = useMemo(() => {
 		return records.map((record: AttendanceRecordWithEmployee, index: number) => [
-			(currentPage - 1) * currentLimit + index + 1,
+			((currentPage - 1) * currentLimit + index + 1).toString(),
 			<div key={`employee-${record.id}`}>
 				<div className='font-medium'>{record.employee_name}</div>
 				<div className='text-sm text-muted-foreground'>{record.employee_position}</div>
@@ -162,7 +162,7 @@ export default function AttendanceManagement() {
 					<div className='flex items-center gap-2'>
 						<h1 className='text-2xl font-bold'>Manajemen Kehadiran</h1>
 						<div
-							className='flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors'
+							className='hidden items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors'
 							style={{
 								backgroundColor: isConnected ? 'rgba(34, 197, 94, 0.1)' : 'rgba(156, 163, 175, 0.1)',
 								color: isConnected ? 'rgb(34, 197, 94)' : 'rgb(156, 163, 175)',
@@ -189,6 +189,12 @@ export default function AttendanceManagement() {
 					<p className='text-muted-foreground'>
 						Kelola catatan kehadiran karyawan dan lihat laporan terperinci
 					</p>
+					<div className='mt-3 flex items-start gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2.5 text-sm dark:border-blue-900 dark:bg-blue-950'>
+						<Info className='h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0' />
+						<p className='text-blue-700 dark:text-blue-300'>
+							Data ini bersifat <strong>realtime</strong> dan akan diperbarui secara otomatis saat ada perubahan
+						</p>
+					</div>
 					{realtimeError && (
 						<p className='text-sm text-red-500 mt-1'>
 							⚠️ Realtime error: {realtimeError.message}

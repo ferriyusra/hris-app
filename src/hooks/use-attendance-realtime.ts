@@ -34,7 +34,7 @@ export interface UseAttendanceRealtimeOptions {
    * Query keys to invalidate when attendance records change
    * @default ['admin-attendance']
    */
-  queryKeys?: string[][];
+  queryKeys?: unknown[][];
 
   /**
    * Callback function when a new attendance record is inserted

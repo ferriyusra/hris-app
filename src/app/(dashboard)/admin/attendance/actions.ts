@@ -147,7 +147,7 @@ export async function createAttendance(
 				status: 'error',
 				errors: {
 					_form: [
-						'An attendance record already exists for this employee on this date',
+						'Catatan kehadiran sudah ada untuk karyawan ini pada tanggal ini',
 					],
 				},
 			};
