@@ -200,7 +200,7 @@ export default function DialogCreateLeave({
 												<Badge variant='outline' className='text-orange-600'>
 													Terpakai: {selectedBalance.used_days} hari
 												</Badge>
-												<Badge variant='outline' className='text-green-600'>
+												<Badge variant='outline' className='text-blue-600'>
 													Tersisa: {selectedBalance.remaining_days} hari
 												</Badge>
 											</div>

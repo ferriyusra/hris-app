@@ -11,7 +11,8 @@
       "Bash(test:*)",
       "Bash(npm run build:*)",
       "Bash(timeout 90s npm run build:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []

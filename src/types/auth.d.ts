@@ -1,5 +1,6 @@
 export type AuthFormState = {
 	status?: string;
+	role?: string;
 	errors?: {
 		email?: string[];
 		password?: string[];

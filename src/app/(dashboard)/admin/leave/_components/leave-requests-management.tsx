@@ -93,7 +93,7 @@ export default function LeaveRequestsManagement({ requests, onRefresh }: LeaveRe
 								setSelectedRequest(request);
 								setActionType('approve');
 							}}>
-							<Check className='h-4 w-4 text-green-600' />
+							<Check className='h-4 w-4 text-blue-600' />
 						</Button>
 						<Button
 							variant='ghost'

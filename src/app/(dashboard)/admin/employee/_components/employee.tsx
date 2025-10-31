@@ -81,7 +81,7 @@ export default function EmployeeManagement() {
 				employee.phone_number,
 				<div
 					className={cn('px-2 py-1 rounded-full text-white w-fit capitalize', {
-						 'bg-green-600': employee.is_active,
+						 'bg-blue-600': employee.is_active,
     					'bg-red-600': !employee.is_active,
 					})}>
 					 {employee.is_active ? 'Aktif' : 'Tidak Aktif'}

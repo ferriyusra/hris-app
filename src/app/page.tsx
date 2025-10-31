@@ -9,7 +9,7 @@ export default function Home() {
 		<div className='bg-muted flex justify-center items-center h-screen flex-col space-y-4'>
 			<h1 className='text-4xl font-semibold'>Welcome {profile.name}</h1>
 			<Link href={profile.role === 'admin' ? '/admin' : '/employee-dashboard'}>
-				<Button className='bg-teal-500 text-white hover:bg-teal-600'>
+				<Button className='bg-blue-600 text-white hover:bg-blue-700'>
 					Access Dashboard
 				</Button>
 			</Link>

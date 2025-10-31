@@ -15,9 +15,9 @@ export const ATTENDANCE_STATUS_LIST = [
 	{
 		value: 'present',
 		label: 'Hadir',
-		color: 'bg-green-500',
-		textColor: 'text-green-700',
-		bgColor: 'bg-green-100',
+		color: 'bg-blue-500',
+		textColor: 'text-blue-700',
+		bgColor: 'bg-blue-100',
 	},
 	{
 		value: 'late',

@@ -43,7 +43,7 @@ export default function AppSidebar() {
 					<SidebarMenuItem>
 						<SidebarMenuButton size='lg' asChild>
 							<div className='font-semibold'>
-								<div className='bg-teal-500 flex p-2 items-center justify-center rounded-md'>
+								<div className='bg-blue-600 flex p-2 items-center justify-center rounded-md'>
 									<Shield className='size-4' />
 								</div>
 								HRIS App
@@ -57,21 +57,24 @@ export default function AppSidebar() {
 					<SidebarGroupContent className='flex flex-col gap-2'>
 						<SidebarMenu>
 							{SIDEBAR_MENU_LIST[profile.role as SidebarMenuKey]?.map(
-								(item) => (
-									<SidebarMenuItem key={item.title}>
-										<SidebarMenuButton asChild tooltip={item.title}>
-											<a
-												href={item.url}
-												className={cn('px-4 py-3 h-auto', {
-													'bg-teal-500 text-white hover:bg-teal-500 hover:text-white':
-														pathname === item.url,
-												})}>
-												{item.icon && <item.icon />}
-												<span>{item.title}</span>
-											</a>
-										</SidebarMenuButton>
-									</SidebarMenuItem>
-								)
+								(item) => {
+									const isActive = pathname === item.url;
+									return (
+										<SidebarMenuItem key={item.title}>
+											<SidebarMenuButton asChild tooltip={item.title}>
+												<a
+													href={item.url}
+													className={cn('px-4 py-3 h-auto', {
+														'bg-blue-600 text-white hover:!bg-blue-700 hover:!text-white':
+															isActive,
+													})}>
+													{item.icon && <item.icon />}
+													<span>{item.title}</span>
+												</a>
+											</SidebarMenuButton>
+										</SidebarMenuItem>
+									);
+								}
 							)}
 						</SidebarMenu>
 					</SidebarGroupContent>

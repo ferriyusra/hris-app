@@ -41,7 +41,7 @@ export default function LeaveBalanceCards({ balances }: LeaveBalanceCardsProps) 
 							</div>
 							<div className='flex justify-between items-center pt-2 border-t'>
 								<span className='text-xs font-medium'>Tersisa</span>
-								<span className='text-lg font-bold text-green-600'>
+								<span className='text-lg font-bold text-blue-600'>
 									{balance.remaining_days} hari
 								</span>
 							</div>

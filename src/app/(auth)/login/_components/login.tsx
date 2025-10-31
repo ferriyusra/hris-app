@@ -21,8 +21,10 @@ import { useForm } from 'react-hook-form';
 import { login } from '../actions';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+	const router = useRouter();
 	const form = useForm<LoginForm>({
 		resolver: zodResolver(loginSchemaForm),
 		defaultValues: INITIAL_LOGIN_FORM,
@@ -53,7 +55,18 @@ export default function Login() {
 				loginAction(null);
 			});
 		}
-	}, [loginState]);
+
+		if (loginState?.status === 'success') {
+			toast.success('Login Successful', {
+				description: 'Redirecting to dashboard...',
+			});
+
+			// Redirect based on role
+			const redirectPath = loginState.role === 'admin' ? '/admin' : '/employee-dashboard';
+			router.push(redirectPath);
+			router.refresh();
+		}
+	}, [loginState, router]);
 
 	return (
 		<Card>

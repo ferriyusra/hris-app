@@ -153,7 +153,7 @@ export default function AdminLeaveBalancePage() {
 														<Badge variant='outline' className='text-xs text-orange-600'>
 															Terpakai: {balance.used_days}h
 														</Badge>
-														<Badge variant='outline' className='text-xs text-green-600'>
+														<Badge variant='outline' className='text-xs text-blue-600'>
 															Sisa: {balance.remaining_days}h
 														</Badge>
 													</div>

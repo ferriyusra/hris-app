@@ -46,7 +46,7 @@ async function MonthlyStatsSection() {
 				value={stats.presentDays}
 				icon={CheckCircle2}
 				description='Hari Anda datang tepat waktu'
-				colorClass='text-green-600'
+				colorClass='text-blue-600'
 				suffix='hari'
 			/>
 			<EmployeeStatCard

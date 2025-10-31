@@ -13,7 +13,7 @@ export default function AttendanceCalendar({ trends }: AttendanceCalendarProps) 
 	const getStatusIcon = (status: 'present' | 'late' | 'absent') => {
 		switch (status) {
 			case 'present':
-				return <CheckCircle2 className='h-4 w-4 text-green-600' />;
+				return <CheckCircle2 className='h-4 w-4 text-blue-600' />;
 			case 'late':
 				return <Clock className='h-4 w-4 text-orange-600' />;
 			case 'absent':
@@ -24,7 +24,7 @@ export default function AttendanceCalendar({ trends }: AttendanceCalendarProps) 
 	const getStatusColor = (status: 'present' | 'late' | 'absent') => {
 		switch (status) {
 			case 'present':
-				return 'bg-green-50 border-green-200 hover:bg-green-100';
+				return 'bg-blue-50 border-blue-200 hover:bg-blue-100';
 			case 'late':
 				return 'bg-orange-50 border-orange-200 hover:bg-orange-100';
 			case 'absent':

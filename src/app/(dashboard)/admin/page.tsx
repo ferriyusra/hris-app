@@ -49,7 +49,7 @@ export default async function AdminDashboard() {
 					value={stats.activeEmployees}
 					icon={UserCheck}
 					description='Karyawan yang saat ini aktif'
-					colorClass='text-green-600'
+					colorClass='text-blue-600'
 				/>
 				<StatCard
 					title='Karyawan Tidak Aktif'
@@ -67,7 +67,7 @@ export default async function AdminDashboard() {
 					value={stats.todayPresent}
 					icon={CalendarCheck}
 					description='Karyawan yang sudah absen masuk'
-					colorClass='text-green-600'
+					colorClass='text-blue-600'
 				/>
 				<StatCard
 					title='Terlambat Hari Ini'
