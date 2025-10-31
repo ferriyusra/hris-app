@@ -141,6 +141,10 @@ export default function DialogCreateLeave({
 		}
 	}, [selectedLeaveType?.allows_flexible_end_date, selectedLeaveType?.id, form]);
 
+	// Get today's date in YYYY-MM-DD format for min date validation
+	const today = new Date().toISOString().split('T')[0];
+	const startDate = form.watch('start_date');
+
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className='max-w-2xl max-h-[90vh] overflow-y-auto'>
@@ -213,6 +217,7 @@ export default function DialogCreateLeave({
 								label='Tanggal Mulai'
 								type='date'
 								placeholder=''
+								min={today}
 							/>
 							{selectedLeaveType?.allows_flexible_end_date ? (
 								<div className='space-y-2'>
@@ -234,6 +239,7 @@ export default function DialogCreateLeave({
 									label='Tanggal Akhir'
 									type='date'
 									placeholder=''
+									min={startDate || today}
 								/>
 							)}
 						</div>

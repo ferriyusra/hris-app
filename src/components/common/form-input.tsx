@@ -15,12 +15,16 @@ export default function FormInput<T extends FieldValues>({
 	label,
 	placeholder,
 	type = 'text',
+	min,
+	max,
 }: {
 	form: UseFormReturn<T>;
 	name: Path<T>;
 	label: string;
 	placeholder?: string;
 	type?: string;
+	min?: string;
+	max?: string;
 }) {
 	return (
 		<FormField
@@ -43,6 +47,8 @@ export default function FormInput<T extends FieldValues>({
 								type={type}
 								placeholder={placeholder}
 								autoComplete='off'
+								min={min}
+								max={max}
 							/>
 						)}
 					</FormControl>
