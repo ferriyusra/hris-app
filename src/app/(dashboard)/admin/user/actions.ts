@@ -53,17 +53,17 @@ export async function createUser(prevState: AuthFormState, formData: FormData) {
 		};
 	}
 
-	const supabase = await createClient();
+	// Use admin client for user creation and employee linking
+	const supabase = await createClient({ isAdmin: true });
 
-	const { data: userData, error } = await supabase.auth.signUp({
+	const { data: userData, error } = await supabase.auth.admin.createUser({
 		email: validatedFields.data.email,
 		password: validatedFields.data.password,
-		options: {
-			data: {
-				name: validatedFields.data.name,
-				role: validatedFields.data.role,
-				avatar_url: validatedFields.data.avatar_url,
-			},
+		email_confirm: true, // Auto-confirm email for admin-created users
+		user_metadata: {
+			name: validatedFields.data.name,
+			role: validatedFields.data.role,
+			avatar_url: validatedFields.data.avatar_url,
 		},
 	});
 
@@ -85,12 +85,15 @@ export async function createUser(prevState: AuthFormState, formData: FormData) {
 			.eq('id', validatedFields.data.employee_id);
 
 		if (updateError) {
+			// Rollback: delete the created user if employee linking fails
+			await supabase.auth.admin.deleteUser(userData.user.id);
+
 			return {
 				status: 'error',
 				errors: {
 					...prevState.errors,
 					_form: [
-						`User created but failed to link to employee: ${updateError.message}`,
+						`Failed to link user to employee: ${updateError.message}`,
 					],
 				},
 			};
