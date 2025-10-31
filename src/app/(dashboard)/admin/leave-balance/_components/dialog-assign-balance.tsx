@@ -117,15 +117,15 @@ export default function DialogAssignBalance({
 
 				<form onSubmit={handleSubmit} className='space-y-4'>
 					<div className='space-y-2'>
-						<Label htmlFor='leave_type_id'>Leave Type</Label>
+						<Label htmlFor='leave_type_id'>Jenis Cuti</Label>
 						<Select value={leaveTypeId} onValueChange={handleLeaveTypeChange}>
 							<SelectTrigger>
-								<SelectValue placeholder='Select leave type' />
+								<SelectValue placeholder='Pilih jenis cuti' />
 							</SelectTrigger>
 							<SelectContent>
 								{leaveTypes.map((type) => (
 									<SelectItem key={type.id} value={type.id}>
-										{type.name} ({type.max_days_per_year} days)
+										{type.name} ({type.max_days_per_year} hari)
 									</SelectItem>
 								))}
 							</SelectContent>
@@ -142,7 +142,7 @@ export default function DialogAssignBalance({
 							Total Days
 							{selectedLeaveType && (
 								<span className='text-muted-foreground font-normal ml-2'>
-									(Default: {selectedLeaveType.max_days_per_year} days)
+									(Default: {selectedLeaveType.max_days_per_year} hari)
 								</span>
 							)}
 						</Label>
@@ -157,7 +157,7 @@ export default function DialogAssignBalance({
 							disabled={!leaveTypeId}
 						/>
 						<p className='text-xs text-muted-foreground'>
-							Auto-filled from leave type settings. You can customize it for this employee.
+							Diisi otomatis dari pengaturan jenis cuti. Anda dapat menyesuaikannya untuk karyawan ini.
 						</p>
 					</div>
 

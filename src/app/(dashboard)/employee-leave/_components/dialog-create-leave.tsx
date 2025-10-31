@@ -68,10 +68,24 @@ export default function DialogCreateLeave({
 	const hasShownToastRef = useRef(false);
 
 	const onSubmit = form.handleSubmit((data) => {
+		console.log('=== CLIENT: Form Submit Data ===');
+		console.log('Form data:', data);
+		console.log('Selected leave type:', selectedLeaveType);
+		console.log('Allows flexible end date?', selectedLeaveType?.allows_flexible_end_date);
+
 		const formData = new FormData();
 		Object.entries(data).forEach(([key, value]) => {
+			// Only append end_date if it has a value (not empty string)
+			// For flexible end date leave types, end_date will be empty
+			if (key === 'end_date' && (!value || value.toString().trim() === '')) {
+				console.log('CLIENT: Skipping empty end_date');
+				return; // Skip empty end_date
+			}
+			console.log(`CLIENT: Appending ${key}:`, value);
 			formData.append(key, value);
 		});
+
+		console.log('=== END CLIENT Form Submit ===');
 
 		hasShownToastRef.current = false;
 
@@ -115,9 +129,17 @@ export default function DialogCreateLeave({
 		}
 	}, [state, form, onOpenChange, onSuccess]);
 
-	// Get selected leave type balance
+	// Get selected leave type balance and type details
 	const selectedLeaveTypeId = form.watch('leave_type_id');
 	const selectedBalance = balances.find((b) => b.leave_type_id === selectedLeaveTypeId);
+	const selectedLeaveType = leaveTypes.find((t) => t.id === selectedLeaveTypeId);
+
+	// Clear end_date when switching to a leave type with flexible end date
+	useEffect(() => {
+		if (selectedLeaveType?.allows_flexible_end_date) {
+			form.setValue('end_date', '');
+		}
+	}, [selectedLeaveType?.allows_flexible_end_date, selectedLeaveType?.id, form]);
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
@@ -192,13 +214,28 @@ export default function DialogCreateLeave({
 								type='date'
 								placeholder=''
 							/>
-							<FormInput
-								form={form}
-								name='end_date'
-								label='Tanggal Akhir'
-								type='date'
-								placeholder=''
-							/>
+							{selectedLeaveType?.allows_flexible_end_date ? (
+								<div className='space-y-2'>
+									<label className='text-sm font-medium'>Tanggal Akhir</label>
+									<div className='p-3 bg-muted rounded-md space-y-2'>
+										<p className='text-xs text-muted-foreground'>
+											<strong>Untuk {selectedLeaveType.name.toLowerCase()}, tanggal akhir tidak perlu ditentukan di awal.</strong>
+										</p>
+										<p className='text-xs text-muted-foreground'>
+											Setiap pengajuan dihitung sebagai <strong>1 hari cuti</strong> dan akan mengurangi saldo Anda.
+											Jika masih memerlukan cuti, ajukan lagi untuk hari berikutnya.
+										</p>
+									</div>
+								</div>
+							) : (
+								<FormInput
+									form={form}
+									name='end_date'
+									label='Tanggal Akhir'
+									type='date'
+									placeholder=''
+								/>
+							)}
 						</div>
 
 						<FormTextarea

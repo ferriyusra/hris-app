@@ -49,6 +49,7 @@ export default function DialogUpdateLeaveType({
 			max_days_per_year: 12,
 			requires_approval: true,
 			is_active: true,
+			allows_flexible_end_date: false,
 		},
 	});
 
@@ -63,6 +64,7 @@ export default function DialogUpdateLeaveType({
 				max_days_per_year: leaveType.max_days_per_year,
 				requires_approval: leaveType.requires_approval,
 				is_active: leaveType.is_active,
+				allows_flexible_end_date: leaveType.allows_flexible_end_date,
 			});
 		}
 	}, [leaveType, form]);
@@ -135,13 +137,19 @@ export default function DialogUpdateLeaveType({
 							rows={3}
 						/>
 
-						<FormInput
-							form={form}
-							name='max_days_per_year'
-							label='Maksimum Hari Per Tahun'
-							type='number'
-							placeholder='12'
-						/>
+						<div className='space-y-2'>
+							<FormInput
+								form={form}
+								name='max_days_per_year'
+								label='Maksimum Hari Per Tahun'
+								type='number'
+								placeholder='12'
+							/>
+							<p className='text-xs text-muted-foreground'>
+								Jumlah maksimal hari cuti yang dapat digunakan dalam setahun.
+								Untuk cuti dengan tanggal akhir fleksibel, setiap pengajuan mengurangi saldo per hari.
+							</p>
+						</div>
 
 						<FormField
 							control={form.control}
@@ -179,6 +187,27 @@ export default function DialogUpdateLeaveType({
 										<FormLabel>Aktif</FormLabel>
 										<p className='text-sm text-muted-foreground'>
 											Hanya jenis cuti aktif yang dapat dipilih oleh karyawan
+										</p>
+									</div>
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name='allows_flexible_end_date'
+							render={({ field }) => (
+								<FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
+									<FormControl>
+										<Checkbox
+											checked={field.value}
+											onCheckedChange={field.onChange}
+										/>
+									</FormControl>
+									<div className='space-y-1 leading-none'>
+										<FormLabel>Tanggal Akhir Fleksibel</FormLabel>
+										<p className='text-sm text-muted-foreground'>
+											Centang jika cuti jenis ini tidak memerlukan tanggal akhir pasti (contoh: Cuti Sakit)
 										</p>
 									</div>
 								</FormItem>

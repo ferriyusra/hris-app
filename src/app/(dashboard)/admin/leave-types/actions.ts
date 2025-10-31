@@ -43,6 +43,7 @@ export async function createLeaveType(
 			max_days_per_year: formData.get('max_days_per_year'),
 			requires_approval: formData.get('requires_approval') === 'true',
 			is_active: formData.get('is_active') === 'true',
+			allows_flexible_end_date: formData.get('allows_flexible_end_date') === 'true',
 		});
 
 		if (!validatedFields.success) {
@@ -63,6 +64,7 @@ export async function createLeaveType(
 			max_days_per_year: validatedFields.data.max_days_per_year,
 			requires_approval: validatedFields.data.requires_approval,
 			is_active: validatedFields.data.is_active,
+			allows_flexible_end_date: validatedFields.data.allows_flexible_end_date,
 		});
 
 		if (error) {
@@ -102,6 +104,7 @@ export async function updateLeaveType(
 			max_days_per_year: formData.get('max_days_per_year'),
 			requires_approval: formData.get('requires_approval') === 'true',
 			is_active: formData.get('is_active') === 'true',
+			allows_flexible_end_date: formData.get('allows_flexible_end_date') === 'true',
 		});
 
 		if (!validatedFields.success) {
@@ -124,6 +127,7 @@ export async function updateLeaveType(
 				max_days_per_year: validatedFields.data.max_days_per_year,
 				requires_approval: validatedFields.data.requires_approval,
 				is_active: validatedFields.data.is_active,
+				allows_flexible_end_date: validatedFields.data.allows_flexible_end_date,
 			})
 			.eq('id', id);
 

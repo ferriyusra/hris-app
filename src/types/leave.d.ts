@@ -5,6 +5,7 @@ export interface LeaveType {
 	max_days_per_year: number;
 	requires_approval: boolean;
 	is_active: boolean;
+	allows_flexible_end_date: boolean;
 	created_at: string;
 	updated_at: string;
 }
@@ -27,7 +28,7 @@ export interface LeaveRequest {
 	employee_id: string;
 	leave_type_id: string;
 	start_date: string;
-	end_date: string;
+	end_date: string | null;
 	total_days: number;
 	reason: string;
 	status: 'pending' | 'approved' | 'rejected';

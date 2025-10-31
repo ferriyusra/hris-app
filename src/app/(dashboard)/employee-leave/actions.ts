@@ -33,6 +33,14 @@ export async function createLeaveRequest(
 	formData: FormData
 ): Promise<LeaveRequestFormState> {
 	try {
+		// Debug: Log all form data
+		console.log('=== DEBUG Form Data ===');
+		console.log('leave_type_id:', formData.get('leave_type_id'));
+		console.log('start_date:', formData.get('start_date'));
+		console.log('end_date:', formData.get('end_date'));
+		console.log('reason:', formData.get('reason'));
+		console.log('=== END Form Data ===');
+
 		const validatedFields = leaveRequestSchema.safeParse({
 			leave_type_id: formData.get('leave_type_id'),
 			start_date: formData.get('start_date'),
@@ -41,6 +49,10 @@ export async function createLeaveRequest(
 		});
 
 		if (!validatedFields.success) {
+			console.log('=== VALIDATION ERROR ===');
+			console.log('Validation errors:', JSON.stringify(validatedFields.error.flatten(), null, 2));
+			console.log('=== END VALIDATION ERROR ===');
+
 			return {
 				status: 'error',
 				errors: {
@@ -79,8 +91,30 @@ export async function createLeaveRequest(
 
 		// Calculate total days
 		const startDate = new Date(validatedFields.data.start_date);
-		const endDate = new Date(validatedFields.data.end_date);
+
+		// If no end_date provided (flexible end date for sick leave), use start_date as end_date (1 day)
+		// Check for both undefined and empty string
+		const hasEndDate = validatedFields.data.end_date &&
+			typeof validatedFields.data.end_date === 'string' &&
+			validatedFields.data.end_date.trim() !== '';
+
+		const endDate = hasEndDate
+			? new Date(validatedFields.data.end_date!)
+			: new Date(validatedFields.data.start_date);
+
+		// Debug logging
+		console.log('=== DEBUG Leave Request Calculation ===');
+		console.log('start_date input:', validatedFields.data.start_date);
+		console.log('end_date input:', validatedFields.data.end_date);
+		console.log('hasEndDate:', hasEndDate);
+		console.log('startDate object:', startDate);
+		console.log('endDate object:', endDate);
+		console.log('startDate valid?', !isNaN(startDate.getTime()));
+		console.log('endDate valid?', !isNaN(endDate.getTime()));
+
 		const totalDays = calculateWorkingDays(startDate, endDate);
+		console.log('totalDays calculated:', totalDays);
+		console.log('=== END DEBUG ===');
 
 		if (totalDays === 0) {
 			return {
@@ -102,7 +136,7 @@ export async function createLeaveRequest(
 		if (!balance) {
 			return {
 				status: 'error',
-				errors: { _form: ['Leave balance not found for this year'] },
+				errors: { _form: ['Saldo cuti tidak ditemukan untuk tahun ini'] },
 			};
 		}
 
@@ -111,7 +145,7 @@ export async function createLeaveRequest(
 				status: 'error',
 				errors: {
 					_form: [
-						`Insufficient leave balance. You have ${balance.remaining_days} days remaining, but requested ${totalDays} days.`,
+						`Saldo cuti tidak mencukupi. Anda memiliki ${balance.remaining_days} hari tersisa, tetapi diminta ${totalDays} hari.`,
 					],
 				},
 			};
@@ -122,7 +156,9 @@ export async function createLeaveRequest(
 			employee_id: employee.id,
 			leave_type_id: validatedFields.data.leave_type_id,
 			start_date: validatedFields.data.start_date,
-			end_date: validatedFields.data.end_date,
+			end_date: hasEndDate
+				? validatedFields.data.end_date!
+				: validatedFields.data.start_date, // Use start_date if end_date not provided or empty
 			total_days: totalDays,
 			reason: validatedFields.data.reason,
 			status: 'pending',
@@ -251,7 +287,8 @@ export async function getMyLeaveBalances() {
 				leave_type:leave_types!leave_balances_leave_type_id_fkey(
 					id,
 					name,
-					description
+					description,
+					allows_flexible_end_date
 				)
 			`
 			)
