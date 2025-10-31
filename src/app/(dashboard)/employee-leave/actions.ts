@@ -208,11 +208,16 @@ export async function getMyLeaveBalances() {
 		const cookieStore = await cookies();
 		const profileCookie = cookieStore.get('user_profile');
 
+		console.log('=== DEBUG getMyLeaveBalances START ===');
+		console.log('DEBUG: Has profile cookie:', !!profileCookie);
+
 		if (!profileCookie) {
+			console.error('DEBUG: No profile cookie found');
 			return { data: null, error: 'Not authenticated' };
 		}
 
 		const profile = JSON.parse(profileCookie.value);
+		console.log('DEBUG: Profile ID:', profile.id);
 
 		// Get employee record - select only id
 		const { data: employee, error: employeeError } = await supabase
@@ -221,11 +226,16 @@ export async function getMyLeaveBalances() {
 			.eq('user_id', profile.id)
 			.single();
 
+		console.log('DEBUG: Employee query result:', { employee, employeeError });
+
 		if (employeeError || !employee) {
+			console.error('DEBUG: Employee not found');
 			return { data: null, error: 'Employee record not found' };
 		}
 
 		const currentYear = new Date().getFullYear();
+		console.log('DEBUG: Current year:', currentYear);
+		console.log('DEBUG: Employee ID:', employee.id);
 
 		// Select only needed fields from leave_balances and leave_types
 		const { data, error } = await supabase
@@ -237,7 +247,8 @@ export async function getMyLeaveBalances() {
 				used_days,
 				remaining_days,
 				year,
-				leave_type:leave_types(
+				leave_type_id,
+				leave_type:leave_types!leave_balances_leave_type_id_fkey(
 					id,
 					name,
 					description
@@ -247,10 +258,18 @@ export async function getMyLeaveBalances() {
 			.eq('employee_id', employee.id)
 			.eq('year', currentYear);
 
+		console.log('DEBUG: Leave balances query result:', {
+			dataCount: data?.length,
+			data,
+			error
+		});
+
 		if (error) {
+			console.error('DEBUG: Query error:', error);
 			throw error;
 		}
 
+		console.log('=== DEBUG getMyLeaveBalances END ===');
 		return { data, error: null };
 	} catch (error) {
 		console.error('getMyLeaveBalances error:', error);

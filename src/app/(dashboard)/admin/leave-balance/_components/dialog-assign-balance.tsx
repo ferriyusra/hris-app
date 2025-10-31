@@ -32,6 +32,7 @@ interface DialogAssignBalanceProps {
 	employeeId: string;
 	employeeName: string;
 	leaveTypes: LeaveType[];
+	onSuccess?: () => void;
 }
 
 export default function DialogAssignBalance({
@@ -40,6 +41,7 @@ export default function DialogAssignBalance({
 	employeeId,
 	employeeName,
 	leaveTypes,
+	onSuccess,
 }: DialogAssignBalanceProps) {
 	const [leaveTypeId, setLeaveTypeId] = useState('');
 	const [totalDays, setTotalDays] = useState('');
@@ -82,21 +84,22 @@ export default function DialogAssignBalance({
 		if (hasShownToastRef.current) return;
 
 		if (state.status === 'error') {
-			toast.error('Assign Leave Balance Failed', {
-				description: state.errors?._form?.[0] || 'Failed to assign leave balance',
+			toast.error('Tetapkan Saldo Cuti Failed', {
+				description: state.errors?._form?.[0] || 'Failed to Tetapkan Saldo Cuti',
 			});
 			hasShownToastRef.current = true;
 		}
 
 		if (state.status === 'success') {
-			toast.success('Leave Balance Assigned Successfully');
+			toast.success('Saldo Cuti Berhasil Diberikan');
 			setLeaveTypeId('');
 			setTotalDays('');
 			onOpenChange(false);
 			hasShownToastRef.current = true;
-			window.location.reload();
+			// Call the onSuccess callback to refresh data instead of hard reload
+			onSuccess?.();
 		}
-	}, [state, onOpenChange]);
+	}, [state, onOpenChange, onSuccess]);
 
 	// Get selected leave type info for display
 	const selectedLeaveType = leaveTypes.find((t) => t.id === leaveTypeId);
@@ -105,9 +108,9 @@ export default function DialogAssignBalance({
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className='max-w-md'>
 				<DialogHeader>
-					<DialogTitle>Assign Leave Balance</DialogTitle>
+					<DialogTitle>Tetapkan Saldo Cuti</DialogTitle>
 					<p className='text-sm text-muted-foreground mt-2'>
-						Assign leave balance to <strong>{employeeName}</strong> for year{' '}
+						Tetapkan Saldo Cuti to <strong>{employeeName}</strong> for year{' '}
 						{currentYear}
 					</p>
 				</DialogHeader>
@@ -167,7 +170,7 @@ export default function DialogAssignBalance({
 							Cancel
 						</Button>
 						<Button type='submit' disabled={isPending}>
-							{isPending ? 'Assigning...' : 'Assign Leave Balance'}
+							{isPending ? 'Assigning...' : 'Tetapkan Saldo Cuti'}
 						</Button>
 					</div>
 				</form>

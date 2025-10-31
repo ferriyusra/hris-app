@@ -49,7 +49,7 @@ export async function getAllEmployeesWithBalances() {
 }
 
 /**
- * Assign leave balance to employee
+ * Tetapkan Saldo Cuti
  */
 export async function assignLeaveBalance(
 	prevState: LeaveRequestFormState,
@@ -134,7 +134,9 @@ export async function assignLeaveBalance(
 
 		console.log('=== DEBUG assignLeaveBalance END ===');
 
+		// Revalidate both admin and employee pages
 		revalidatePath('/admin/leave-balance');
+		revalidatePath('/employee-leave');
 
 		return { status: 'success' };
 	} catch (error) {
@@ -142,7 +144,7 @@ export async function assignLeaveBalance(
 		return {
 			status: 'error',
 			errors: {
-				_form: [error instanceof Error ? error.message : 'Failed to assign leave balance'],
+				_form: [error instanceof Error ? error.message : 'Gagal Tetapkan Saldo Cuti'],
 			},
 		};
 	}
@@ -172,7 +174,9 @@ export async function removeLeaveBalance(
 			};
 		}
 
+		// Revalidate both admin and employee pages
 		revalidatePath('/admin/leave-balance');
+		revalidatePath('/employee-leave');
 
 		return { status: 'success' };
 	} catch (error) {

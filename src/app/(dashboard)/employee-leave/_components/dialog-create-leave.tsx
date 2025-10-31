@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import {
 	Dialog,
 	DialogContent,
+	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
@@ -123,6 +124,9 @@ export default function DialogCreateLeave({
 			<DialogContent className='max-w-2xl max-h-[90vh] overflow-y-auto'>
 				<DialogHeader>
 					<DialogTitle>Ajukan Cuti</DialogTitle>
+					<DialogDescription>
+						Isi formulir di bawah ini untuk mengajukan permintaan cuti Anda.
+					</DialogDescription>
 				</DialogHeader>
 
 				{leaveTypes.length === 0 ? (

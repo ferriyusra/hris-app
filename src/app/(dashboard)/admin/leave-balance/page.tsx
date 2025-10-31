@@ -44,18 +44,18 @@ export default function AdminLeaveBalancePage() {
 	const [removeState, removeAction, isRemoving] = useActionState(removeLeaveBalance, INITIAL_STATE);
 	const hasShownToastRef = useRef(false);
 
-	useEffect(() => {
-		async function fetchData() {
-			setIsLoading(true);
-			const [empResult, typesResult] = await Promise.all([
-				getAllEmployeesWithBalances(),
-				getAllLeaveTypes(),
-			]);
-			setEmployees(empResult.data || []);
-			setLeaveTypes((typesResult.data || []).filter((t: LeaveType) => t.is_active));
-			setIsLoading(false);
-		}
+	const fetchData = async () => {
+		setIsLoading(true);
+		const [empResult, typesResult] = await Promise.all([
+			getAllEmployeesWithBalances(),
+			getAllLeaveTypes(),
+		]);
+		setEmployees(empResult.data || []);
+		setLeaveTypes((typesResult.data || []).filter((t: LeaveType) => t.is_active));
+		setIsLoading(false);
+	};
 
+	useEffect(() => {
 		fetchData();
 	}, []);
 
@@ -91,7 +91,8 @@ export default function AdminLeaveBalancePage() {
 			toast.success('Saldo Cuti Berhasil Dihapus');
 			setBalanceToRemove(null);
 			hasShownToastRef.current = true;
-			window.location.reload();
+			// Refresh data instead of hard reload
+			fetchData();
 		}
 	}, [removeState]);
 
@@ -180,6 +181,7 @@ export default function AdminLeaveBalancePage() {
 					employeeId={selectedEmployee.id}
 					employeeName={selectedEmployee.full_name}
 					leaveTypes={leaveTypes}
+					onSuccess={fetchData}
 				/>
 			)}
 

@@ -22,6 +22,11 @@ export default function EmployeeLeavePage() {
 			getMyLeaveRequests(),
 		]);
 
+		console.log('=== CLIENT DEBUG: fetchData ===');
+		console.log('CLIENT: Balances result:', balancesResult);
+		console.log('CLIENT: Balances data:', balancesResult.data);
+		console.log('CLIENT: Balances count:', balancesResult.data?.length);
+
 		setBalances(balancesResult.data || []);
 		setRequests(requestsResult.data || []);
 		setIsLoading(false);
