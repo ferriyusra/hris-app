@@ -311,7 +311,7 @@ export async function deleteAttendance(
 				_form: [
 					error instanceof Error
 						? error.message
-						: 'Failed to delete attendance record',
+						: 'Gagal menghapus catatan kehadiran',
 				],
 			},
 		};
