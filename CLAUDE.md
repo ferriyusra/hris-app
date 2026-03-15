@@ -32,8 +32,11 @@ The application uses Next.js App Router with route groups:
 
 - `(auth)/` - Authentication routes (login)
 - `(dashboard)/` - Protected dashboard routes with sidebar layout
-  - `/admin/` - Admin-only routes (employee, user, attendance management)
-  - `/attendance/` - Attendance tracking and order management
+  - `/admin/` - Admin-only routes (employee, user, attendance, leave-types, leave-balance, work-time)
+  - `/employee-attendance/` - Employee clock-in/out
+  - `/employee-dashboard/` - Personal dashboard view
+  - `/employee-leave/` - Leave request management
+  - `/employee-profile/` - Personal profile view
   - `/payment/` - Payment success/failed pages
 
 ### Data Layer
@@ -44,6 +47,7 @@ The application uses Next.js App Router with route groups:
   - Use `createClient({ isAdmin: true })` to get service role client for admin operations
   - Default uses anon key for regular operations
 - `src/lib/supabase/middleware.ts` - Session management in middleware
+- `src/lib/supabase/default.ts` - Direct client with realtime subscriptions (used for live attendance updates)
 
 **Server Actions Pattern:**
 Each feature module has an `actions.ts(x)` file containing server actions:
@@ -52,9 +56,10 @@ Each feature module has an `actions.ts(x)` file containing server actions:
 - Return type follows `{ status: 'success' | 'error', errors?: {...} }` pattern
 
 **Database:**
-- SQL migrations in `src/migrations/`
-- Tables: `profiles`, `employees`, and others
-- Row Level Security enabled on tables
+- SQL migrations in `src/migrations/` (9 migration files, applied in order)
+- Core tables: `profiles`, `employees`, `attendance_records`, `leave_types`, `leave_balances`, `leave_requests`, `work_time_config`
+- Row Level Security enabled on all data tables
+- Key view: `attendance_records_with_employee` (denormalized attendance + employee data)
 
 ### State Management
 
@@ -89,6 +94,7 @@ Each feature follows a consistent pattern with `_components/` directory:
 - `use-debounce.tsx` - Debounce utility for search inputs
 - `use-mobile.ts` - Responsive breakpoint detection
 - `use-pricing.tsx` - Pricing calculations
+- `use-attendance-realtime.ts` - Real-time Supabase subscription for live attendance updates
 
 ### Type Safety
 
@@ -122,9 +128,20 @@ Each feature follows a consistent pattern with `_components/` directory:
 3. **Admin operations** use service role key via `createClient({ isAdmin: true })`
 4. **Form validation** happens both client-side (React Hook Form) and server-side (Zod in actions)
 5. **Toasts** for user feedback via Sonner (`src/components/ui/sonner.tsx`)
+6. **Profile cookie hydration**: `user_profile` cookie (30-day max age) is read in layout and hydrated into Zustand via `AuthStoreProvider`
+7. **Realtime subscriptions** for live attendance dashboard updates via Supabase channels
+
+### Constants and Localization
+
+- `src/constants/` contains form initial states, status enums with UI color metadata, role lists, and date filter presets
+- All user-facing validation error messages are in **Indonesian**
+- Currency formatting uses Indonesian Rupiah (IDR)
 
 ## Database Schema Notes
 
 - The `profiles` table has triggers for auto-creation/deletion on auth user changes
-- The `employees` table references `auth.users` with cascade delete
+- The `employees` table references `auth.users` with cascade delete (employee can exist without a user account via nullable `user_id`)
+- `attendance_records` has a unique constraint on `(employee_id, date)` — one record per employee per day
+- `work_time_config` is a singleton table (unique index enforces single row) — stores work hours, late threshold, half-day threshold
+- Leave management uses database triggers: `update_leave_balance_on_approval()` auto-updates balances when leave requests are approved
 - Check `src/migrations/` for full schema definitions when adding new tables or modifying existing ones
