@@ -1,14 +1,18 @@
 import {
 	Album,
+	Banknote,
 	CalendarCheck,
 	CalendarDays,
 	Clock,
 	ClipboardList,
+	CreditCard,
 	LayoutDashboard,
+	Receipt,
 	Settings,
 	SquareMenu,
 	User,
 	Users,
+	Wallet,
 } from 'lucide-react';
 
 export const SIDEBAR_MENU_LIST = {
@@ -53,6 +57,16 @@ export const SIDEBAR_MENU_LIST = {
 			url: '/admin/work-time',
 			icon: Clock,
 		},
+		{
+			title: 'Konfigurasi Gaji',
+			url: '/admin/salary-config',
+			icon: Wallet,
+		},
+		{
+			title: 'Penggajian',
+			url: '/admin/payroll',
+			icon: Banknote,
+		},
 	],
 	employee: [
 		{
@@ -69,6 +83,11 @@ export const SIDEBAR_MENU_LIST = {
 			title: 'Cuti',
 			url: '/employee-leave',
 			icon: CalendarDays,
+		},
+		{
+			title: 'Slip Gaji',
+			url: '/employee-payslip',
+			icon: Receipt,
 		},
 		{
 			title: 'Profil',
