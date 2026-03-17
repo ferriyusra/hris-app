@@ -20,10 +20,12 @@ export default function LeaveBalanceCards({ balances }: LeaveBalanceCardsProps) 
 	return (
 		<div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
 			{balances.map((balance) => (
-				<Card key={balance.id}>
+				<Card key={balance.id} className='glass-card hover:shadow-[var(--shadow-card-hover)] transition-all duration-200'>
 					<CardHeader className='pb-2'>
 						<CardTitle className='text-sm font-medium flex items-center gap-2'>
-							<Calendar className='h-4 w-4 text-blue-600' />
+							<div className='flex h-7 w-7 items-center justify-center rounded-full bg-primary/10'>
+								<Calendar className='h-3.5 w-3.5 text-primary' />
+							</div>
 							{balance.leave_type?.name || 'Unknown'}
 						</CardTitle>
 					</CardHeader>
@@ -31,17 +33,17 @@ export default function LeaveBalanceCards({ balances }: LeaveBalanceCardsProps) 
 						<div className='space-y-2'>
 							<div className='flex justify-between items-center'>
 								<span className='text-xs text-muted-foreground'>Total</span>
-								<span className='text-sm font-semibold'>{balance.total_days} hari</span>
+								<span className='text-sm font-semibold font-mono'>{balance.total_days} hari</span>
 							</div>
 							<div className='flex justify-between items-center'>
 								<span className='text-xs text-muted-foreground'>Terpakai</span>
-								<span className='text-sm font-semibold text-orange-600'>
+								<span className='text-sm font-semibold font-mono text-amber-600 dark:text-amber-400'>
 									{balance.used_days} hari
 								</span>
 							</div>
 							<div className='flex justify-between items-center pt-2 border-t'>
 								<span className='text-xs font-medium'>Tersisa</span>
-								<span className='text-lg font-bold text-blue-600'>
+								<span className='text-lg font-bold font-mono text-primary'>
 									{balance.remaining_days} hari
 								</span>
 							</div>

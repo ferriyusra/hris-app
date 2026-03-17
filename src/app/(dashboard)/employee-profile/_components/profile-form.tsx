@@ -145,7 +145,7 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
 	return (
 		<div className='w-full max-w-4xl mx-auto space-y-6'>
 			<div>
-				<h1 className='text-2xl font-bold'>Update Data Diri</h1>
+				<h1 className='text-2xl font-bold tracking-tight'>Update Data Diri</h1>
 				<p className='text-muted-foreground'>
 					Perbarui informasi pribadi Anda
 				</p>

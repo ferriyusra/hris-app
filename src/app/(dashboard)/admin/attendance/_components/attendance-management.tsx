@@ -9,7 +9,7 @@ import DataTable from '@/components/common/data-table';
 import DropdownAction from '@/components/common/dropdown-action';
 import { AttendanceStatusBadge } from '@/components/common/attendance-status-badge';
 import { TimeDisplay, DateDisplay, DurationDisplay } from '@/components/common/time-display';
-import { Pencil, Trash2, Plus, FileDown, Wifi, WifiOff, Info } from 'lucide-react';
+import { Pencil, Trash2, Plus, FileDown, Search, Wifi, WifiOff, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import useDataTable from '@/hooks/use-data-table';
 import { useAttendanceRealtime } from '@/hooks/use-attendance-realtime';
@@ -160,7 +160,7 @@ export default function AttendanceManagement() {
 			<div className='flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center'>
 				<div>
 					<div className='flex items-center gap-2'>
-						<h1 className='text-2xl font-bold'>Manajemen Kehadiran</h1>
+						<h1 className='text-2xl font-bold tracking-tight'>Manajemen Kehadiran</h1>
 						<div
 							className='hidden items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors'
 							style={{
@@ -189,9 +189,9 @@ export default function AttendanceManagement() {
 					<p className='text-muted-foreground'>
 						Kelola catatan kehadiran karyawan dan lihat laporan terperinci
 					</p>
-					<div className='mt-3 flex items-start gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2.5 text-sm dark:border-blue-900 dark:bg-blue-950'>
-						<Info className='h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0' />
-						<p className='text-blue-700 dark:text-blue-300'>
+					<div className='mt-3 flex items-start gap-2 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2.5 text-sm dark:border-primary/20 dark:bg-primary/5'>
+						<Info className='h-4 w-4 text-primary mt-0.5 flex-shrink-0' />
+						<p className='text-primary/80 dark:text-primary/70'>
 							Data ini bersifat <strong>realtime</strong> dan akan diperbarui secara otomatis saat ada perubahan
 						</p>
 					</div>
@@ -215,11 +215,14 @@ export default function AttendanceManagement() {
 
 			{/* Filters */}
 			<div className='flex flex-col sm:flex-row gap-2'>
-				<Input
-					placeholder='Cari nama karyawan...'
-					onChange={(e) => handleChangeSearch(e.target.value)}
-					className='sm:max-w-xs'
-				/>
+				<div className='relative sm:max-w-xs'>
+					<Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground' />
+					<Input
+						placeholder='Cari nama karyawan...'
+						onChange={(e) => handleChangeSearch(e.target.value)}
+						className='pl-9'
+					/>
+				</div>
 				<Select value={statusFilter} onValueChange={setStatusFilter}>
 					<SelectTrigger className='sm:w-[180px]'>
 						<SelectValue placeholder='Filter berdasarkan status' />

@@ -32,7 +32,7 @@ export default function AttendanceTrendsChart({ data }: AttendanceTrendsChartPro
 		<Card className='col-span-full'>
 			<CardHeader>
 				<CardTitle className='text-lg flex items-center gap-2'>
-					<TrendingUp className='h-5 w-5 text-blue-600' />
+					<TrendingUp className='h-5 w-5 text-primary' />
 					Tren Kehadiran (7 Hari Terakhir)
 				</CardTitle>
 			</CardHeader>
@@ -48,11 +48,15 @@ export default function AttendanceTrendsChart({ data }: AttendanceTrendsChartPro
 						<YAxis tick={{ fontSize: 12 }} tickLine={false} />
 						<Tooltip
 							contentStyle={{
-								backgroundColor: 'rgba(255, 255, 255, 0.95)',
-								border: '1px solid #e2e8f0',
-								borderRadius: '8px',
-								padding: '8px',
+								backgroundColor: 'rgba(15, 15, 30, 0.9)',
+								color: '#e2e8f0',
+								border: 'none',
+								borderRadius: '12px',
+								padding: '10px 14px',
+								boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
 							}}
+							itemStyle={{ color: '#e2e8f0' }}
+							labelStyle={{ color: '#94a3b8', marginBottom: '4px', fontWeight: 600 }}
 						/>
 						<Legend
 							wrapperStyle={{ fontSize: '12px' }}
@@ -62,27 +66,27 @@ export default function AttendanceTrendsChart({ data }: AttendanceTrendsChartPro
 							type='monotone'
 							dataKey='present'
 							stackId='1'
-							stroke='#10b981'
-							fill='#10b981'
-							fillOpacity={0.6}
+							stroke='#0d9488'
+							fill='#0d9488'
+							fillOpacity={0.5}
 							name='Hadir'
 						/>
 						<Area
 							type='monotone'
 							dataKey='late'
 							stackId='1'
-							stroke='#f59e0b'
-							fill='#f59e0b'
-							fillOpacity={0.6}
+							stroke='#d97706'
+							fill='#d97706'
+							fillOpacity={0.5}
 							name='Terlambat'
 						/>
 						<Area
 							type='monotone'
 							dataKey='absent'
 							stackId='1'
-							stroke='#ef4444'
-							fill='#ef4444'
-							fillOpacity={0.6}
+							stroke='#dc2626'
+							fill='#dc2626'
+							fillOpacity={0.5}
 							name='Tidak Hadir'
 						/>
 					</AreaChart>

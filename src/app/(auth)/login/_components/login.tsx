@@ -2,13 +2,6 @@
 
 import FormInput from '@/components/common/form-input';
 import { Button } from '@/components/ui/button';
-import {
-	Card,
-	CardHeader,
-	CardTitle,
-	CardContent,
-	CardDescription,
-} from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
 import {
 	INITIAL_LOGIN_FORM,
@@ -19,7 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { startTransition, useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { login } from '../actions';
-import { Loader2 } from 'lucide-react';
+import { ArrowRight, Loader2, User, Briefcase } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
@@ -75,67 +68,91 @@ export default function Login() {
 	};
 
 	return (
-		<div className='flex flex-col gap-4 w-full'>
-			<Card>
-				<CardHeader className='text-center'>
-					<CardTitle className='text-xl'>Welcome</CardTitle>
-					<CardDescription>Login to access all features</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<Form {...form}>
-						<form onSubmit={onSubmit} className='space-y-4'>
-							<FormInput
-								form={form}
-								name='email'
-								label='Email'
-								placeholder='Insert email here'
-								type='text'
-							/>
-							<FormInput
-								form={form}
-								name='password'
-								label='Password'
-								placeholder='*******'
-								type='password'
-							/>
-							<Button type='submit'>
-								{isPendingLogin ? <Loader2 className='animate-spin' /> : 'Login'}
-							</Button>
-						</form>
-					</Form>
-				</CardContent>
-			</Card>
+		<div className='flex flex-col gap-8 w-full'>
+			{/* Header */}
+			<div className='space-y-2'>
+				<h2 className='text-2xl font-bold tracking-tight'>Sign in</h2>
+				<p className='text-muted-foreground text-sm'>
+					Enter your credentials to access the dashboard
+				</p>
+			</div>
 
-			<Card className='border-dashed'>
-				<CardHeader className='pb-3'>
-					<CardTitle className='text-sm font-medium'>Demo Accounts</CardTitle>
-					<CardDescription className='text-xs'>
-						Click to auto-fill credentials (password: demo1234)
-					</CardDescription>
-				</CardHeader>
-				<CardContent className='grid gap-2'>
+			{/* Login Form */}
+			<Form {...form}>
+				<form onSubmit={onSubmit} className='space-y-5'>
+					<FormInput
+						form={form}
+						name='email'
+						label='Email'
+						placeholder='you@company.com'
+						type='text'
+					/>
+					<FormInput
+						form={form}
+						name='password'
+						label='Password'
+						placeholder='Enter your password'
+						type='password'
+					/>
 					<Button
-						variant='outline'
-						size='sm'
-						className='justify-between text-xs'
-						onClick={() => fillDemoCredentials('admin@demo.com')}
-						type='button'
+						type='submit'
+						className='w-full h-11 mt-2 group'
 					>
-						<span>Admin</span>
-						<span className='text-muted-foreground'>admin@demo.com</span>
+						{isPendingLogin ? (
+							<Loader2 className='animate-spin' />
+						) : (
+							<>
+								Sign in
+								<ArrowRight className='ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1' />
+							</>
+						)}
 					</Button>
-					<Button
-						variant='outline'
-						size='sm'
-						className='justify-between text-xs'
-						onClick={() => fillDemoCredentials('budi@demo.com')}
-						type='button'
-					>
-						<span>Employee</span>
-						<span className='text-muted-foreground'>budi@demo.com</span>
-					</Button>
-				</CardContent>
-			</Card>
+				</form>
+			</Form>
+
+			{/* Divider */}
+			<div className='flex items-center gap-3'>
+				<div className='h-px flex-1 bg-border' />
+				<span className='text-[11px] text-muted-foreground/60 uppercase tracking-[0.15em] font-medium'>Demo access</span>
+				<div className='h-px flex-1 bg-border' />
+			</div>
+
+			{/* Demo Credentials */}
+			<div className='grid gap-3 animate-fade-in-up stagger-2'>
+				<button
+					type='button'
+					onClick={() => fillDemoCredentials('admin@demo.com')}
+					className='group flex items-center gap-4 rounded-xl border border-border bg-card p-4 text-left transition-all duration-200 hover:shadow-[var(--shadow-card)] hover:border-primary/20'
+				>
+					<div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground'>
+						<User className='h-4 w-4' />
+					</div>
+					<div className='flex-1 min-w-0'>
+						<div className='text-sm font-semibold'>Admin Account</div>
+						<div className='text-xs text-muted-foreground truncate'>admin@demo.com</div>
+					</div>
+					<ArrowRight className='h-4 w-4 text-muted-foreground/30 transition-all duration-200 group-hover:text-primary group-hover:translate-x-0.5' />
+				</button>
+
+				<button
+					type='button'
+					onClick={() => fillDemoCredentials('budi@demo.com')}
+					className='group flex items-center gap-4 rounded-xl border border-border bg-card p-4 text-left transition-all duration-200 hover:shadow-[var(--shadow-card)] hover:border-primary/20'
+				>
+					<div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground'>
+						<Briefcase className='h-4 w-4' />
+					</div>
+					<div className='flex-1 min-w-0'>
+						<div className='text-sm font-semibold'>Employee Account</div>
+						<div className='text-xs text-muted-foreground truncate'>budi@demo.com</div>
+					</div>
+					<ArrowRight className='h-4 w-4 text-muted-foreground/30 transition-all duration-200 group-hover:text-primary group-hover:translate-x-0.5' />
+				</button>
+
+				<p className='text-center text-[11px] text-muted-foreground/40 mt-1'>
+					Password: demo1234
+				</p>
+			</div>
 		</div>
 	);
 }

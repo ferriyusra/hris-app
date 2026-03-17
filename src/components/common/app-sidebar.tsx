@@ -38,13 +38,13 @@ export default function AppSidebar() {
 	const profile = useAuthStore((state) => state.profile);
 	return (
 		<Sidebar collapsible='icon'>
-			<SidebarHeader>
+			<SidebarHeader className='border-b border-sidebar-border'>
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<SidebarMenuButton size='lg' asChild>
-							<div className='font-semibold'>
-								<div className='bg-blue-600 flex p-2 items-center justify-center rounded-md'>
-									<Shield className='size-4' />
+							<div className='font-bold tracking-tight'>
+								<div className='bg-gradient-to-br from-sidebar-primary to-sidebar-primary/70 flex p-2.5 items-center justify-center rounded-xl shadow-lg shadow-sidebar-primary/20'>
+									<Shield className='size-4 text-sidebar-primary-foreground' />
 								</div>
 								HRIS App
 							</div>
@@ -64,8 +64,8 @@ export default function AppSidebar() {
 											<SidebarMenuButton asChild tooltip={item.title}>
 												<a
 													href={item.url}
-													className={cn('px-4 py-3 h-auto', {
-														'bg-blue-600 text-white hover:!bg-blue-700 hover:!text-white':
+													className={cn('px-4 py-3 h-auto transition-colors duration-150', {
+														'bg-sidebar-primary/15 text-sidebar-primary border-l-2 border-sidebar-primary hover:!bg-sidebar-primary/20 hover:!text-sidebar-primary':
 															isActive,
 													})}>
 													{item.icon && <item.icon />}
@@ -80,7 +80,7 @@ export default function AppSidebar() {
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
-			<SidebarFooter>
+			<SidebarFooter className='border-t border-sidebar-border'>
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<DropdownMenu>

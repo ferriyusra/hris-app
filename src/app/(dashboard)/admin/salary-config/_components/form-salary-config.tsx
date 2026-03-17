@@ -41,81 +41,83 @@ export default function FormSalaryConfig<T extends FieldValues>({
 					</DialogDescription>
 				</DialogHeader>
 				<form onSubmit={onSubmit} className='space-y-4'>
-					<div className='space-y-4 max-h-[50vh] px-1 overflow-y-auto'>
-						<FormSelect
-							form={form}
-							name={'employee_id' as Path<T>}
-							label='Karyawan'
-							selectItem={employeeOptions}
-						/>
-						<FormSelect
-							form={form}
-							name={'year' as Path<T>}
-							label='Tahun'
-							selectItem={yearOptions}
-						/>
-						<FormInput
-							form={form}
-							name={'base_salary' as Path<T>}
-							label='Gaji Pokok'
-							placeholder='5000000'
-							type='number'
-							min='0'
-						/>
-						<FormInput
-							form={form}
-							name={'transport_allowance' as Path<T>}
-							label='Tunjangan Transport'
-							placeholder='500000'
-							type='number'
-							min='0'
-						/>
-						<FormInput
-							form={form}
-							name={'meal_allowance' as Path<T>}
-							label='Tunjangan Makan'
-							placeholder='500000'
-							type='number'
-							min='0'
-						/>
-						<FormInput
-							form={form}
-							name={'late_deduction_per_day' as Path<T>}
-							label='Potongan Terlambat/Hari'
-							placeholder='50000'
-							type='number'
-							min='0'
-						/>
-						<FormInput
-							form={form}
-							name={'absent_deduction_per_day' as Path<T>}
-							label='Potongan Absen/Hari'
-							placeholder='100000'
-							type='number'
-							min='0'
-						/>
-						<FormInput
-							form={form}
-							name={'half_day_deduction_per_day' as Path<T>}
-							label='Potongan Setengah Hari'
-							placeholder='50000'
-							type='number'
-							min='0'
-						/>
-						<FormInput
-							form={form}
-							name={'overtime_rate_per_hour' as Path<T>}
-							label='Tarif Lembur/Jam'
-							placeholder='25000'
-							type='number'
-							min='0'
-						/>
+					<div className='max-h-[50vh] px-1 overflow-y-auto'>
+						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+							<FormSelect
+								form={form}
+								name={'employee_id' as Path<T>}
+								label='Karyawan'
+								selectItem={employeeOptions}
+							/>
+							<FormSelect
+								form={form}
+								name={'year' as Path<T>}
+								label='Tahun'
+								selectItem={yearOptions}
+							/>
+							<FormInput
+								form={form}
+								name={'base_salary' as Path<T>}
+								label='Gaji Pokok'
+								placeholder='5000000'
+								type='number'
+								min='0'
+							/>
+							<FormInput
+								form={form}
+								name={'transport_allowance' as Path<T>}
+								label='Tunjangan Transport'
+								placeholder='500000'
+								type='number'
+								min='0'
+							/>
+							<FormInput
+								form={form}
+								name={'meal_allowance' as Path<T>}
+								label='Tunjangan Makan'
+								placeholder='500000'
+								type='number'
+								min='0'
+							/>
+							<FormInput
+								form={form}
+								name={'late_deduction_per_day' as Path<T>}
+								label='Potongan Terlambat/Hari'
+								placeholder='50000'
+								type='number'
+								min='0'
+							/>
+							<FormInput
+								form={form}
+								name={'absent_deduction_per_day' as Path<T>}
+								label='Potongan Absen/Hari'
+								placeholder='100000'
+								type='number'
+								min='0'
+							/>
+							<FormInput
+								form={form}
+								name={'half_day_deduction_per_day' as Path<T>}
+								label='Potongan Setengah Hari'
+								placeholder='50000'
+								type='number'
+								min='0'
+							/>
+							<FormInput
+								form={form}
+								name={'overtime_rate_per_hour' as Path<T>}
+								label='Tarif Lembur/Jam'
+								placeholder='25000'
+								type='number'
+								min='0'
+							/>
+						</div>
 					</div>
 					<DialogFooter>
 						<DialogClose asChild>
 							<Button variant='outline'>Batal</Button>
 						</DialogClose>
-						<Button type='submit'>
+						<Button type='submit' className='bg-gradient-to-r from-primary to-primary/80'>
 							{isLoading ? <Loader2 className='animate-spin' /> : type}
 						</Button>
 					</DialogFooter>

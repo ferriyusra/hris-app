@@ -169,7 +169,7 @@ export default function DialogAssignBalance({
 							disabled={isPending}>
 							Cancel
 						</Button>
-						<Button type='submit' disabled={isPending}>
+						<Button type='submit' disabled={isPending} className='bg-gradient-to-r from-primary to-primary/80'>
 							{isPending ? 'Assigning...' : 'Tetapkan Saldo Cuti'}
 						</Button>
 					</div>

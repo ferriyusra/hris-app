@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import useDataTable from '@/hooks/use-data-table';
 import { createClient } from '@/lib/supabase/client';
 import { useQuery } from '@tanstack/react-query';
-import { Eye, Pencil, Trash2 } from 'lucide-react';
+import { Eye, Pencil, Plus, Search, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -81,10 +81,10 @@ export default function EmployeeManagement() {
 				employee.phone_number,
 				<div
 					className={cn('px-2 py-1 rounded-full text-white w-fit capitalize', {
-						 'bg-blue-600': employee.is_active,
-    					'bg-red-600': !employee.is_active,
+						'bg-teal-600 dark:bg-teal-500': employee.is_active,
+						'bg-red-600 dark:bg-red-500': !employee.is_active,
 					})}>
-					 {employee.is_active ? 'Aktif' : 'Tidak Aktif'}
+					{employee.is_active ? 'Aktif' : 'Tidak Aktif'}
 				</div>,
 				<DropdownAction
 					menu={[
@@ -146,15 +146,19 @@ export default function EmployeeManagement() {
 	return (
 		<div className='w-full'>
 			<div className='flex flex-col lg:flex-row mb-4 gap-2 justify-between w-full'>
-				<h1 className='text-2xl font-bold'>Manajemen Karyawan</h1>
+				<h1 className='text-2xl font-bold tracking-tight'>Manajemen Karyawan</h1>
 				<div className='flex gap-2'>
-					<Input
-						placeholder='Cari...'
-						onChange={(e) => handleChangeSearch(e.target.value)}
-					/>
+					<div className='relative'>
+						<Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground' />
+						<Input
+							placeholder='Cari...'
+							onChange={(e) => handleChangeSearch(e.target.value)}
+							className='pl-9'
+						/>
+					</div>
 					<Dialog>
 						<DialogTrigger asChild>
-							<Button variant='outline'>Tambah</Button>
+							<Button><Plus className='mr-2 h-4 w-4' />Tambah</Button>
 						</DialogTrigger>
 						<DialogCreateEmployee refetch={refetch} />
 					</Dialog>

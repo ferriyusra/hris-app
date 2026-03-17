@@ -87,23 +87,25 @@ export default function DialogCreatePayroll({
 					</DialogDescription>
 				</DialogHeader>
 				<form onSubmit={onSubmit} className='space-y-4'>
-					<FormSelect
-						form={form}
-						name='month'
-						label='Bulan'
-						selectItem={monthOptions}
-					/>
-					<FormSelect
-						form={form}
-						name='year'
-						label='Tahun'
-						selectItem={yearOptions}
-					/>
+					<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+						<FormSelect
+							form={form}
+							name='month'
+							label='Bulan'
+							selectItem={monthOptions}
+						/>
+						<FormSelect
+							form={form}
+							name='year'
+							label='Tahun'
+							selectItem={yearOptions}
+						/>
+					</div>
 					<DialogFooter>
 						<DialogClose asChild>
 							<Button variant='outline'>Batal</Button>
 						</DialogClose>
-						<Button type='submit'>
+						<Button type='submit' className='bg-gradient-to-r from-primary to-primary/80'>
 							{isPending ? <Loader2 className='animate-spin' /> : 'Buat'}
 						</Button>
 					</DialogFooter>

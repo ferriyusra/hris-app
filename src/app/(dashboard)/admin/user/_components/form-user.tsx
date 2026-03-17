@@ -148,7 +148,7 @@ export default function FormUser<T extends FieldValues>({
 						<DialogClose asChild>
 							<Button variant='outline'>Batal</Button>
 						</DialogClose>
-						<Button type='submit'>
+						<Button type='submit' className='bg-gradient-to-r from-primary to-primary/80'>
 							{isLoading ? <Loader2 className='animate-spin' /> : type}
 						</Button>
 					</DialogFooter>

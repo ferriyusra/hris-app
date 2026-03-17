@@ -9,7 +9,7 @@ import { HEADER_TABLE_USER } from '@/constants/user-constant';
 import useDataTable from '@/hooks/use-data-table';
 import { createClient } from '@/lib/supabase/client';
 import { useQuery } from '@tanstack/react-query';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Plus, Search, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import DialogCreateUser from './dialog-create-user';
@@ -113,15 +113,19 @@ export default function UserManagement() {
 	return (
 		<div className='w-full'>
 			<div className='flex flex-col justify-between w-full gap-2 mb-4 lg:flex-row'>
-				<h1 className='text-2xl font-bold'>Manajemen Pengguna</h1>
+				<h1 className='text-2xl font-bold tracking-tight'>Manajemen Pengguna</h1>
 				<div className='flex gap-2'>
-					<Input
-						placeholder='Cari berdasarkan nama'
-						onChange={(e) => handleChangeSearch(e.target.value)}
-					/>
+					<div className='relative'>
+						<Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground' />
+						<Input
+							placeholder='Cari berdasarkan nama'
+							onChange={(e) => handleChangeSearch(e.target.value)}
+							className='pl-9'
+						/>
+					</div>
 					<Dialog>
 						<DialogTrigger asChild>
-							<Button variant='outline'>Tambah</Button>
+							<Button><Plus className='mr-2 h-4 w-4' />Tambah</Button>
 						</DialogTrigger>
 						<DialogCreateUser refetch={refetch} />
 					</Dialog>

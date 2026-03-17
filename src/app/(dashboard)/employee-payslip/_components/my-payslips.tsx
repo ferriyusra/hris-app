@@ -48,7 +48,7 @@ export default function MyPayslips() {
 	return (
 		<div className='space-y-6'>
 			<div>
-				<h1 className='text-2xl font-bold'>Slip Gaji</h1>
+				<h1 className='text-2xl font-bold tracking-tight'>Slip Gaji</h1>
 				<p className='text-muted-foreground'>
 					Lihat riwayat slip gaji Anda
 				</p>
@@ -91,21 +91,21 @@ export default function MyPayslips() {
 										<TableCell className='px-6 py-3 font-medium'>
 											{period}
 										</TableCell>
-										<TableCell className='px-6 py-3'>
+										<TableCell className='px-6 py-3 font-mono'>
 											{convertIDR(payslip.base_salary)}
 										</TableCell>
-										<TableCell className='px-6 py-3'>
+										<TableCell className='px-6 py-3 font-mono'>
 											{convertIDR(payslip.total_allowances)}
 										</TableCell>
 										<TableCell className='px-6 py-3'>
-											<span className='text-red-600'>
+											<span className='text-red-600 font-mono'>
 												-{convertIDR(payslip.total_deductions)}
 											</span>
 										</TableCell>
-										<TableCell className='px-6 py-3'>
+										<TableCell className='px-6 py-3 font-mono'>
 											{convertIDR(payslip.overtime_pay)}
 										</TableCell>
-										<TableCell className='px-6 py-3 font-bold'>
+										<TableCell className='px-6 py-3 font-bold font-mono'>
 											{convertIDR(payslip.net_salary)}
 										</TableCell>
 										<TableCell className='px-6 py-3'>

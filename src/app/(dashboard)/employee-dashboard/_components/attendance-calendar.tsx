@@ -13,22 +13,22 @@ export default function AttendanceCalendar({ trends }: AttendanceCalendarProps) 
 	const getStatusIcon = (status: 'present' | 'late' | 'absent') => {
 		switch (status) {
 			case 'present':
-				return <CheckCircle2 className='h-4 w-4 text-blue-600' />;
+				return <div className='flex h-7 w-7 items-center justify-center rounded-full bg-teal-100 dark:bg-teal-950/30'><CheckCircle2 className='h-3.5 w-3.5 text-teal-600 dark:text-teal-400' /></div>;
 			case 'late':
-				return <Clock className='h-4 w-4 text-orange-600' />;
+				return <div className='flex h-7 w-7 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-950/30'><Clock className='h-3.5 w-3.5 text-amber-600 dark:text-amber-400' /></div>;
 			case 'absent':
-				return <XCircle className='h-4 w-4 text-red-600' />;
+				return <div className='flex h-7 w-7 items-center justify-center rounded-full bg-red-100 dark:bg-red-950/30'><XCircle className='h-3.5 w-3.5 text-red-600 dark:text-red-400' /></div>;
 		}
 	};
 
 	const getStatusColor = (status: 'present' | 'late' | 'absent') => {
 		switch (status) {
 			case 'present':
-				return 'bg-blue-50 border-blue-200 hover:bg-blue-100';
+				return 'bg-teal-50 border-teal-200 hover:bg-teal-100 dark:bg-teal-950/10 dark:border-teal-900/30 dark:hover:bg-teal-950/20';
 			case 'late':
-				return 'bg-orange-50 border-orange-200 hover:bg-orange-100';
+				return 'bg-amber-50 border-amber-200 hover:bg-amber-100 dark:bg-amber-950/10 dark:border-amber-900/30 dark:hover:bg-amber-950/20';
 			case 'absent':
-				return 'bg-red-50 border-red-200 hover:bg-red-100';
+				return 'bg-red-50 border-red-200 hover:bg-red-100 dark:bg-red-950/10 dark:border-red-900/30 dark:hover:bg-red-950/20';
 		}
 	};
 
@@ -47,7 +47,7 @@ export default function AttendanceCalendar({ trends }: AttendanceCalendarProps) 
 		<Card>
 			<CardHeader>
 				<CardTitle className='text-lg flex items-center gap-2'>
-					<Calendar className='h-5 w-5 text-blue-600' />
+					<Calendar className='h-5 w-5 text-primary' />
 					Riwayat Kehadiran (30 Hari Terakhir)
 				</CardTitle>
 			</CardHeader>
@@ -71,7 +71,7 @@ export default function AttendanceCalendar({ trends }: AttendanceCalendarProps) 
 								<div
 									key={trend.date}
 									className={cn(
-										'flex items-center justify-between p-3 rounded-lg border transition-colors',
+										'flex items-center justify-between p-3 rounded-lg border transition-colors duration-150',
 										getStatusColor(trend.status)
 									)}>
 									<div className='flex items-center gap-3'>

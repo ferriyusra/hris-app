@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from 'next/font/google';
+import { DM_Sans, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
@@ -6,14 +6,16 @@ import AuthStoreProvider from '@/providers/auth-store-provider';
 import { cookies } from 'next/headers';
 import ReactQueryProvider from '@/providers/react-query-provider';
 
-const geistSans = Geist({
+const dmSans = DM_Sans({
 	variable: '--font-geist-sans',
 	subsets: ['latin'],
+	weight: ['400', '500', '600', '700'],
 });
 
-const geistMono = Geist_Mono({
+const jetbrainsMono = JetBrains_Mono({
 	variable: '--font-geist-mono',
 	subsets: ['latin'],
+	weight: ['400', '500', '600'],
 });
 
 export default async function RootLayout({
@@ -27,7 +29,7 @@ export default async function RootLayout({
 	return (
 		<html lang='en' suppressHydrationWarning>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+				className={`${dmSans.variable} ${jetbrainsMono.variable} antialiased`}>
 				<ReactQueryProvider>
 					<AuthStoreProvider profile={profile}>
 						<ThemeProvider

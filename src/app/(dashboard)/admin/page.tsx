@@ -31,60 +31,75 @@ export default async function AdminDashboard() {
 	const trends = trendsResult.data || [];
 
 	return (
-		<div className='space-y-6'>
+		<div className='space-y-6 w-full'>
 			<div>
-				<h1 className='text-3xl font-bold'>Dasbor</h1>
+				<h1 className='text-3xl font-bold tracking-tight'>Dasbor</h1>
 				<p className='text-muted-foreground'>Selamat datang di dasbor HRIS Anda</p>
 			</div>
 
 			{/* Employee Statistics */}
 			<div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
-				<StatCard
-					title='Total Karyawan'
-					value={stats.totalEmployees}
-					icon={Users}
-					description='Semua karyawan terdaftar'
-					colorClass='text-blue-600'
-				/>
-				<StatCard
-					title='Karyawan Aktif'
-					value={stats.activeEmployees}
-					icon={UserCheck}
-					description='Karyawan yang saat ini aktif'
-					colorClass='text-blue-600'
-				/>
-				<StatCard
-					title='Karyawan Tidak Aktif'
-					value={stats.inactiveEmployees}
-					icon={UserX}
-					description='Karyawan yang saat ini tidak aktif'
-					colorClass='text-gray-600'
-				/>
+				<div className='animate-fade-in-up stagger-1'>
+					<StatCard
+						title='Total Karyawan'
+						value={stats.totalEmployees}
+						icon={Users}
+						description='Semua karyawan terdaftar'
+						colorClass='text-primary'
+					/>
+				</div>
+				<div className='animate-fade-in-up stagger-2'>
+					<StatCard
+						title='Karyawan Aktif'
+						value={stats.activeEmployees}
+						icon={UserCheck}
+						description='Karyawan yang saat ini aktif'
+						colorClass='text-teal-600'
+					/>
+				</div>
+				<div className='animate-fade-in-up stagger-3'>
+					<StatCard
+						title='Karyawan Tidak Aktif'
+						value={stats.inactiveEmployees}
+						icon={UserX}
+						description='Karyawan yang saat ini tidak aktif'
+						colorClass='text-muted-foreground'
+					/>
+				</div>
 			</div>
 
 			{/* Today's Attendance */}
-			<div className='grid gap-4 md:grid-cols-3'>
-				<StatCard
-					title='Hadir Hari Ini'
-					value={stats.todayPresent}
-					icon={CalendarCheck}
-					description='Karyawan yang sudah absen masuk'
-					colorClass='text-blue-600'
-				/>
-				<StatCard
-					title='Terlambat Hari Ini'
-					value={stats.todayLate}
-					icon={Clock}
-					description='Karyawan yang datang terlambat'
-					colorClass='text-orange-600'
-				/>
-				<StatCard
-					title='Tidak Hadir Hari Ini'
-					value={stats.todayAbsent}
-					icon={UserX}
-					description='Karyawan yang tidak hadir'
-					colorClass='text-red-600'
-				/>
+			<div>
+				<h2 className='text-lg font-semibold tracking-tight mb-3 pl-3 border-l-2 border-primary'>Kehadiran Hari Ini</h2>
+				<div className='grid gap-4 md:grid-cols-3'>
+					<div className='animate-fade-in-up stagger-1'>
+						<StatCard
+							title='Hadir Hari Ini'
+							value={stats.todayPresent}
+							icon={CalendarCheck}
+							description='Karyawan yang sudah absen masuk'
+							colorClass='text-teal-600'
+						/>
+					</div>
+					<div className='animate-fade-in-up stagger-2'>
+						<StatCard
+							title='Terlambat Hari Ini'
+							value={stats.todayLate}
+							icon={Clock}
+							description='Karyawan yang datang terlambat'
+							colorClass='text-amber-600'
+						/>
+					</div>
+					<div className='animate-fade-in-up stagger-3'>
+						<StatCard
+							title='Tidak Hadir Hari Ini'
+							value={stats.todayAbsent}
+							icon={UserX}
+							description='Karyawan yang tidak hadir'
+							colorClass='text-red-600'
+						/>
+					</div>
+				</div>
 			</div>
 
 			{/* Attendance Trends Chart */}

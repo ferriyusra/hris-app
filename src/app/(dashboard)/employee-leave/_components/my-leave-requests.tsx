@@ -7,7 +7,7 @@ import useDataTable from '@/hooks/use-data-table';
 import { LeaveRequest } from '@/types/leave';
 import { HEADER_TABLE_MY_LEAVE, LEAVE_STATUS_COLORS, LEAVE_STATUS_LABELS } from '@/constants/leave-constant';
 import { useMemo, useState, useActionState, useEffect, useRef } from 'react';
-import { Trash2 } from 'lucide-react';
+import { Search, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { cancelLeaveRequest } from '../actions';
 import {

@@ -64,7 +64,7 @@ export default function AdminLeaveTypesPage() {
 							setSelectedType(type);
 							setActionType('update');
 						}}>
-						<Pencil className='h-4 w-4 text-blue-600' />
+						<Pencil className='h-4 w-4 text-primary' />
 					</Button>
 					<Button
 						variant='ghost'

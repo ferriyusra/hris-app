@@ -36,21 +36,26 @@ export default function LateEmployeesList({ employees }: LateEmployeesListProps)
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<div className='space-y-3'>
+				<div className='divide-y divide-border'>
 					{employees.map((employee) => (
 						<div
 							key={employee.id}
-							className='flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors'>
-							<div>
-								<p className='font-medium'>{employee.employee_name}</p>
-								<p className='text-sm text-muted-foreground'>
-									Jam masuk: {employee.clock_in}
-								</p>
+							className='flex items-center justify-between py-3 px-2 rounded-lg hover:bg-primary/5 transition-colors duration-150'>
+							<div className='flex items-center gap-3'>
+								<div className='flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 text-amber-700 text-sm font-semibold dark:bg-amber-950/30 dark:text-amber-400'>
+									{employee.employee_name?.charAt(0)?.toUpperCase()}
+								</div>
+								<div>
+									<p className='font-medium'>{employee.employee_name}</p>
+									<p className='text-sm text-muted-foreground font-mono'>
+										Jam masuk: {employee.clock_in}
+									</p>
+								</div>
 							</div>
 							<div className='text-right'>
-								<p className='text-sm font-semibold text-orange-600'>
+								<span className='inline-flex items-center rounded-full bg-amber-100 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400 px-2.5 py-0.5 text-xs font-medium'>
 									Terlambat {employee.minutes_late} menit
-								</p>
+								</span>
 							</div>
 						</div>
 					))}

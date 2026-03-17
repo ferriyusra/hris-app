@@ -110,7 +110,7 @@ export default function AttendanceClockInOut() {
 		<div className='w-full max-w-4xl mx-auto space-y-6'>
 			{/* Header */}
 			<div className='flex justify-between items-center'>
-				<h1 className='text-2xl font-bold'>Absensi Saya</h1>
+				<h1 className='text-2xl font-bold tracking-tight'>Absensi Saya</h1>
 				<Link href='/employee-attendance/history'>
 					<Button variant='outline'>
 						<Calendar className='mr-2 h-4 w-4' />
@@ -120,22 +120,23 @@ export default function AttendanceClockInOut() {
 			</div>
 
 			{/* Real-time Clock Card */}
-			<Card>
-				<CardHeader>
+			<Card className='glass-card overflow-hidden'>
+				<div className='absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 pointer-events-none' />
+				<CardHeader className='relative'>
 					<CardTitle className='flex items-center gap-2'>
-						<Clock className='h-5 w-5' />
+						<Clock className='h-5 w-5 text-primary' />
 						Waktu Saat Ini
 					</CardTitle>
 				</CardHeader>
-				<CardContent>
+				<CardContent className='relative'>
 					<div className='text-center'>
 						{currentTime ? (
 							<>
-								<div className='text-5xl font-bold mb-2'>{format(currentTime, 'HH:mm:ss')}</div>
+								<div className='text-6xl font-bold mb-3 font-mono tracking-tight'>{format(currentTime, 'HH:mm:ss')}</div>
 								<div className='text-muted-foreground'>{format(currentTime, 'EEEE, dd MMMM yyyy')}</div>
 							</>
 						) : (
-							<div className='text-5xl font-bold mb-2'>--:--:--</div>
+							<div className='text-6xl font-bold mb-3 font-mono tracking-tight animate-pulse-soft'>--:--:--</div>
 						)}
 					</div>
 				</CardContent>
@@ -160,8 +161,8 @@ export default function AttendanceClockInOut() {
 						<>
 							{/* Status Display */}
 							<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-								<div className='space-y-2'>
-									<div className='text-sm font-medium text-muted-foreground'>Status</div>
+								<div className='rounded-xl bg-muted/50 p-4 space-y-2'>
+									<div className='text-xs font-medium uppercase tracking-wider text-muted-foreground'>Status</div>
 									{todayStatus?.record ? (
 										<AttendanceStatusBadge status={todayStatus.record.status} />
 									) : (
@@ -169,8 +170,8 @@ export default function AttendanceClockInOut() {
 									)}
 								</div>
 
-								<div className='space-y-2'>
-									<div className='text-sm font-medium text-muted-foreground'>Absen Masuk</div>
+								<div className='rounded-xl bg-muted/50 p-4 space-y-2'>
+									<div className='text-xs font-medium uppercase tracking-wider text-muted-foreground'>Absen Masuk</div>
 									{todayStatus?.record?.clock_in ? (
 										<TimeDisplay
 											timestamp={todayStatus.record.clock_in}
@@ -182,8 +183,8 @@ export default function AttendanceClockInOut() {
 									)}
 								</div>
 
-								<div className='space-y-2'>
-									<div className='text-sm font-medium text-muted-foreground'>Absen Keluar</div>
+								<div className='rounded-xl bg-muted/50 p-4 space-y-2'>
+									<div className='text-xs font-medium uppercase tracking-wider text-muted-foreground'>Absen Keluar</div>
 									{todayStatus?.record?.clock_out ? (
 										<TimeDisplay
 											timestamp={todayStatus.record.clock_out}
@@ -201,7 +202,7 @@ export default function AttendanceClockInOut() {
 								<Button
 									onClick={handleClockIn}
 									disabled={!canClockIn || isClockingIn}
-									className='flex-1 cursor-pointer'
+									className='flex-1 cursor-pointer h-14 text-base bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg shadow-primary/20'
 									size='lg'
 								>
 									<LogIn className='mr-2 h-5 w-5' />
@@ -212,7 +213,7 @@ export default function AttendanceClockInOut() {
 									onClick={handleClockOut}
 									disabled={!canClockOut || isClockingOut}
 									variant='outline'
-									className='flex-1 cursor-pointer'
+									className='flex-1 cursor-pointer h-14 text-base border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-700 dark:text-amber-400 dark:hover:bg-amber-950/20'
 									size='lg'
 								>
 									<LogOut className='mr-2 h-5 w-5' />
@@ -245,9 +246,9 @@ export default function AttendanceClockInOut() {
 					</CardHeader>
 					<CardContent>
 						<div className='grid grid-cols-2 gap-4'>
-							<div>
-								<div className='text-sm text-muted-foreground'>Total Waktu Kerja</div>
-								<div className='text-2xl font-bold'>
+							<div className='rounded-xl bg-muted/50 p-4'>
+								<div className='text-xs font-medium uppercase tracking-wider text-muted-foreground mb-1'>Total Waktu Kerja</div>
+								<div className='text-2xl font-bold font-mono tracking-tight'>
 									{(() => {
 										const clockIn = new Date(todayStatus.record!.clock_in!);
 										const clockOut = new Date(todayStatus.record!.clock_out!);
@@ -258,9 +259,9 @@ export default function AttendanceClockInOut() {
 									})()}
 								</div>
 							</div>
-							<div>
-								<div className='text-sm text-muted-foreground'>Status</div>
-								<div className='text-2xl font-bold'>
+							<div className='rounded-xl bg-muted/50 p-4'>
+								<div className='text-xs font-medium uppercase tracking-wider text-muted-foreground mb-1'>Status</div>
+								<div className='mt-1'>
 									<AttendanceStatusBadge status={todayStatus.record.status} />
 								</div>
 							</div>

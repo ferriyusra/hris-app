@@ -9,7 +9,7 @@ import useDataTable from '@/hooks/use-data-table';
 import { createClient } from '@/lib/supabase/client';
 import { cn, convertIDR } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { Eye, Trash2 } from 'lucide-react';
+import { Eye, Plus, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { PayrollRun } from '@/types/payroll';
@@ -153,14 +153,14 @@ export default function PayrollManagement() {
 		<div className='w-full'>
 			<div className='flex flex-col lg:flex-row mb-4 gap-2 justify-between w-full'>
 				<div>
-					<h1 className='text-2xl font-bold'>Penggajian</h1>
+					<h1 className='text-2xl font-bold tracking-tight'>Penggajian</h1>
 					<p className='text-muted-foreground'>
 						Kelola penggajian bulanan karyawan
 					</p>
 				</div>
 				<Dialog>
 					<DialogTrigger asChild>
-						<Button variant='outline'>Buat Penggajian</Button>
+						<Button><Plus className='mr-2 h-4 w-4' />Buat Penggajian</Button>
 					</DialogTrigger>
 					<DialogCreatePayroll refetch={refetch} />
 				</Dialog>

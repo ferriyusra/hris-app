@@ -23,10 +23,11 @@ export function AttendanceStatusBadge({
 			className={cn(
 				statusConfig.bgColor,
 				statusConfig.textColor,
-				'border-0',
+				'border-0 gap-1.5',
 				className
 			)}
 		>
+			<span className='inline-block h-1.5 w-1.5 rounded-full bg-current opacity-70' />
 			{statusConfig.label}
 		</Badge>
 	);

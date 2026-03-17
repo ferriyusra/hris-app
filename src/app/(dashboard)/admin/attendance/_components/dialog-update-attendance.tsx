@@ -102,7 +102,7 @@ export default function DialogUpdateAttendance({
 						>
 							Batal
 						</Button>
-						<Button type='submit' disabled={isPending}>
+						<Button type='submit' disabled={isPending} className='bg-gradient-to-r from-primary to-primary/80'>
 							{isPending ? 'Menyimpan...' : 'Simpan'}
 						</Button>
 					</DialogFooter>

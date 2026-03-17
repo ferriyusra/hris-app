@@ -20,7 +20,7 @@ export function TimeDisplay({
 
 	try {
 		const date = new Date(timestamp);
-		return <span className={className}>{format(date, formatStr)}</span>;
+		return <span className={cn('font-mono', className)}>{format(date, formatStr)}</span>;
 	} catch (error) {
 		return <span className={cn('text-muted-foreground', className)}>{emptyText}</span>;
 	}
@@ -45,7 +45,7 @@ export function DateDisplay({
 
 	try {
 		const dateObj = new Date(date);
-		return <span className={className}>{format(dateObj, formatStr)}</span>;
+		return <span className={cn('font-mono', className)}>{format(dateObj, formatStr)}</span>;
 	} catch (error) {
 		return <span className={cn('text-muted-foreground', className)}>{emptyText}</span>;
 	}
@@ -76,7 +76,7 @@ export function DurationDisplay({
 		const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
 
 		return (
-			<span className={className}>
+			<span className={cn('font-mono', className)}>
 				{hours}h {minutes}m
 			</span>
 		);

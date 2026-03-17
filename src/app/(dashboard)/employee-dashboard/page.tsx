@@ -38,7 +38,7 @@ async function MonthlyStatsSection() {
 				value={stats.totalDays}
 				icon={Calendar}
 				description='Total hari kerja bulan ini'
-				colorClass='text-blue-600'
+				colorClass='text-primary'
 				suffix='hari'
 			/>
 			<EmployeeStatCard
@@ -46,7 +46,7 @@ async function MonthlyStatsSection() {
 				value={stats.presentDays}
 				icon={CheckCircle2}
 				description='Hari Anda datang tepat waktu'
-				colorClass='text-blue-600'
+				colorClass='text-primary'
 				suffix='hari'
 			/>
 			<EmployeeStatCard

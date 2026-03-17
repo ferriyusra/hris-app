@@ -223,7 +223,7 @@ export default function DialogCreateLeaveType({
 								disabled={isPending}>
 								Batal
 							</Button>
-							<Button type='submit' disabled={isPending}>
+							<Button type='submit' disabled={isPending} className='bg-gradient-to-r from-primary to-primary/80'>
 								{isPending ? 'Membuat...' : 'Tambah Jenis Cuti'}
 							</Button>
 						</div>

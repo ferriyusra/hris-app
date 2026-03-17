@@ -9,7 +9,7 @@ import { LeaveRequest } from '@/types/leave';
 import { HEADER_TABLE_LEAVE_REQUEST, LEAVE_STATUS_COLORS, LEAVE_STATUS_LABELS } from '@/constants/leave-constant';
 import { useMemo, useState, useEffect, useRef, startTransition } from 'react';
 import { useActionState } from 'react';
-import { Check, X } from 'lucide-react';
+import { Check, Search, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { approveLeaveRequest, rejectLeaveRequest } from '../actions';
 import {
@@ -94,7 +94,7 @@ export default function LeaveRequestsManagement({ requests, onRefresh }: LeaveRe
 								setSelectedRequest(request);
 								setActionType('approve');
 							}}>
-							<Check className='h-4 w-4 text-blue-600' />
+							<Check className='h-4 w-4 text-teal-600' />
 						</Button>
 						<Button
 							variant='ghost'
@@ -195,11 +195,15 @@ export default function LeaveRequestsManagement({ requests, onRefresh }: LeaveRe
 	return (
 		<>
 			<div className='flex flex-col lg:flex-row mb-4 gap-2 justify-between w-full'>
-				<h1 className='text-2xl font-bold'>Manajemen Permohonan Cuti</h1>
-				<Input
-					placeholder='Cari berdasarkan karyawan, jenis cuti, atau status...'
-					onChange={(e) => handleChangeSearch(e.target.value)}
-				/>
+				<h1 className='text-2xl font-bold tracking-tight'>Manajemen Permohonan Cuti</h1>
+				<div className='relative'>
+					<Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground' />
+					<Input
+						placeholder='Cari berdasarkan karyawan, jenis cuti, atau status...'
+						onChange={(e) => handleChangeSearch(e.target.value)}
+						className='pl-9'
+					/>
+				</div>
 			</div>
 			<DataTable
 				header={HEADER_TABLE_LEAVE_REQUEST}

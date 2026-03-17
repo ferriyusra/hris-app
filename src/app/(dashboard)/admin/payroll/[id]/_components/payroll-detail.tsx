@@ -148,7 +148,7 @@ export default function PayrollDetail({ id }: { id: string }) {
 					</Button>
 				</Link>
 				<div className='flex-1'>
-					<h1 className='text-2xl font-bold'>
+					<h1 className='text-2xl font-bold tracking-tight'>
 						Penggajian {MONTH_NAMES[payrollRun.month - 1]}{' '}
 						{payrollRun.year}
 					</h1>
@@ -212,21 +212,21 @@ export default function PayrollDetail({ id }: { id: string }) {
 											</p>
 										</div>
 									</TableCell>
-									<TableCell className='px-6 py-3'>
+									<TableCell className='px-6 py-3 font-mono'>
 										{convertIDR(payslip.base_salary)}
 									</TableCell>
-									<TableCell className='px-6 py-3'>
+									<TableCell className='px-6 py-3 font-mono'>
 										{convertIDR(payslip.total_allowances)}
 									</TableCell>
 									<TableCell className='px-6 py-3'>
-										<span className='text-red-600'>
+										<span className='text-red-600 font-mono'>
 											-{convertIDR(payslip.total_deductions)}
 										</span>
 									</TableCell>
-									<TableCell className='px-6 py-3'>
+									<TableCell className='px-6 py-3 font-mono'>
 										{convertIDR(payslip.overtime_pay)}
 									</TableCell>
-									<TableCell className='px-6 py-3 font-bold'>
+									<TableCell className='px-6 py-3 font-bold font-mono'>
 										{convertIDR(payslip.net_salary)}
 									</TableCell>
 									<TableCell className='px-6 py-3'>
@@ -398,7 +398,7 @@ function PayrollStepper({ payrollRun }: { payrollRun: PayrollRun }) {
 									isCompleted &&
 										'bg-emerald-500 border-emerald-500 text-white',
 									isCurrent &&
-										'bg-blue-500 border-blue-500 text-white',
+										'bg-primary border-primary text-white',
 									!isCompleted &&
 										!isCurrent &&
 										'bg-muted border-muted-foreground/30 text-muted-foreground'

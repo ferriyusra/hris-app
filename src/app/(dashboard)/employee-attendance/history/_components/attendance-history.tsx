@@ -162,7 +162,7 @@ export default function AttendanceHistory() {
 							<ArrowLeft className='h-4 w-4' />
 						</Button>
 					</Link>
-					<h1 className='text-2xl font-bold'>Riwayat Kehadiran</h1>
+					<h1 className='text-2xl font-bold tracking-tight'>Riwayat Kehadiran</h1>
 				</div>
 				<div className='flex gap-2'>
 					<Select value={dateFilter} onValueChange={setDateFilter}>

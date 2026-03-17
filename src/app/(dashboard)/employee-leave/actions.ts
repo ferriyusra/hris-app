@@ -312,9 +312,9 @@ export async function getMyLeaveBalances() {
 		// Transform data to ensure leave_type is an object, not an array
 		const transformedData = data?.map((balance: any) => ({
 			...balance,
-			leave_type: Array.isArray(balance.leave_type) && balance.leave_type.length > 0
-				? balance.leave_type[0]
-				: undefined
+			leave_type: Array.isArray(balance.leave_type)
+				? balance.leave_type[0] ?? undefined
+				: balance.leave_type ?? undefined
 		}));
 
 		console.log('=== DEBUG getMyLeaveBalances END ===');

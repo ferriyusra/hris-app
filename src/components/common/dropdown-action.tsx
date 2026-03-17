@@ -34,7 +34,8 @@ export default function DropdownAction({
 						key={`dropdown-action-${index}`}
 						variant={item.variant || 'default'}
 						asChild={item.type === 'link'}
-						onClick={item.action}>
+						onClick={item.action}
+						className='transition-colors duration-150 cursor-pointer'>
 						{item.label}
 					</DropdownMenuItem>
 				))}
