@@ -36,7 +36,7 @@ export async function getMyPayslips() {
 			`
 			)
 			.eq('employee_id', employee.id)
-			.in('payroll_run.status', ['finalized', 'paid'])
+			.in('payroll_run.status', ['process', 'paid'])
 			.order('created_at', { ascending: false });
 
 		if (error) throw error;

@@ -85,7 +85,7 @@ export const SIDEBAR_MENU_LIST = {
 			icon: CalendarDays,
 		},
 		{
-			title: 'Slip Gaji',
+			title: 'Slip Gaji Karyawan',
 			url: '/employee-payslip',
 			icon: Receipt,
 		},

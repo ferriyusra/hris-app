@@ -1,18 +1,18 @@
 export const PAYROLL_STATUS = {
-	DRAFT: 'draft',
-	FINALIZED: 'finalized',
+	UNPAID: 'unpaid',
+	PROCESS: 'process',
 	PAID: 'paid',
 } as const;
 
 export const PAYROLL_STATUS_LABELS = {
-	draft: 'Draf',
-	finalized: 'Final',
+	unpaid: 'Belum Dibayar',
+	process: 'Diproses',
 	paid: 'Dibayar',
 } as const;
 
 export const PAYROLL_STATUS_COLORS = {
-	draft: 'bg-gray-100 text-gray-800 border-gray-200',
-	finalized: 'bg-blue-100 text-blue-800 border-blue-200',
+	unpaid: 'bg-gray-100 text-gray-800 border-gray-200',
+	process: 'bg-yellow-100 text-yellow-800 border-yellow-200',
 	paid: 'bg-green-100 text-green-800 border-green-200',
 } as const;
 

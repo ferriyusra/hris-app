@@ -22,7 +22,7 @@ export interface PayrollRun {
 	id: string;
 	month: number;
 	year: number;
-	status: 'draft' | 'finalized' | 'paid';
+	status: 'unpaid' | 'process' | 'paid';
 	created_by: string | null;
 	finalized_at: string | null;
 	total_amount: number;

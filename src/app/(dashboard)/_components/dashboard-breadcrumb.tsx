@@ -23,12 +23,15 @@ const PATH_TRANSLATIONS: Record<string, string> = {
 	'leave-types': 'Jenis Cuti',
 	'leave-balance': 'Saldo Cuti',
 	'work-time': 'Waktu Kerja',
+	'salary-config': 'Pengaturan Gaji',
+	payroll: 'Penggajian',
 
 	// Employee routes
 	'employee-dashboard': 'Dasbor',
 	'employee-attendance': 'Absensi',
 	'employee-leave': 'Cuti Saya',
 	'employee-profile': 'Profil Saya',
+	'employee-payslip': 'Gaji Karyawan',
 	history: 'Riwayat',
 };
 

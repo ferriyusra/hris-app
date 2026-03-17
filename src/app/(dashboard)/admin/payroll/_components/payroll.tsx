@@ -7,12 +7,11 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import useDataTable from '@/hooks/use-data-table';
 import { createClient } from '@/lib/supabase/client';
-import { convertIDR } from '@/lib/utils';
+import { cn, convertIDR } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { Eye, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
 import { PayrollRun } from '@/types/payroll';
 import {
 	HEADER_TABLE_PAYROLL,
@@ -123,7 +122,7 @@ export default function PayrollManagement() {
 									router.push(`/admin/payroll/${run.id}`);
 								},
 							},
-							...(run.status === 'draft'
+							...(run.status === 'unpaid'
 								? [
 										{
 											label: (

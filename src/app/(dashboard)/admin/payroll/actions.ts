@@ -108,13 +108,13 @@ export async function createPayrollRun(
 		};
 	}
 
-	// Create payroll run
+	// Create payroll run with status 'unpaid'
 	const { data: payrollRun, error: runError } = await supabase
 		.from('payroll_runs')
 		.insert({
 			month,
 			year,
-			status: 'draft',
+			status: 'unpaid',
 			created_by: profile.id,
 		})
 		.select()
@@ -261,7 +261,7 @@ export async function getPayrollRunDetail(id: string) {
 	}
 }
 
-export async function finalizePayrollRun(
+export async function processPayrollRun(
 	prevState: PayrollFormState,
 	formData: FormData
 ): Promise<PayrollFormState> {
@@ -269,19 +269,28 @@ export async function finalizePayrollRun(
 		const supabase = await createClient();
 		const id = formData.get('id') as string;
 
-		const { error } = await supabase
+		const { data, error } = await supabase
 			.from('payroll_runs')
 			.update({
-				status: 'finalized',
+				status: 'process',
 				finalized_at: new Date().toISOString(),
 			})
 			.eq('id', id)
-			.eq('status', 'draft');
+			.eq('status', 'unpaid')
+			.select()
+			.single();
 
 		if (error) {
 			return {
 				status: 'error',
 				errors: { _form: [error.message] },
+			};
+		}
+
+		if (!data) {
+			return {
+				status: 'error',
+				errors: { _form: ['Status penggajian sudah berubah. Silakan muat ulang halaman.'] },
 			};
 		}
 
@@ -296,7 +305,7 @@ export async function finalizePayrollRun(
 				_form: [
 					error instanceof Error
 						? error.message
-						: 'Gagal memfinalisasi penggajian',
+						: 'Gagal memproses penggajian',
 				],
 			},
 		};
@@ -307,24 +316,37 @@ export async function deletePayrollRun(
 	prevState: PayrollFormState,
 	formData: FormData
 ): Promise<PayrollFormState> {
-	const supabase = await createClient();
+	try {
+		const supabase = await createClient();
 
-	const { error } = await supabase
-		.from('payroll_runs')
-		.delete()
-		.eq('id', formData.get('id'))
-		.eq('status', 'draft');
+		const { error } = await supabase
+			.from('payroll_runs')
+			.delete()
+			.eq('id', formData.get('id'))
+			.eq('status', 'unpaid');
 
-	if (error) {
+		if (error) {
+			return {
+				status: 'error',
+				errors: { _form: [error.message] },
+			};
+		}
+
+		revalidatePath('/admin/payroll');
+
+		return { status: 'success' };
+	} catch (error) {
 		return {
 			status: 'error',
-			errors: { _form: [error.message] },
+			errors: {
+				_form: [
+					error instanceof Error
+						? error.message
+						: 'Gagal menghapus penggajian',
+				],
+			},
 		};
 	}
-
-	revalidatePath('/admin/payroll');
-
-	return { status: 'success' };
 }
 
 export async function markPayslipAsPaid(

@@ -20,8 +20,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { convertIDR } from '@/lib/utils';
-import { cn } from '@/lib/utils';
+import { cn, convertIDR } from '@/lib/utils';
 import { PayrollRun, Payslip } from '@/types/payroll';
 import {
 	MONTH_NAMES,
@@ -33,12 +32,26 @@ import {
 } from '@/constants/payroll-constant';
 import {
 	getPayrollRunDetail,
-	finalizePayrollRun,
+	processPayrollRun,
 	markPayslipAsPaid,
 } from '../../actions';
-import { ArrowLeft, CheckCircle, CircleDollarSign, Loader2 } from 'lucide-react';
+import {
+	ArrowLeft,
+	Check,
+	CircleDollarSign,
+	CreditCard,
+	FileText,
+	Loader2,
+	PlayCircle,
+} from 'lucide-react';
 import Link from 'next/link';
-import { startTransition, useActionState, useCallback, useEffect, useState } from 'react';
+import {
+	startTransition,
+	useActionState,
+	useCallback,
+	useEffect,
+	useState,
+} from 'react';
 import { INITIAL_STATE_ACTION } from '@/constants/general-constant';
 import { toast } from 'sonner';
 
@@ -47,6 +60,7 @@ export default function PayrollDetail({ id }: { id: string }) {
 	const [payslips, setPayslips] = useState<Payslip[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [confirmPayslip, setConfirmPayslip] = useState<Payslip | null>(null);
+	const [showProcessDialog, setShowProcessDialog] = useState(false);
 
 	const fetchData = useCallback(async () => {
 		setIsLoading(true);
@@ -60,8 +74,8 @@ export default function PayrollDetail({ id }: { id: string }) {
 		fetchData();
 	}, [fetchData]);
 
-	const [finalizeState, finalizeAction, isFinalizing] = useActionState(
-		finalizePayrollRun,
+	const [processState, processAction, isProcessing] = useActionState(
+		processPayrollRun,
 		INITIAL_STATE_ACTION
 	);
 
@@ -70,11 +84,11 @@ export default function PayrollDetail({ id }: { id: string }) {
 		INITIAL_STATE_ACTION
 	);
 
-	const handleFinalize = () => {
+	const handleProcess = () => {
 		const formData = new FormData();
 		formData.append('id', id);
 		startTransition(() => {
-			finalizeAction(formData);
+			processAction(formData);
 		});
 	};
 
@@ -89,16 +103,17 @@ export default function PayrollDetail({ id }: { id: string }) {
 	};
 
 	useEffect(() => {
-		if (finalizeState?.status === 'success') {
-			toast.success('Penggajian berhasil difinalisasi');
+		if (processState?.status === 'success') {
+			toast.success('Penggajian sedang diproses');
+			setShowProcessDialog(false);
 			fetchData();
 		}
-		if (finalizeState?.status === 'error') {
-			toast.error('Gagal memfinalisasi', {
-				description: finalizeState.errors?._form?.[0],
+		if (processState?.status === 'error') {
+			toast.error('Gagal memproses penggajian', {
+				description: processState.errors?._form?.[0],
 			});
 		}
-	}, [finalizeState]);
+	}, [processState]);
 
 	useEffect(() => {
 		if (paymentState?.status === 'success') {
@@ -125,6 +140,7 @@ export default function PayrollDetail({ id }: { id: string }) {
 
 	return (
 		<div className='space-y-6'>
+			{/* Header */}
 			<div className='flex items-center gap-4'>
 				<Link href='/admin/payroll'>
 					<Button variant='ghost' size='icon'>
@@ -149,18 +165,22 @@ export default function PayrollDetail({ id }: { id: string }) {
 						</span>
 					</div>
 				</div>
-				{payrollRun.status === 'draft' && (
-					<Button onClick={handleFinalize} disabled={isFinalizing}>
-						{isFinalizing ? (
-							<Loader2 className='animate-spin mr-2' />
-						) : (
-							<CheckCircle className='mr-2' />
-						)}
-						Finalisasi
+
+				{payrollRun.status === 'unpaid' && (
+					<Button onClick={() => setShowProcessDialog(true)}>
+						<PlayCircle className='mr-2 h-4 w-4' />
+						Proses Pembayaran
 					</Button>
 				)}
 			</div>
 
+			{/* Stepper */}
+			<Card className='p-6'>
+				<h3 className='font-semibold mb-6'>Status Penggajian</h3>
+				<PayrollStepper payrollRun={payrollRun} />
+			</Card>
+
+			{/* Payslip Table */}
 			<Card className='p-0'>
 				<Table>
 					<TableHeader className='bg-muted'>
@@ -219,7 +239,7 @@ export default function PayrollDetail({ id }: { id: string }) {
 										</span>
 									</TableCell>
 									<TableCell className='px-6 py-3'>
-										{payrollRun.status === 'finalized' &&
+										{payrollRun.status === 'process' &&
 											payslip.payment_status === 'unpaid' && (
 												<Button
 													size='sm'
@@ -277,6 +297,34 @@ export default function PayrollDetail({ id }: { id: string }) {
 				</Card>
 			</div>
 
+			{/* Process Dialog */}
+			<AlertDialog
+				open={showProcessDialog}
+				onOpenChange={setShowProcessDialog}>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Proses Pembayaran</AlertDialogTitle>
+						<AlertDialogDescription>
+							Mulai proses pembayaran gaji periode{' '}
+							{MONTH_NAMES[payrollRun.month - 1]} {payrollRun.year} dengan
+							total {convertIDR(payrollRun.total_amount)}? Slip gaji akan
+							dapat dilihat oleh karyawan.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Batal</AlertDialogCancel>
+						<AlertDialogAction onClick={handleProcess} disabled={isProcessing}>
+							{isProcessing ? (
+								<Loader2 className='animate-spin mr-2' />
+							) : (
+								<PlayCircle className='mr-2 h-4 w-4' />
+							)}
+							Ya, Proses
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+
 			{/* Confirm Payment Dialog */}
 			<AlertDialog
 				open={confirmPayslip !== null}
@@ -311,6 +359,83 @@ export default function PayrollDetail({ id }: { id: string }) {
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
+		</div>
+	);
+}
+
+function PayrollStepper({ payrollRun }: { payrollRun: PayrollRun }) {
+	const statusOrder: PayrollRun['status'][] = ['unpaid', 'process', 'paid'];
+	const currentIndex = statusOrder.indexOf(payrollRun.status);
+
+	const steps = [
+		{
+			label: 'Belum Dibayar',
+			icon: <FileText className='h-4 w-4' />,
+		},
+		{
+			label: 'Diproses',
+			icon: <PlayCircle className='h-4 w-4' />,
+		},
+		{
+			label: 'Dibayar',
+			icon: <CreditCard className='h-4 w-4' />,
+		},
+	];
+
+	return (
+		<div className='flex items-center'>
+			{steps.map((step, index) => {
+				const isCompleted = index < currentIndex;
+				const isCurrent = index === currentIndex;
+
+				return (
+					<div key={step.label} className='flex items-center flex-1 last:flex-none'>
+						{/* Step circle + label */}
+						<div className='flex flex-col items-center'>
+							<div
+								className={cn(
+									'h-10 w-10 rounded-full flex items-center justify-center border-2 transition-colors',
+									isCompleted &&
+										'bg-emerald-500 border-emerald-500 text-white',
+									isCurrent &&
+										'bg-blue-500 border-blue-500 text-white',
+									!isCompleted &&
+										!isCurrent &&
+										'bg-muted border-muted-foreground/30 text-muted-foreground'
+								)}>
+								{isCompleted ? (
+									<Check className='h-4 w-4' />
+								) : (
+									step.icon
+								)}
+							</div>
+							<span
+								className={cn(
+									'text-xs font-medium mt-2 text-center',
+									!isCompleted && !isCurrent
+										? 'text-muted-foreground'
+										: 'text-foreground'
+								)}>
+								{step.label}
+							</span>
+						</div>
+
+						{/* Connector line */}
+						{index < steps.length - 1 && (
+							<div className='flex-1 flex items-center px-2 -mt-5'>
+								<div
+									className={cn(
+										'h-0.5 w-full rounded-full',
+										isCompleted
+											? 'bg-emerald-500'
+											: 'bg-muted-foreground/20'
+									)}
+								/>
+							</div>
+						)}
+					</div>
+				);
+			})}
 		</div>
 	);
 }
