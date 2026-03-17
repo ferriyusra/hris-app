@@ -69,35 +69,73 @@ export default function Login() {
 		}
 	}, [loginState, router]);
 
+	const fillDemoCredentials = (email: string) => {
+		form.setValue('email', email);
+		form.setValue('password', 'demo1234');
+	};
+
 	return (
-		<Card>
-			<CardHeader className='text-center'>
-				<CardTitle className='text-xl'>Welcome</CardTitle>
-				<CardDescription>Login to access all features</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<Form {...form}>
-					<form onSubmit={onSubmit} className='space-y-4'>
-						<FormInput
-							form={form}
-							name='email'
-							label='Email'
-							placeholder='Insert email here'
-							type='text'
-						/>
-						<FormInput
-							form={form}
-							name='password'
-							label='Password'
-							placeholder='*******'
-							type='password'
-						/>
-						<Button type='submit'>
-							{isPendingLogin ? <Loader2 className='animate-spin' /> : 'Login'}
-						</Button>
-					</form>
-				</Form>
-			</CardContent>
-		</Card>
+		<div className='flex flex-col gap-4 w-full'>
+			<Card>
+				<CardHeader className='text-center'>
+					<CardTitle className='text-xl'>Welcome</CardTitle>
+					<CardDescription>Login to access all features</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<Form {...form}>
+						<form onSubmit={onSubmit} className='space-y-4'>
+							<FormInput
+								form={form}
+								name='email'
+								label='Email'
+								placeholder='Insert email here'
+								type='text'
+							/>
+							<FormInput
+								form={form}
+								name='password'
+								label='Password'
+								placeholder='*******'
+								type='password'
+							/>
+							<Button type='submit'>
+								{isPendingLogin ? <Loader2 className='animate-spin' /> : 'Login'}
+							</Button>
+						</form>
+					</Form>
+				</CardContent>
+			</Card>
+
+			<Card className='border-dashed'>
+				<CardHeader className='pb-3'>
+					<CardTitle className='text-sm font-medium'>Demo Accounts</CardTitle>
+					<CardDescription className='text-xs'>
+						Click to auto-fill credentials (password: demo1234)
+					</CardDescription>
+				</CardHeader>
+				<CardContent className='grid gap-2'>
+					<Button
+						variant='outline'
+						size='sm'
+						className='justify-between text-xs'
+						onClick={() => fillDemoCredentials('admin@demo.com')}
+						type='button'
+					>
+						<span>Admin</span>
+						<span className='text-muted-foreground'>admin@demo.com</span>
+					</Button>
+					<Button
+						variant='outline'
+						size='sm'
+						className='justify-between text-xs'
+						onClick={() => fillDemoCredentials('budi@demo.com')}
+						type='button'
+					>
+						<span>Employee</span>
+						<span className='text-muted-foreground'>budi@demo.com</span>
+					</Button>
+				</CardContent>
+			</Card>
+		</div>
 	);
 }
