@@ -8,17 +8,15 @@ async function main() {
     // readPath is the path to the file that Claude is trying to read
     const readPath = toolArgs.tool_input?.file_path || toolArgs.tool_input?.path || "";
 
-    // Allow docs/openapi.yaml but block all other .yaml files
-    if (readPath.endsWith(".yaml")) {
-        // Normalize the path to handle different path formats
-        const normalizedPath = readPath.replace(/\\/g, '/');
-        
-        // Check if this is the allowed openapi.yaml file
-        if (!normalizedPath.endsWith("docs/openapi.yaml")) {
-            console.error("You cannot read .yaml files except for docs/openapi.yaml");
-            process.exit(2);
-        }
+    const normalizedPath = readPath.replace(/\\/g, '/');
+    const fileName = normalizedPath.split('/').pop() || "";
+
+    // Block .env files (e.g. .env, .env.local, .env.production)
+    if (fileName.startsWith(".env")) {
+        console.error("You cannot read .env files");
+        process.exit(2);
     }
+
 }
 
 main();
