@@ -9,15 +9,20 @@ import {
 } from '@/constants/auth-constant';
 import { LoginForm, loginSchemaForm } from '@/validations/auth-validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { startTransition, useActionState, useEffect } from 'react';
+import { startTransition, useActionState, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { login } from '../actions';
 import { ArrowRight, Loader2, User, Briefcase } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import CaptchaTurnstile from '@/components/common/captcha-turnstile';
+import { TurnstileInstance } from '@marsidev/react-turnstile';
 
 export default function Login() {
 	const router = useRouter();
+	const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+	const captchaRef = useRef<TurnstileInstance>(null);
+
 	const form = useForm<LoginForm>({
 		resolver: zodResolver(loginSchemaForm),
 		defaultValues: INITIAL_LOGIN_FORM,
@@ -29,10 +34,18 @@ export default function Login() {
 	);
 
 	const onSubmit = form.handleSubmit(async (data) => {
+		if (!captchaToken) {
+			toast.error('Captcha diperlukan', {
+				description: 'Silakan selesaikan verifikasi captcha terlebih dahulu.',
+			});
+			return;
+		}
+
 		const formData = new FormData();
 		Object.entries(data).forEach(([key, value]) => {
 			formData.append(key, value);
 		});
+		formData.append('captcha_token', captchaToken);
 
 		startTransition(() => {
 			loginAction(formData);
@@ -41,18 +54,21 @@ export default function Login() {
 
 	useEffect(() => {
 		if (loginState?.status === 'error') {
-			const errorMessage = loginState.errors?._form?.[0] || 'An error occurred';
-			toast.error('Login Failed', {
+			const errorMessage = loginState.errors?._form?.[0] || 'Terjadi kesalahan';
+			toast.error('Login Gagal', {
 				description: errorMessage,
 			});
+			// Reset captcha on error so the user must solve it again
+			setCaptchaToken(null);
+			captchaRef.current?.reset();
 			startTransition(() => {
 				loginAction(null);
 			});
 		}
 
 		if (loginState?.status === 'success') {
-			toast.success('Login Successful', {
-				description: 'Redirecting to dashboard...',
+			toast.success('Login Berhasil', {
+				description: 'Mengalihkan ke dashboard...',
 			});
 
 			// Redirect based on role
@@ -60,7 +76,7 @@ export default function Login() {
 			router.push(redirectPath);
 			router.refresh();
 		}
-	}, [loginState, router]);
+	}, [loginState, loginAction, router]);
 
 	const fillDemoCredentials = (email: string) => {
 		form.setValue('email', email);
@@ -94,9 +110,16 @@ export default function Login() {
 						placeholder='Enter your password'
 						type='password'
 					/>
+					<CaptchaTurnstile
+						ref={captchaRef}
+						onSuccess={(token) => setCaptchaToken(token)}
+						onError={() => setCaptchaToken(null)}
+						onExpire={() => setCaptchaToken(null)}
+					/>
 					<Button
 						type='submit'
 						className='w-full h-11 mt-2 group'
+						disabled={isPendingLogin || !captchaToken}
 					>
 						{isPendingLogin ? (
 							<Loader2 className='animate-spin' />

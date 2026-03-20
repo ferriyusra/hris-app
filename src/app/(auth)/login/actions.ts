@@ -15,6 +15,7 @@ export async function login(
 		return INITIAL_STATE_LOGIN_FORM;
 	}
 
+	// Validate form fields first (avoids unnecessary CAPTCHA API call on invalid data)
 	const validatedFields = loginSchemaForm.safeParse({
 		email: formData.get('email'),
 		password: formData.get('password'),
@@ -31,6 +32,58 @@ export async function login(
 		};
 	}
 
+	// Verify CAPTCHA token
+	const captchaToken = formData.get('captcha_token') as string | null;
+
+	if (!captchaToken) {
+		return {
+			status: 'error',
+			role: '',
+			errors: {
+				_form: ['Verifikasi captcha diperlukan. Silakan selesaikan captcha terlebih dahulu.'],
+			},
+		};
+	}
+
+	try {
+		const captchaVerification = await fetch(
+			'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+			{
+				method: 'POST',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				body: new URLSearchParams({
+					secret: process.env.TURNSTILE_SECRET_KEY || '',
+					response: captchaToken,
+				}),
+				signal: AbortSignal.timeout(5000),
+			}
+		);
+
+		if (!captchaVerification.ok) {
+			throw new Error(`HTTP ${captchaVerification.status}`);
+		}
+
+		const captchaResult = (await captchaVerification.json()) as { success: boolean };
+
+		if (!captchaResult.success) {
+			return {
+				status: 'error',
+				role: '',
+				errors: {
+					_form: ['Verifikasi captcha gagal. Silakan coba lagi.'],
+				},
+			};
+		}
+	} catch {
+		return {
+			status: 'error',
+			role: '',
+			errors: {
+				_form: ['Verifikasi captcha gagal. Silakan coba lagi nanti.'],
+			},
+		};
+	}
+
 	const supabase = await createClient();
 
 	const {
@@ -43,7 +96,6 @@ export async function login(
 			status: 'error',
 			role: '',
 			errors: {
-				...prevState.errors,
 				_form: [error.message],
 			},
 		};
